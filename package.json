@@ -1,0 +1,53 @@
+{
+  "name": "doctorrweb-api",
+  "version": "1.0.0",
+  "description": "This is the API for the doctorrweb's website",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "test",
+    "dev": "webpack -wd",
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/doctorrweb/portfolio.git"
+  },
+  "keywords": [
+    "doctorrweb",
+    "portfolio",
+    "blog",
+    "website"
+  ],
+  "author": "doctorrWeb",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/doctorrweb/portfolio/issues"
+  },
+  "homepage": "https://github.com/doctorrweb/portfolio#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.8.4",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.7.7",
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/preset-react": "^7.7.4",
+    "@babel/preset-stage-3": "^7.0.0",
+    "babel-eslint": "^10.0.3",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-import": "^1.13.0",
+    "casual": "^1.6.2",
+    "eslint": "^6.8.0",
+    "eslint-plugin-react": "^7.17.0",
+    "morgan": "^1.9.1",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  }
+}
