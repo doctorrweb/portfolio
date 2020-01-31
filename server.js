@@ -4,8 +4,7 @@ const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const config = require('./config')
 
-const routes = require('./api/routes')
-
+const appRouter = require('./api/routes')
 
 const app = express()
 
@@ -50,7 +49,8 @@ app.get('/', (req, res) => {
 
 app.set('view engine', 'ejs')
 
-routes(app)
+//routes(app)
+app.use('/api', appRouter)
 app.use(express.static('public'))
 
 
