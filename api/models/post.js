@@ -11,6 +11,10 @@ const PostSchema = new Schema({
         type: String,
         lowercase: true
     },
+    content: {
+        type: String,
+        required: true
+    },
     category: {
         type: String,
         lowercase: true,
@@ -47,7 +51,26 @@ const PostSchema = new Schema({
         ],
         required: true,
         default: 'pending'
-    }
+    },
+    project: {
+        type: Schema.Types.ObjectId,
+        ref: 'project'
+    },
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
+    },
+    comments: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'comment'
+        }
+    ],
+    images: [
+        {
+            type: String
+        }
+    ]
 })
 
 const Post = mongoose.model('post', PostSchema)

@@ -8,12 +8,12 @@ const jwtAuthentication = passport.authenticate('jwt', { session: false })
 
 const clientRouter = express.Router()
 
-clientRouter.route('/projects')
-    .get(jwtAuthentication, clientController.getAll)
-    .post(jwtAuthentication, clientController.new)
+clientRouter.route('/clients')
+    .get(jwtAuthentication, clientController.readAll)
+    .post(jwtAuthentication, clientController.create)
 
-clientRouter.route('/projects/:id')
-    .get(jwtAuthentication, clientController.getOne)
+clientRouter.route('/clients/:id')
+    .get(jwtAuthentication, clientController.readOne)
     .put(jwtAuthentication, clientController.update)
     .delete(jwtAuthentication, clientController.delete)
 

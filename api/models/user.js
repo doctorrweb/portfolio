@@ -3,6 +3,20 @@ const { Schema } = mongoose
 const bcrypt = require('bcrypt')
 
 const UserSchema = new Schema({
+    method: {
+        type: String,
+        enum: ['local', 'google', 'facebook', 'github'],
+        required: true
+    },
+    local: {
+        email: {
+            type: String,
+            lowercase: true
+        },
+        password: {
+            type: String
+        }
+    },
     surname: {
         type: String,
         lowercase: true
@@ -22,15 +36,9 @@ const UserSchema = new Schema({
         required: true,
         default: 'suscriber'
     },
-    email: {
-        type: String,
-        lowercase: true
-    },
-    password: {
-        type: String
-    },
-    image: String,
+    pic: String,
 })
+
 
 UserSchema.methods.isValidPassword = function(newPassword) {
     return bcrypt.compare(newPassword, this.password)

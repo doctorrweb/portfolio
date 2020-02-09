@@ -1,16 +1,17 @@
 const Project = require('../models/project')
+const Post = require('../models/post')
 
 const projectController = {
-    new: async (req, res) => {
+    create: async (req, res) => {
         const project = new Project(req.body)
         await project.save()
         res.status(201).json(project)
     },
-    getAll: async (req, res) => {
+    readAll: async (req, res) => {
         const projects = await Project.find({})
         res.status(200).json(projects)
     },
-    getOne: async (req, res) => {
+    readOne: async (req, res) => {
         const { id } = req.params
         const project = await Project.findById(id)
         res.status(200).json(project)
@@ -28,8 +29,33 @@ const projectController = {
     },
     delete: async (req, res) => {
         const { id } = req.params
+        
         await Project.findByIdAndDelete(id, err => {
-            err ? res.status(500).send(err) : res.status(200).json({ success: true })
+            if (err) {
+                res.status(500).send(err)
+            } else {
+                
+                // Delete all Posts related to the project
+                Post.deleteMany({project: id}, (err, data) => {
+                    if (err) {
+                        res
+                            .status(200)
+                            .json({
+                                success:
+                              'You are successfuly deleted the project but an error occured while deleting posts'
+                            })
+                    } else {
+                        res
+                            .status(200)
+                            .json({
+                                success:
+                              'You are successfuly deleted the project and ' +
+                              data.deletedCount +
+                              ' posts'
+                            })
+                    }
+                })
+            }
         })
     }
 }

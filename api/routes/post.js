@@ -10,6 +10,7 @@ const postRouter = express.Router()
 
 postRouter.route('/posts')
     .get(jwtAuthentication, postController.getAll)
+    .post(jwtAuthentication, postController.new)
 
 postRouter.route('/posts/:id')
     .get(jwtAuthentication, postController.getOne)

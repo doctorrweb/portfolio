@@ -24,7 +24,8 @@ const ProjectSchema = new Schema({
     },
     client: {
         type: Schema.Types.ObjectId,
-        ref: 'client'
+        ref: 'client',
+        required: true
     },
     startDate: {
         type: Date,
@@ -54,7 +55,24 @@ const ProjectSchema = new Schema({
         ],
         required: true,
         default: 'pending'
-    }
+    },
+    link: String,
+    posts: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'post'
+        }
+    ],
+    testimonies: [
+        {
+            type: String
+        }
+    ],
+    image: [
+        {
+            type: String
+        }
+    ],
 })
 
 const Project = mongoose.model('project', ProjectSchema)

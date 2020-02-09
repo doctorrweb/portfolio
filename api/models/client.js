@@ -23,7 +23,6 @@ const ClientSchema = new Schema({
             ref: 'project'
         }
     ]
-
 })
 
 const Client = mongoose.model('client', ClientSchema)

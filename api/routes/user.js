@@ -22,4 +22,7 @@ userRouter.route('/users/:id')
     .put(jwtAuthentication, userController.update)
     .delete(jwtAuthentication, userController.delete)
 
+userRouter.route('/users/updatepassword/:id')
+    .put(jwtAuthentication, userController.updatePassword)    
+
 module.exports = userRouter    

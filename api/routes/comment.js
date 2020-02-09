@@ -9,11 +9,11 @@ const jwtAuthentication = passport.authenticate('jwt', { session: false })
 const commentRouter = express.Router()
 
 commentRouter.route('/comments')
-    .get(jwtAuthentication, commentController.getAll)
-    .post(jwtAuthentication, commentController.new)
+    .get(jwtAuthentication, commentController.readAll)
+    .post(jwtAuthentication, commentController.create)
 
 commentRouter.route('/comments/:id')
-    .get(jwtAuthentication, commentController.getOne)
+    .get(jwtAuthentication, commentController.readOne)
     .put(jwtAuthentication, commentController.update)
     .delete(jwtAuthentication, commentController.delete)
 
