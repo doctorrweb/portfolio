@@ -7,7 +7,7 @@ const localOptions = { usernameField: 'email' }
 const verify = async (email, password, done) => {
 
     // Find the user given email
-    const user = await User.findOne({ email })
+    const user = await User.findOne({ 'local.email': email })
 
     // If not, handle it
     if (!user) {

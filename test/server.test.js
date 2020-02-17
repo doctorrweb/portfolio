@@ -2,9 +2,9 @@ const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
-const config = require('./config')
+const config = require('../config')
 
-const appRouter = require('./api/routes')
+const appRouter = require('../api/routes')
 
 const app = express()
 
@@ -13,7 +13,7 @@ start - SETTING OF THE DATABASE
 **** */
 
 // Conection to Databse
-mongoose.connect(config.devDB, {
+mongoose.connect(config.testDB, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
@@ -35,7 +35,6 @@ db.on('error', err => {
 end - SETTING OF THE DATABASE
 **** */
 
-
 app.use(morgan('tiny'))
 
 app.use(bodyParser.json({ limit: '50mb' }, { type: '*/*' }))
@@ -52,7 +51,6 @@ app.set('view engine', 'ejs')
 //routes(app)
 app.use('/api', appRouter)
 app.use(express.static('public'))
-
 
 app.listen(config.port, () => {
     console.log(`Express is launch: http://localhost:${config.port}`)

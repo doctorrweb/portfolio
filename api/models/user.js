@@ -41,7 +41,7 @@ const UserSchema = new Schema({
 
 
 UserSchema.methods.isValidPassword = function(newPassword) {
-    return bcrypt.compare(newPassword, this.password)
+    return bcrypt.compare(newPassword, this.local.password)
 }
 
 const User = mongoose.model('user', UserSchema)

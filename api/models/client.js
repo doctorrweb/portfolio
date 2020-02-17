@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
+const Project = require('../models/project')
 
 const ClientSchema = new Schema({
     name: {
@@ -7,7 +8,10 @@ const ClientSchema = new Schema({
         lowercase: true,
         required: true
     },
-    image: String,
+    image: {
+        type: Schema.Types.ObjectId,
+        ref: 'image'
+    },
     description: {
         type: String
     },
@@ -23,6 +27,10 @@ const ClientSchema = new Schema({
             ref: 'project'
         }
     ]
+})
+
+ClientSchema.pre('findOneAndDelete', next => {
+    Project.deleteMany({ client: this._id }, err => err ? err : next())
 })
 
 const Client = mongoose.model('client', ClientSchema)

@@ -40,6 +40,10 @@ const CommentSchema = new Schema({
         required: true,
         default: 'pending'
     },
+    top: {
+        type: Schema.Types.ObjectId,
+        ref: 'comment'
+    },
     post: {
         type: Schema.Types.ObjectId,
         ref: 'post',

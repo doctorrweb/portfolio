@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
-const Post = require('../models/post')
+//const Post = require('../models/post')
 
-const ProjectSchema = new Schema({
+const FormationSchema = new Schema({
     title: {
         type: String,
         lowercase: true,
@@ -11,6 +11,10 @@ const ProjectSchema = new Schema({
     subTitle: {
         type: String,
         lowercase: true
+    },
+    content: {
+        type: String,
+        required: true
     },
     category: {
         type: String,
@@ -23,18 +27,10 @@ const ProjectSchema = new Schema({
         required: true,
         default: 'undefined'
     },
-    client: {
-        type: Schema.Types.ObjectId,
-        ref: 'client',
-        required: true
-    },
-    startDate: {
+    creationDate: {
         type: Date,
         default: Date.now(),
         required: true,
-    },
-    endDate: {
-        type: Date
     },
     publicationDate: [
         {
@@ -57,29 +53,26 @@ const ProjectSchema = new Schema({
         required: true,
         default: 'pending'
     },
-    link: String,
+    images: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'image'
+        }
+    ],
+    videos: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'video'
+        }
+    ],
     posts: [
         {
             type: Schema.Types.ObjectId,
             ref: 'post'
         }
-    ],
-    testimonies: [
-        {
-            type: String
-        }
-    ],
-    image: [
-        {
-            type: String
-        }
-    ],
+    ]
 })
 
-ProjectSchema.pre('findOneAndDelete', next => {
-    Post.deleteMany({ project: this._id }, err => err ? err : next())
-})
+const Formation = mongoose.model('formation', FormationSchema)
 
-const Project = mongoose.model('project', ProjectSchema)
-
-module.exports = Project
+module.exports = Formation

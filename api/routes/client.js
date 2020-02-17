@@ -1,6 +1,7 @@
 const express = require('express')
 const clientController = require('../controllers/client')
 require('../authentication/jwtAuth')
+const authorize = require('../authentication/authorization')
 
 const passport = require('passport')
 
@@ -10,11 +11,11 @@ const clientRouter = express.Router()
 
 clientRouter.route('/clients')
     .get(jwtAuthentication, clientController.readAll)
-    .post(jwtAuthentication, clientController.create)
+    .post(jwtAuthentication, authorize('administrator'), clientController.create)
 
 clientRouter.route('/clients/:id')
     .get(jwtAuthentication, clientController.readOne)
-    .put(jwtAuthentication, clientController.update)
-    .delete(jwtAuthentication, clientController.delete)
+    .put(jwtAuthentication, authorize('administrator'), clientController.update)
+    .delete(jwtAuthentication, authorize('administrator'), clientController.delete)
 
 module.exports = clientRouter    

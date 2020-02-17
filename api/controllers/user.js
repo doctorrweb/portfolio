@@ -67,78 +67,97 @@ const userController = {
     /*
     
     */
-    signIn: async (req, res, next) => {
+    signIn: async (req, res) => {
         try {
             res.status(200).json({ token: getToken(req.user) })
         } catch (error) {
             //console.log(error)
-            next(error)
+            res.status(400).json({ message: 'Bad Request' })
         }
     },
-    getAll: async (req, res) => {
-        const users = await User.find({})
-        res.status(200).json(users)
+    readAll: async (req, res) => {
+        try {
+            const users = await User.find({})
+            res.status(200).json(users)
+        } catch (error) {
+            res.status(400).json({ message: 'Bad Request' })
+        }
     },
-    getOne: async (req, res) => {
-        const { id } = req.params
-        const user = await User.findById(id)
-        res.status(200).json(user)
+    readOne: async (req, res) => {
+        try {
+            const { id } = req.params
+            const user = await User.findById(id)
+            res.status(200).json(user)
+        } catch (error) {
+            res.status(400).json({ message: 'Bad Request' })
+        }
     },
     update: async (req, res) => {
-    // Enforce that req.body must contain all the fields
-        const { id } = req.params 
-        await User.findByIdAndUpdate(
-            id,
-            req.body,
-            { new: true },
-            (err, updatedUser) => {
-                err ? res.status(500).send(err) : res.status(200).send(updatedUser)
-            }
-        )
+        try {
+            // Enforce that req.body must contain all the fields
+            const { id } = req.params
+            await User.findByIdAndUpdate(
+                id,
+                req.body,
+                { new: true },
+                (err, updatedUser) => {
+                    err ? res.status(500).send(err) : res.status(200).send(updatedUser)
+                }
+            )
+        } catch (error) {
+            res.status(400).json({ message: 'Bad Request' })
+        }
     },
     updatePassword: async (req, res) => {
-        // Enforce that req.body must contain all the fields
-        const { id } = req.params
-        
-        if (req.body.newPassword) {
-            const { oldPassword, newPassword } = req.body
-            //let user = await User.find({ _id: id })
-            let user = await User.findById(id)
-            if (user) {
-                const isValidPassword = await bcrypt.compare(oldPassword, user.local.password)
-                await bcrypt.genSalt(13, async (err, salt) => {
-                    await bcrypt.hash(newPassword, salt, function (err, hash) {
-                        // Store hash in your password DB.
-                        if (isValidPassword) {
-                            User.findByIdAndUpdate(
-                                id,
-                                {
-                                    local: {
-                                        password: hash
+        try {
+            // Enforce that req.body must contain all the fields
+            const { id } = req.params
+
+            if (req.body.newPassword) {
+                const { oldPassword, newPassword } = req.body
+                //let user = await User.find({ _id: id })
+                let user = await User.findById(id)
+                if (user) {
+                    const isValidPassword = await bcrypt.compare(oldPassword, user.local.password)
+                    await bcrypt.genSalt(13, async (err, salt) => {
+                        await bcrypt.hash(newPassword, salt, function (err, hash) {
+                            // Store hash in your password DB.
+                            if (isValidPassword) {
+                                User.findByIdAndUpdate(
+                                    id,
+                                    {
+                                        local: {
+                                            password: hash
+                                        }
+                                    },
+                                    { new: true },
+                                    (err, updatedUser) => {
+                                        err ? res.status(500).send(err) : res.status(200).send(updatedUser)
                                     }
-                                },
-                                { new: true },
-                                (err, updatedUser) => {
-                                    err ? res.status(500).send(err) : res.status(200).send(updatedUser)
-                                }
-                            )
-                        } else {
-                            return res.status(404).send('Passwords don\'t match')
-                        }
+                                )
+                            } else {
+                                return res.status(404).send('Passwords don\'t match')
+                            }
+                        })
                     })
-                })
-            } else {
-                return res.status(404).send('No user found')
+                } else {
+                    return res.status(404).send('No user found')
+                }
             }
+        } catch (error) {
+            res.status(400).json({ message: 'Bad Request' })
         }
     },
     delete: async (req, res) => {
-        const { id } = req.params
-        await User.findByIdAndDelete(id, err => {
-            err ? res.status(500).send(err) : res.status(200).json({ success: true })
-        })
+        try {
+            const { id } = req.params
+            await User.findByIdAndDelete(id, err => {
+                err ? res.status(500).send(err) : res.status(200).json({ success: true })
+            })
+        } catch (error) {
+            res.status(400).json({ message: 'Bad Request' })
+        }
     }
 }
-
 
 module.exports = userController

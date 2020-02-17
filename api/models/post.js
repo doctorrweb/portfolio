@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
+const Comment = require('../models/comment')
 
 const PostSchema = new Schema({
     title: {
@@ -60,6 +61,10 @@ const PostSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'user'
     },
+    formation: {
+        type: Schema.Types.ObjectId,
+        ref: 'formation'
+    },
     comments: [
         {
             type: Schema.Types.ObjectId,
@@ -68,9 +73,20 @@ const PostSchema = new Schema({
     ],
     images: [
         {
-            type: String
+            type: Schema.Types.ObjectId,
+            ref: 'image'
+        }
+    ],
+    videos: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'video'
         }
     ]
+})
+
+PostSchema.pre('findOneandDelete', next => {
+    Comment.deleteMany({ post: this._id }, err => err ? err : next())
 })
 
 const Post = mongoose.model('post', PostSchema)
