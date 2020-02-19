@@ -10,6 +10,7 @@ const commentRouter = require('./comment')
 const clientRouter = require('./client')
 const imageRouter = require('./image')
 const videoRouter = require('./video')
+const testimonyRouter = require('./testimony')
 
 const appRouter = express.Router()
 
@@ -21,5 +22,6 @@ appRouter.use(commentRouter)
 appRouter.use(clientRouter)
 appRouter.use(imageRouter)
 appRouter.use(videoRouter)
+appRouter.use(testimonyRouter)
 
 module.exports = appRouter

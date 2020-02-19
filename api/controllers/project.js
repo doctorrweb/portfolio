@@ -104,7 +104,7 @@ const projectController = {
 
                 // Delete comments related to the posts 
                 await Comment.deleteMany({ post: { $in: project.posts} }, (err, data) => {
-                    err ? res.status(500).send(err) : Object.assign(response, { comments: data.n })
+                    err ? res.status(500).send(err) : Object.assign(response, { comments: data.n, success: true })
                 })
             }
 

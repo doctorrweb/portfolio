@@ -77,6 +77,24 @@ const postController = {
                 Object.assign(response, { newPost: true })
             }
 
+            // Handle the formation update //
+            if (req.body.formation !== undefined && (req.body.formation !== post.formation)) {
+                const oldFormation = await Formation.findById(post.formation)
+                const formationPosts = await oldFormation.posts.filter(formation => formation != id)
+
+                //Delete the post in the old project
+                oldFormation.posts = formationPosts
+                await oldFormation.save()
+                Object.assign(response, { oldPost: true })
+
+                //Add the post in the new project
+                const newPost = await Post.findById(id) //redo this query to get the updated post
+                const newFormation = await Formation.findById(newPost.formation)
+                await newFormation.posts.push(newPost._id)
+                await newFormation.save()
+                Object.assign(response, { newPost: true })
+            }
+
             res.status(200).json(response)
 
         } catch (error) {
@@ -118,7 +136,7 @@ const postController = {
             // Delete all comments related to the article
             if (post.comments !== []) {
                 await Comment.deleteMany({ post: id }, (err, data) => {
-                    err ? res.status(500).send(err) : Object.assign(response, { posts: data.n })
+                    err ? res.status(500).send(err) : Object.assign(response, { comments: data.n })
                 })
             }
 

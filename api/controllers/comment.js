@@ -53,23 +53,23 @@ const commentController = {
     delete: async (req, res) => {
         try {
             const { id } = req.params
-            const comment = await Comment.findById(id)
-
-            const post = await Post.findById(comment.post)
-            const postComments = post.comments.filter(comment => comment != id)
+            const response = {}
+            const comment = await Comment.findById(id)            
 
             await Comment.findByIdAndDelete(id, err => {
-                if (err) {
-                    res.status(500).send(err)
-                } else {
-                    //Delete the comment in the related post
-                    post.comments = postComments
-                    post.save()
-
-                    // Send the response to the client
-                    res.status(200).json({ success: true })
-                }
+                err ? res.status(500).send(err) : Object.assign(response, {comment: 1})
             })
+
+
+            //Delete the comment in the related post
+            const post = await Post.findById(comment.post)
+            const postComments = await post.comments.filter(comment => comment != id)
+            post.comments = postComments
+            await post.save()
+            Object.assign(response, { success: true})
+
+            res.status(200).json(response)
+
         } catch (error) {
             res.status(400).json({ message: 'Bad Request' })
         }
