@@ -7,7 +7,7 @@ const config = require('../config')
 const getToken = user => {
     
     const date = new Date()
-    const expiratiionDate = date.setDate(date.getDate() + 10)
+    const expirationDate = date.setDate(date.getDate() + 10)
     const timeStamp = date.getTime()
 
     return jwt.encode(
@@ -16,7 +16,7 @@ const getToken = user => {
             name: user.surname,
             firstname: user.firstname,
             iat: timeStamp,
-            exp: expiratiionDate,
+            exp: expirationDate,
             role: user.role
         },
         config.secret
