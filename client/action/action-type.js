@@ -1,0 +1,11 @@
+export const SET_AUTHENTICATION = 'SET_AUTHENTICATION'
+export const SET_CURRENT_USER = 'SET_CURRENT_USER'
+
+// Settings Action Types
+export const LOCALE_SET = 'LOCALE_SET'
+export const SHOW_MODALLOGIN = 'SHOW_MODALLOGIN'
+export const SHOW_SIDEBAR = 'SHOW_SIDEBAR'
+export const PARSE_RESPONSE = 'PARSE_RESPONSE'
+export const RESET_RESPONSE = 'RESET_RESPONSE'
+export const PARSE_ERROR = 'PARSE_ERROR'
+export const RESET_ERROR = 'RESET_ERROR'
