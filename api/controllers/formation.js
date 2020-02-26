@@ -7,7 +7,7 @@ const formationController = {
         try {
             const formation = new Formation(req.body)
             await formation.save()
-            res.status(400).json(formation)
+            res.status(200).json(formation)
 
         } catch (error) {
             res.status(400).json({ message: 'Bad Request' })

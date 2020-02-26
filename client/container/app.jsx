@@ -3,9 +3,10 @@ import { useSelector } from 'react-redux'
 import { IntlProvider } from 'react-intl'
 import { Layout } from 'antd'
 import { Switch, Route, Router, Link, useHistory } from 'react-router-dom'
+import NavBar from './navBar'
 import Post from './post'
 import Formation from './formation'
-//import messages from '../translation/'
+import messages from '../translation/'
 
 const { Header, Content, Footer } = Layout
 
@@ -16,27 +17,28 @@ const App = () => {
     const lang = useSelector(state => state.locale.lang)
 
     return (
-        <IntlProvider locale={lang}>
-            <Footer style={{ minHeight: 0 }}>
+        <IntlProvider locale={lang} messages={messages[lang]}>
+            <Layout style={{ minHeight: 0 }}>
                 <Header
-                    theme="light"
+                    //theme="light"
                     style={{
-                        //position: 'fixed',
-                        //zIndex: 100,
-                        minHeight: '80px',
-                        padding: '10px 50px',
+                        position: 'fixed',
+                        zIndex: 1,
+                        minHeight: '100px',
+                        padding: '18px 50px',
                         width: '100%',
-                        backgroundColor: '#EFEFEF'
+                        backgroundColor: '#EFEFEF',
+                        boxShadow: '2px 2px 2px 1px rgba(0, 0, 0, 0.2)',
                     }}
                 >
-            Header
+                    <NavBar />
                 </Header>
                 <Content
                     style={{
-                        //background: '#fff',
+                        background: '#fff',
                         minHeight: '100%',
-                        padding: '10px 50px'
-                        //marginTop: 100
+                        padding: '10px 50px',
+                        marginTop: 100
                     }}
                 >
                     <Router history={history}>
@@ -58,27 +60,11 @@ const App = () => {
                         //marginTop: 100
                     }}
                 >
-            Footer
+                    Footer
                 </Footer>
-            </Footer>
+            </Layout>
         </IntlProvider>
     )
 }
-
-//const intl = useIntl()
-
-/*
-const mapStateToprops = state => {
-    return {
-        lang: state.locale.lang,
-        //sidebar: state.sidebar.sidebar,
-        errorStatus: state.error.status
-    }
-}
-
-const mapDispatchToProps ={
-
-}
-*/
 
 export default App

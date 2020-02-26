@@ -10,6 +10,7 @@ import setAuthorizationToken from './helper/authToken'
 import registerServiceWorker from './registerServiceWorker'
 import reducers from './reducer'
 import { setAuthentication, setCurrentUser } from './action/index'
+//import 'antd/dist/antd.css'
 
 const middleware =
   process.env.NODE_ENV !== 'production'

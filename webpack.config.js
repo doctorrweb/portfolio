@@ -20,6 +20,7 @@ module.exports = {
                 //test: /\.(css|less)$/,
                 //test: /\.css$/,
                 test: /\.less$/,
+                include: [/node_modules\/.*antd/],
                 use: [
                     { loader: 'style-loader' },
                     { loader: 'css-loader' },
@@ -27,8 +28,8 @@ module.exports = {
                         loader: 'less-loader',
                         options: {
                             modifyVars: {
-                                'primary-color': '#009944',
-                                'link-color': '#009944',
+                                'primary-color': '#FF9900',
+                                'link-color': '#FF9900',
                                 'border-radius-base': '2px'
                             },
                             javascriptEnabled: true
@@ -43,5 +44,9 @@ module.exports = {
     },
     devServer: {
         historyApiFallback: true
-    }
+    },
+    stats: {
+        colors: true
+    },
+    devtool: 'source-map'
 }

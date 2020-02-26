@@ -13,7 +13,7 @@ import axios from 'axios'
 import jwt from 'jsonwebtoken'
 import setAuthorizationToken from '../helper/authToken'
 
-const BASE_URL = 'http://localhost:8080/api'
+const BASE_URL = 'http://localhost:3000/api'
 
 export function setAuthentication(isLoggedIn) {
     return {
