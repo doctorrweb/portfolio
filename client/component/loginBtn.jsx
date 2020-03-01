@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
+import { PoweroffOutlined } from '@ant-design/icons';
 import { Col, Button, Modal, notification } from 'antd'
 import { showModalLogin } from '../action'
 
@@ -36,11 +37,11 @@ const loginBtn = () => {
 
     return (
         <Col md={3} sm={1} xs={1}>
-            <Button icon="poweroff" type="primary" size="small" onClick={() => btnAction()}>
+            <Button icon={<PoweroffOutlined />} type="primary" size="small" onClick={() => btnAction()}>
                 {isLoggedIn ? ` ${intl.formatMessage({id: 'logout'})}`: ` ${intl.formatMessage({id: 'login'})}`}
             </Button>
         </Col>
-    )
+    );
 }
 
 export default loginBtn

@@ -1,5 +1,6 @@
 import React from 'react'
-import { Row, Col, Icon } from 'antd'
+import { MenuOutlined } from '@ant-design/icons'
+import { Row, Col } from 'antd'
 //import { FormattedMessage } from 'react-intl'
 import { Link } from 'react-router-dom'
 import Language from '../component/language'
@@ -18,7 +19,7 @@ const NavBar = () => {
     return (
         <Row type="flex" justify="space-between" >
             <Col md={6} sm={20} xs={20} style={{ textAlign: 'left' }}>
-                <Icon type="menu" style={{ fontSize: '30px', fontWeight: 'bold' }} />
+                <MenuOutlined style={{ fontSize: '30px', fontWeight: 'bold' }} />
             </Col>
             <Col
                 md={9}
