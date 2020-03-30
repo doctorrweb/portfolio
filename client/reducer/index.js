@@ -27,11 +27,11 @@ const rootReducer = combineReducers({
     error: ErrorReducer,
     toggleBtn: ToggleBtnReducer,
     posts: PostReducer,
-    project: ProjectReducer,
-    client: ClientReducer,
-    tutorial: TutorialReducer,
-    image: ImageReducer,
-    video: VideoReducer
+    projects: ProjectReducer,
+    clients: ClientReducer,
+    tutorials: TutorialReducer,
+    images: ImageReducer,
+    videos: VideoReducer
     //form
 })
 

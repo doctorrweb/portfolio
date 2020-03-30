@@ -1,6 +1,7 @@
 import { 
     CREATE_POST,
     READALL_POST,
+    UPDATE_POST,
     DELETE_POST
 } from '../action/action-type'
 
@@ -18,6 +19,10 @@ export default function (state = initialState, action) {
         return {
             posts: [...action.payload]
         }
+    case UPDATE_POST:
+        return {
+            posts: [...state.posts]
+        }    
     case DELETE_POST:
         return {
             posts: state.posts.filter(post => post._id != action.payload)

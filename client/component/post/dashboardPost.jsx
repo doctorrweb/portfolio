@@ -5,9 +5,10 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { PlusOutlined } from '@ant-design/icons'
 import { useCustomModal } from '../../helper/utils'
 import PostTable from './postTable'
+import PostFormUpdate from './postFormUpdate'
 import PostForm from './postForm'
 import { readAllPosts } from '../../action/post'
-import ModalPostFormProvider from '../../helper/modalPostFormProvider'
+import { ModalPostFormProvider } from '../../helper/modalFormProvider'
 
 const { Title } = Typography
 
@@ -18,47 +19,59 @@ const DashboardPost = () => {
     const responseStatus = useSelector(state => state.response.status)
     const posts = useSelector(state => state.posts.posts)
 
-    const [modalVisibility, setModalVisibility] = useState(false)
+    const [modalVisibilityUpdate, setModalVisibilityUpdate] = useState(false)
+    const [modalVisibilityCreate, setModalVisibilityCreate] = useState(false)
     const [itemToUpdate, setItemToUpdate] = useState('')
     const [initialValues, setInitialValues] = useState({})
-
-    useEffect(() => {
-        if (itemToUpdate !== '') {
-            let initialData = posts.filter(post => post._id === itemToUpdate)
-            setInitialValues({...initialData[0]})
-        }
-    }, [itemToUpdate])
     
     useEffect(() => {
         dispatch(readAllPosts())
     }, [])
 
     useEffect(() => {
-        renderModal()
-    }, [modalVisibility])    
+        if (itemToUpdate !== '') {
+            let initialData = posts.filter(post => post._id === itemToUpdate)
+            setInitialValues({ ...initialData[0] })
+        }
+    }, [itemToUpdate])
+
+    useEffect(() => {
+        renderModalUpdate()
+    }, [modalVisibilityUpdate])    
     
     useEffect(() => {
         if (responseStatus >= 200) {
-            setModalVisibility(false)
+            setModalVisibilityUpdate(false)
+            setModalVisibilityCreate(false)
             dispatch(readAllPosts())
         }
     }, [responseStatus])
 
     const title = <Title level={4}>Post Form</Title>
-    const component = <PostForm itemToUpdate={itemToUpdate} initialValues={initialValues} />
+    const componentUpdate = <PostFormUpdate itemToUpdate={itemToUpdate} initialValues={initialValues} />
+    const componentCreate = <PostForm />
 
-    const renderModal = () => {
-        return useCustomModal(title, component, modalVisibility, setModalVisibility)
+    const renderModalUpdate = () => {
+        return useCustomModal(title, componentUpdate, modalVisibilityUpdate, setModalVisibilityUpdate)
     }
 
+    const renderModalCreate = () => {
+        return useCustomModal(title, componentCreate, modalVisibilityCreate, setModalVisibilityCreate)
+    }
+
+    /*
+    const renderModalCreate = () => {
+        return useCustomModal(title, component, modalVisibility, setModalVisibility)
+    }
+    */
+
     const handleOnClick = () => {
-        setModalVisibility(!modalVisibility)
-        setItemToUpdate('')
+        setModalVisibilityCreate(!modalVisibilityUpdate)
     }
 
     return (
         <ModalPostFormProvider.Provider value={{
-            setVisibility: setModalVisibility,
+            setVisibility: setModalVisibilityUpdate,
             setItemToUpdate: setItemToUpdate
         }}>
             <Row>
@@ -71,7 +84,8 @@ const DashboardPost = () => {
                             {` ${intl.formatMessage({ id: 'createpost' })}`}
                         </Button>
                     </Col>
-                    {renderModal()}
+                    {renderModalCreate()}
+                    {renderModalUpdate()}
                 </Row>
                 <Row>
                     <Col lg={24} md={24} sm={24} xs={24}>

@@ -1,5 +1,8 @@
 import {
-    CREATE_CLIENT
+    CREATE_CLIENT, 
+    READALL_CLEINT,
+    UPDATE_CLIENT,
+    DELETE_CLIENT,
 } from '../action/action-type'
 
 const initialState = {
@@ -11,6 +14,18 @@ export default function (state = initialState, action) {
     case CREATE_CLIENT:
         return {
             clients: [...state.clients, action.payload]
+        }
+    case READALL_CLEINT:
+        return {
+            clients: [...action.payload]
+        }
+    case UPDATE_CLIENT:
+        return {
+            clients: [...state.clients]
+        }
+    case DELETE_CLIENT:
+        return {
+            clients: state.clients.filter(client => client._id != action.payload)
         }
     default:
         return state

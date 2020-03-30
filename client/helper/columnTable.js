@@ -1,10 +1,10 @@
 import React, { useContext } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Dropdown, Button, Menu, Modal } from 'antd'
+import { Dropdown, Button, Menu, Modal, Tag } from 'antd'
 import { DownOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import { useDispatch } from 'react-redux'
 import { deletePost } from '../action/post'
-import ModalPostFormProvider from '../helper/modalPostFormProvider'
+import { ModalPostFormProvider } from './modalFormProvider'
 
 const { confirm } = Modal
 
@@ -63,6 +63,23 @@ const renderAction = (text, record) => {
     )
 }
 
+const renderStatus = (text) => {
+    switch (text) {
+    case 'trash':
+        return (
+            <Tag color="red">{text}</Tag>
+        )
+    case 'active':
+        return (
+            <Tag color="green">{text}</Tag>
+        )
+    default:
+        return (
+            <Tag color="orange">{text}</Tag>
+        )
+    }
+}
+
 const columns = {
     postTable:  [
         {
@@ -73,26 +90,21 @@ const columns = {
             fixed: 'left'
         },
         {
-            title: <FormattedMessage id='subtitle' />,
-            width: 100,
-            dataIndex: 'subTitle',
-            key: 'subTitle'
-        },
-        {
             title: <FormattedMessage id='category' />,
-            width: 100,
+            width: 50,
             dataIndex: 'category',
             key: 'category'
         },
         {
             title: <FormattedMessage id='status' />,
-            width: 100,
+            width: 50,
             dataIndex: 'status',
-            key: 'status'
+            key: 'status',
+            render: (text) => renderStatus(text)
         },
         {
             title: <FormattedMessage id='creationdate' />,
-            width: 150,
+            width: 75,
             dataIndex: 'creationDate',
             key: 'creationDate'
         },
@@ -100,7 +112,7 @@ const columns = {
             title: <FormattedMessage id='action' />,
             key: 'operation',
             fixed: 'right',
-            width: 100,
+            width: 50,
             render: (text, record) => renderAction(text, record),
         },
     ]

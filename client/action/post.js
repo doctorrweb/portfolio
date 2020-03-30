@@ -1,6 +1,7 @@
 import {
     CREATE_POST,
     READALL_POST,
+    UPDATE_POST,
     DELETE_POST
 } from './action-type'
 import axios from 'axios'
@@ -45,6 +46,26 @@ export function readAllPosts() {
                 dispatch(parseResponse(response.status))
             })
 
+            .catch((error) => {
+                dispatch(parseError(error.response))
+            })
+    }
+}
+
+export function updatePost(postId, updatedContent) {
+    return function (dispatch) {
+        axios({
+            method: 'put',
+            url: `${BASE_URL}/entries/${postId}`,
+            data: updatedContent,
+        })
+            .then((response) => {
+                dispatch({
+                    type: UPDATE_POST,
+                    payload: postId
+                })
+                dispatch(parseResponse(response.status))
+            })
             .catch((error) => {
                 dispatch(parseError(error.response))
             })
@@ -103,33 +124,7 @@ export function creatEntryFormOffer(entry, history) {
 
 }
 
-export function updateEntry(id, entry, history) {
-    return function (dispatch) {
-        axios({
-            method: 'put',
-            url: `${BASE_URL}/entries/${id}`,
-            data: entry,
-            config: { headers: { 'Content-Type': 'multipart/form-data' } }
-        })
-            .then((response) => {
-                dispatch({
-                    type: UPDATE_ENTRY,
-                    payload: id
-                })
-                dispatch(parseResponse(response.status))
-                notification['success']({
-                    message: 'Your entry has been updated !',
-                    duration: 0,
-                })
-                //history.push('/dashboard/offers')
-            })
-            .catch((error) => {
-                dispatch(parseError(error.response))
-                history.push('/')
-            })
-    }
 
-}
 
 
 

@@ -98,7 +98,7 @@ const projectController = {
             if (project.posts !== []) {
 
                 // Delete Posts related to the project 
-                await Post.deleteMany({ project: id }, (err, data) => {
+                await Post.deleteMany({ projects: { $in: id } }, (err, data) => {
                     Object.assign(response, { posts: data.n })
                 })
 

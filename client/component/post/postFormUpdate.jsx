@@ -13,7 +13,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import CKEditor from 'ckeditor4-react'
 import { UploadOutlined } from '@ant-design/icons'
 import { resetResponse, resetError } from '../../action'
-import { createPost } from '../../action/post'
+import { updatePost } from '../../action/post'
+//import 'braft-editor/dist/index.css'
 
 const { Option } = Select
 
@@ -40,7 +41,7 @@ const tailFormItemLayout = {
     }
 }
 
-const PostForm = ({ itemToUpdate }) => {
+const PostForm = ({ itemToUpdate, initialValues }) => {
 
     const [form] = Form.useForm()
     const [, forceUpdate] = useState()
@@ -49,8 +50,8 @@ const PostForm = ({ itemToUpdate }) => {
     const dispatch = useDispatch()
 
     const [content, setContent] = useState('')
-    const [postInitialValues, setPostInitialValues] = useState({})
-    //const [relation, setRelation] = useState('blog')
+    //const [postInitialValues, setPostInitialValues] = useState({}) 
+    const [relation, setRelation] = useState('blog')
 
     const errorStatus = useSelector(state => state.error.status)
     const responseStatus = useSelector(state => state.response.status)
@@ -60,35 +61,18 @@ const PostForm = ({ itemToUpdate }) => {
     useEffect(() => {
         if (itemToUpdate === '') {
             setContent('')
+            form.resetFields()
+            //setPostInitialValues({})
         }
         if (itemToUpdate !== '') {
             let initialData = posts.filter(post => post._id === itemToUpdate)
             setContent(initialData[0].content)
+            form.setFieldsValue({ ...initialData[0] })
         }
     })
 
-    useEffect(() => {
-        if (itemToUpdate === '') {
-            form.resetFields()
-            setPostInitialValues({})
-        }
-        if (itemToUpdate !== '') {
-            let initialData = posts.filter(post => post._id === itemToUpdate)
-            setPostInitialValues({ ...initialData[0] })
-            form.setFieldsValue({ ...initialData[0] })
-        }
-    }, [itemToUpdate])
-
     /*
-   useEffect(() => {
-        if (formType === 'create') {
-            form.setFieldsValue({})
-        }
-        if (formType === 'update') {
-            form.setFieldsValue({ ...initialValues })
-        }
 
-    }, [formType])
     */
 
     // To disable submit button at the beginning.
@@ -122,11 +106,9 @@ const PostForm = ({ itemToUpdate }) => {
     }
 
     const onFinish = (values) => {
-        if (itemToUpdate === '') {
-            dispatch(createPost({ ...values, lang: lang, content: content }))
-            setContent('')
-            form.resetFields()
-        }
+        dispatch(updatePost({ ...values, lang: lang, content: content }))
+        setContent('')
+        form.resetFields()
     }
 
     const onFinishFailed = errorInfo => {
@@ -144,12 +126,13 @@ const PostForm = ({ itemToUpdate }) => {
             name="post"
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
-        //initialValues={{ ...postInitialValues }}
         >
             <Form.Item
                 name="title"
                 label={
-                    <span><FormattedMessage id='title' /></span>
+                    <span>
+                        <FormattedMessage id="title" />
+                    </span>
                 }
                 rules={[
                     {
@@ -164,83 +147,92 @@ const PostForm = ({ itemToUpdate }) => {
             </Form.Item>
 
             <Form.Item
-                name="subtitle"
                 label={
-                    <span><FormattedMessage id='subtitle' /></span>
-                }
-            >
-                <Input />
-            </Form.Item>
-
-            <Form.Item
-                label={
-                    <span><FormattedMessage id='content' /></span>
+                    <span>
+                        <FormattedMessage id="content" />
+                    </span>
                 }
                 name="content"
             >
                 <CKEditor
+                    onBeforeLoad={(CKEDITOR) => (CKEDITOR.disableAutoInline = true)}
                     onChange={e => ckeditor4Handler(e.editor.getData())}
-                    data={content}
+                    //data={content}
+                    data={itemToUpdate === '' ? '' : initialValues.content}
                 />
             </Form.Item>
 
-            <Form.Item
-                label="Related to"
-                shouldUpdate
+            <Form.Item 
+                label="Related to" 
+                name="relation"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please input the title!',
+                        whitespace: true
+                    }
+                ]}
+                
             >
-                {() => (
-                    <div>
-                        <span>
-                            <Radio.Group
-                                defaultValue="blog"
-                                buttonStyle="solid"
-                                //onChange={e => setRelation(e.target.value)}
-                                name='relation'
-                            >
-                                <Radio.Button value="blog">Blog</Radio.Button>
-                                <Radio.Button value="tutorial"><FormattedMessage id='tutorial' /></Radio.Button>
-                                <Radio.Button value="project"><FormattedMessage id='project' /></Radio.Button>
-                            </Radio.Group>
-                        </span>
-                        <Select
-                            style={{ width: '27em', marginLeft: '1em' }}
-                            allowClear
-                            showSearch
-                            mode='multiple'
-                            name='relationItem'
-                        >
-                            <Option value="option1">Option 1</Option>
-                            <Option value="option2">Option 2</Option>
-                            <Option value="option3">Option 3</Option>
-                            <Option value="option4">Option 4</Option>
-                        </Select>
-                    </div>
-                )}
+                <Radio.Group
+                    defaultValue="blog"
+                    buttonStyle="solid"
+                    onChange={e => setRelation(e.target.value)}
+                >
+                    <Radio.Button value="blog">Blog</Radio.Button>
+                    <Radio.Button value="tutorial">
+                        <FormattedMessage id="tutorial" />
+                    </Radio.Button>
+                    <Radio.Button value="project">
+                        <FormattedMessage id="project" />
+                    </Radio.Button>
+                </Radio.Group>
+            </Form.Item>
+
+            <Form.Item label="Related item" name="relationItem">
+                <Select
+                    allowClear
+                    showSearch
+                    disabled={relation === 'blog'}
+                >
+                    <Option value="option1">Option 1</Option>
+                    <Option value="option2">Option 2</Option>
+                    <Option value="option3">Option 3</Option>
+                    <Option value="option4">Option 4</Option>
+                </Select>
             </Form.Item>
 
             <Form.Item
                 name="category"
                 label={
-                    <span><FormattedMessage id='category' /></span>
+                    <span>
+                        <FormattedMessage id="category" />
+                    </span>
                 }
             >
                 <Select
                     //placeholder="Select a option and change input text above"
                     allowClear
                 >
-                    <Option value="professional"><FormattedMessage id='professional' /></Option>
-                    <Option value="personal"><FormattedMessage id='personal' /></Option>
+                    <Option value="professional">
+                        <FormattedMessage id="professional" />
+                    </Option>
+                    <Option value="personal">
+                        <FormattedMessage id="personal" />
+                    </Option>
                 </Select>
             </Form.Item>
 
             <Form.Item
                 name="image"
                 label={
-                    <span><FormattedMessage id='image' /></span>
+                    <span>
+                        <FormattedMessage id="image" />
+                    </span>
                 }
             >
                 <Button>
-                    <UploadOutlined /> <FormattedMessage id='click-upload' />
+                    <UploadOutlined /> <FormattedMessage id="click-upload" />
                 </Button>
             </Form.Item>
 
@@ -252,11 +244,11 @@ const PostForm = ({ itemToUpdate }) => {
                         htmlType="submit"
                         disabled={
                             !form.isFieldsTouched(['title', 'subtitle', 'category']) ||
-                            form.getFieldsError().filter(({ errors }) => errors.length).length
+                            form.getFieldsError().filter(({ errors }) => errors.length)
+                                .length
                         }
                     >
-                        {itemToUpdate !== '' ? <FormattedMessage id='update' />
-                            : <FormattedMessage id='create' />}
+                        <FormattedMessage id="update" />
                     </Button>
                 )}
             </Form.Item>
@@ -265,7 +257,8 @@ const PostForm = ({ itemToUpdate }) => {
 }
 
 PostForm.propTypes = {
-    itemToUpdate: PropTypes.string
+    itemToUpdate: PropTypes.string,
+    initialValues: PropTypes.object
 }
 
 export default PostForm

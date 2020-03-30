@@ -4,32 +4,8 @@ const Post = require('../models/post')
 
 const ProjectSchema = new Schema({
     title: {
-        en: {
-            type: String,
-            lowercase: true
-        },
-        fr: {
-            type: String,
-            lowercase: true
-        },
-        de: {
-            type: String,
-            lowercase: true
-        }
-    },
-    subTitle: {
-        en: {
-            type: String,
-            lowercase: true
-        },
-        fr: {
-            type: String,
-            lowercase: true
-        },
-        de: {
-            type: String,
-            lowercase: true
-        }
+        type: String,
+        required: true
     },
     category: {
         type: String,

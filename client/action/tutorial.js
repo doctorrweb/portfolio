@@ -1,5 +1,8 @@
 import {
-    CREATE_TUTORIAL,
+    CREATE_TUTORIAL, 
+    READALL_TUTORIAL,
+    UPDATE_TUTORIAL,
+    DELETE_TUTORIAL,
 } from './action-type'
 import axios from 'axios'
 import { parseResponse, parseError } from './index'
@@ -30,6 +33,68 @@ export function createTutorial(tutorial) {
                 dispatch(parseError(error.response))
             })
     }
+}
+
+export function readAllTutorials() {
+    return function (dispatch) {
+        axios({
+            method: 'get',
+            url: `${BASE_URL}/formations`
+        })
+            .then((response) => {
+                dispatch({
+                    type: READALL_TUTORIAL,
+                    payload: response.data
+                })
+                dispatch(parseResponse(response.status))
+            })
+
+            .catch((error) => {
+                dispatch(parseError(error.response))
+            })
+    }
+}
+
+export function updateTutorial(tutoId, updatedContent) {
+    return function (dispatch) {
+        axios({
+            method: 'put',
+            url: `${BASE_URL}/formations/${tutoId}`,
+            data: updatedContent,
+        })
+            .then((response) => {
+                dispatch({
+                    type: UPDATE_TUTORIAL,
+                    payload: tutoId
+                })
+                dispatch(parseResponse(response.status))
+            })
+            .catch((error) => {
+                dispatch(parseError(error.response))
+            })
+    }
+
+}
+
+export function deleteTutorial(tutoId) {
+    return function (dispatch) {
+        axios({
+            method: 'delete',
+            url: `${BASE_URL}/formations/${tutoId}`
+        })
+            .then((response) => {
+                console.log('response.data', response.data)
+                dispatch({
+                    type: DELETE_TUTORIAL,
+                    payload: tutoId
+                })
+                dispatch(parseResponse(response.status))
+            })
+            .catch((error) => {
+                dispatch(parseError(error.response))
+            })
+    }
+
 }
 /*
 export function creatEntryFormOffer(entry, history) {

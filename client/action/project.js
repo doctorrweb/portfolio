@@ -1,5 +1,8 @@
 import {
     CREATE_PROJECT,
+    READALL_PROJECT,
+    UPDATE_PROJECT,
+    DELETE_PROJECT
 } from './action-type'
 import axios from 'axios'
 import { parseResponse, parseError } from './index'
@@ -28,6 +31,70 @@ export function createProject(project) {
                 dispatch(parseError(error.response))
             })
     }
+}
+
+
+export function readAllProjects() {
+    return function (dispatch) {
+        axios({
+            method: 'get',
+            url: `${BASE_URL}/projects`
+        })
+            .then((response) => {
+                //console.log(response.data)
+                dispatch({
+                    type: READALL_PROJECT,
+                    payload: response.data
+                })
+                dispatch(parseResponse(response.status))
+            })
+
+            .catch((error) => {
+                dispatch(parseError(error.response))
+            })
+    }
+
+}
+
+export function updateProject(projectId, updatedContent) {
+    return function (dispatch) {
+        axios({
+            method: 'put',
+            url: `${BASE_URL}/projects/${projectId}`,
+            data: updatedContent,
+        })
+            .then((response) => {
+                dispatch({
+                    type: UPDATE_PROJECT,
+                    payload: projectId
+                })
+                dispatch(parseResponse(response.status))
+            })
+            .catch((error) => {
+                dispatch(parseError(error.response))
+            })
+    }
+
+}
+
+export function deleteProject(projectId) {
+    return function (dispatch) {
+        axios({
+            method: 'delete',
+            url: `${BASE_URL}/projects/${projectId}`
+        })
+            .then((response) => {
+                dispatch({
+                    type: DELETE_PROJECT,
+                    payload: projectId
+                })
+                dispatch(parseResponse(response.status))
+            })
+            .catch((error) => {
+                dispatch(parseError(error.response))
+            })
+    }
+
 }
 /*
 export function creatEntryFormOffer(entry, history) {

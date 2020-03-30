@@ -35,7 +35,6 @@ const PostTable = () => {
         if (fetchedData !== undefined) {
             fetchedData.map(post => tmpData.push({
                 title: post.title,
-                subTitle: post.subTitle,
                 category: post.category,
                 status: post.status,
                 creationDate: moment(post.creationDate).format('LLL'),
@@ -46,6 +45,7 @@ const PostTable = () => {
     }
 
     return <Table
+        bordered
         locale={lang}
         columns={columns.postTable}
         dataSource={data}

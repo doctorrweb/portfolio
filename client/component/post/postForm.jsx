@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
 import {
     Form,
     Input,
@@ -14,7 +13,6 @@ import CKEditor from 'ckeditor4-react'
 import { UploadOutlined } from '@ant-design/icons'
 import { resetResponse, resetError } from '../../action'
 import { createPost } from '../../action/post'
-//import 'braft-editor/dist/index.css'
 
 const { Option } = Select
 
@@ -41,7 +39,7 @@ const tailFormItemLayout = {
     }
 }
 
-const PostForm = ({ itemToUpdate, initialValues}) => {
+const PostForm = () => {
 
     const [form] = Form.useForm()
     const [, forceUpdate] = useState()
@@ -51,25 +49,11 @@ const PostForm = ({ itemToUpdate, initialValues}) => {
 
     const [content, setContent] = useState('')   
     //const [postInitialValues, setPostInitialValues] = useState({}) 
-    //const [relation, setRelation] = useState('blog')
+    const [relation, setRelation] = useState('blog')
 
     const errorStatus = useSelector(state => state.error.status)
     const responseStatus = useSelector(state => state.response.status)
     const lang = useSelector(state => state.locale.lang)
-    const posts = useSelector(state => state.posts.posts)
-    
-    useEffect(() => {
-        if (itemToUpdate === '') {
-            setContent('')
-            form.resetFields()
-            //setPostInitialValues({})
-        }
-        if (itemToUpdate !== '') {
-            let initialData = posts.filter(post => post._id === itemToUpdate)
-            setContent(initialData[0].content)
-            form.setFieldsValue({ ...initialData[0] })
-        }
-    })
 
     /*
 
@@ -106,11 +90,9 @@ const PostForm = ({ itemToUpdate, initialValues}) => {
     }
 
     const onFinish = (values) => {
-        if (itemToUpdate === '') {
-            dispatch(createPost({ ...values, lang: lang, content: content }))
-            setContent('')
-            form.resetFields()
-        }
+        dispatch(createPost({ ...values, lang: lang, content: content }))
+        setContent('')
+        form.resetFields()
     }
 
     const onFinishFailed = errorInfo => {
@@ -128,7 +110,9 @@ const PostForm = ({ itemToUpdate, initialValues}) => {
             name="post"
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
-            //initialValues={{ ...initialValues }}
+            initialValues={{
+                relation: 'blog'
+            }}
         >
             <Form.Item
                 name="title"
@@ -150,17 +134,6 @@ const PostForm = ({ itemToUpdate, initialValues}) => {
             </Form.Item>
 
             <Form.Item
-                name="subtitle"
-                label={
-                    <span>
-                        <FormattedMessage id="subtitle" />
-                    </span>
-                }
-            >
-                <Input />
-            </Form.Item>
-
-            <Form.Item
                 label={
                     <span>
                         <FormattedMessage id="content" />
@@ -171,44 +144,46 @@ const PostForm = ({ itemToUpdate, initialValues}) => {
                 <CKEditor
                     onBeforeLoad={ ( CKEDITOR ) => ( CKEDITOR.disableAutoInline = true )}
                     onChange={e => ckeditor4Handler(e.editor.getData())}
-                    //data={content}
-                    data={itemToUpdate === '' ? '' : initialValues.content}
+                    data={content}
                 />
             </Form.Item>
 
-            <Form.Item label="Related to" shouldUpdate>
-                {() => (
-                    <div>
-                        <span>
-                            <Radio.Group
-                                defaultValue="blog"
-                                buttonStyle="solid"
-                                //onChange={e => setRelation(e.target.value)}
-                                name="relation"
-                            >
-                                <Radio.Button value="blog">Blog</Radio.Button>
-                                <Radio.Button value="tutorial">
-                                    <FormattedMessage id="tutorial" />
-                                </Radio.Button>
-                                <Radio.Button value="project">
-                                    <FormattedMessage id="project" />
-                                </Radio.Button>
-                            </Radio.Group>
-                        </span>
-                        <Select
-                            style={{ width: '27em', marginLeft: '1em' }}
-                            allowClear
-                            showSearch
-                            mode="multiple"
-                            name="relationItem"
-                        >
-                            <Option value="option1">Option 1</Option>
-                            <Option value="option2">Option 2</Option>
-                            <Option value="option3">Option 3</Option>
-                            <Option value="option4">Option 4</Option>
-                        </Select>
-                    </div>
-                )}
+            <Form.Item 
+                label="Related to" 
+                name="relation"
+                rules={[
+                    {
+                        required: true
+                    }
+                ]}
+            >
+                <Radio.Group
+                    defaultValue='blog'
+                    buttonStyle="solid"
+                    onChange={e => setRelation(e.target.value)}
+
+                >
+                    <Radio.Button value="blog">Blog</Radio.Button>
+                    <Radio.Button value="tutorial">
+                        <FormattedMessage id="tutorial" />
+                    </Radio.Button>
+                    <Radio.Button value="project">
+                        <FormattedMessage id="project" />
+                    </Radio.Button>
+                </Radio.Group>
+            </Form.Item>
+
+            <Form.Item label="Related item" name="relationItem">
+                <Select
+                    allowClear
+                    showSearch
+                    disabled={relation === 'blog'}
+                >
+                    <Option value="option1">Option 1</Option>
+                    <Option value="option2">Option 2</Option>
+                    <Option value="option3">Option 3</Option>
+                    <Option value="option4">Option 4</Option>
+                </Select>
             </Form.Item>
 
             <Form.Item
@@ -257,11 +232,7 @@ const PostForm = ({ itemToUpdate, initialValues}) => {
                     .length
                         }
                     >
-                        {itemToUpdate !== '' ? (
-                            <FormattedMessage id="update" />
-                        ) : (
-                            <FormattedMessage id="create" />
-                        )}
+                        <FormattedMessage id="create" />
                     </Button>
                 )}
             </Form.Item>
@@ -269,10 +240,6 @@ const PostForm = ({ itemToUpdate, initialValues}) => {
     )
 }
 
-PostForm.propTypes ={
-    itemToUpdate: PropTypes.string,
-    initialValues: PropTypes.object
-}
 
 export default PostForm
 
