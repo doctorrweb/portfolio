@@ -4,23 +4,49 @@ const { Schema } = mongoose
 
 const FormationSchema = new Schema({
     title: {
-        type: String,
-        lowercase: true,
-        required: true
+        en: {
+            type: String,
+            lowercase: true
+        },
+        fr: {
+            type: String,
+            lowercase: true
+        },
+        de: {
+            type: String,
+            lowercase: true
+        }
     },
     subTitle: {
-        type: String,
-        lowercase: true
+        en: {
+            type: String,
+            lowercase: true
+        },
+        fr: {
+            type: String,
+            lowercase: true
+        },
+        de: {
+            type: String,
+            lowercase: true
+        }
     },
     content: {
-        type: String,
-        required: true
+        en: {
+            type: String
+        },
+        fr: {
+            type: String
+        },
+        de: {
+            type: String
+        }
     },
     category: {
         type: String,
         lowercase: true,
         enum: [
-            'personnal',
+            'personal',
             'professional',
             'undefined'
         ],
@@ -53,12 +79,10 @@ const FormationSchema = new Schema({
         required: true,
         default: 'pending'
     },
-    images: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'image'
-        }
-    ],
+    images: {
+        type: Schema.Types.ObjectId,
+        ref: 'image'
+    },
     videos: [
         {
             type: Schema.Types.ObjectId,

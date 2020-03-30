@@ -10,7 +10,7 @@ const jwtAuthentication = passport.authenticate('jwt', { session: false })
 const postRouter = express.Router()
 
 postRouter.route('/posts')
-    .get(jwtAuthentication, postController.readAll)
+    .get(postController.readAll)
     .post(jwtAuthentication, authorize('manager', 'administrator'), postController.create)
 
 postRouter.route('/posts/:id')

@@ -10,11 +10,11 @@ import setAuthorizationToken from './helper/authToken'
 import registerServiceWorker from './registerServiceWorker'
 import reducers from './reducer'
 import { setAuthentication, setCurrentUser } from './action/index'
-//import 'antd/dist/antd.css'
+import reduxImmutableStateVariant from 'redux-immutable-state-invariant'
 
 const middleware =
   process.env.NODE_ENV !== 'production'
-      ? [thunk]
+      ? [thunk, reduxImmutableStateVariant()]
       : [thunk]
 const creatStoreWithMiddleware = applyMiddleware(...middleware)(createStore)
 

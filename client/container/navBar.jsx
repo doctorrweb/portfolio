@@ -1,40 +1,26 @@
 import React from 'react'
-import { MenuOutlined } from '@ant-design/icons'
 import { Row, Col } from 'antd'
-//import { FormattedMessage } from 'react-intl'
-import { Link } from 'react-router-dom'
-import Language from '../component/language'
-import Login from '../component/loginBtn'
-import ModalLogin from '../component/modalLogin'
-
-//import { useSelector } from 'react-redux'
-
+import MenuIcon from '../component/menuIcon'
+import Logo from '../component/logo'
 
 const NavBar = () => {
 
-    //const lang = useSelector(state => state.locale.lang)
-
     
-
+    
     return (
-        <Row type="flex" justify="space-between" >
-            <Col md={6} sm={20} xs={20} style={{ textAlign: 'left' }}>
-                <MenuOutlined style={{ fontSize: '30px', fontWeight: 'bold' }} />
-            </Col>
+        <Row type="flex" justify="space-between">
             <Col
-                md={9}
-                sm={0}
-                xs={0}
-                style={{ textAlign: 'center' }}
+                md={3}
+                sm={3}
+                xs={9}
+                style={{ textAlign: 'left' }}
                 className="logo"
             >
-                <Link to="/">
-                    <img src="/img/logo_drweb_color.png" />
-                </Link>
+                <Logo />
             </Col>
-            <Language />
-            <Login />
-            <ModalLogin />
+            <Col md={3} sm={3} xs={9} style={{ textAlign: 'right' }}>
+                <MenuIcon  />
+            </Col>
         </Row>
     )
 }

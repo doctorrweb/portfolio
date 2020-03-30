@@ -5,12 +5,10 @@ const Comment = require('../models/comment')
 const PostSchema = new Schema({
     title: {
         type: String,
-        lowercase: true,
         required: true
     },
     subTitle: {
-        type: String,
-        lowercase: true
+        type: String
     },
     content: {
         type: String,
@@ -20,7 +18,7 @@ const PostSchema = new Schema({
         type: String,
         lowercase: true,
         enum: [
-            'personnal',
+            'personal',
             'professional',
             'undefined'
         ],
@@ -81,6 +79,18 @@ const PostSchema = new Schema({
         {
             type: Schema.Types.ObjectId,
             ref: 'video'
+        }
+    ],
+    lang: {
+        type: String,
+        lowercase: true,
+        enum: ['en', 'fr', 'de'],
+        required: true
+    },
+    translations: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'post'
         }
     ]
 })

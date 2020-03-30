@@ -6,7 +6,9 @@ import {
     RESET_RESPONSE,
     RESET_ERROR,
     LOCALE_SET,
-    SHOW_MODALLOGIN
+    SHOW_MODALLOGIN,
+    SHOW_MAINMENU,
+    TOGGLE_BUTTON
 } from './action-type'
 
 import axios from 'axios'
@@ -44,6 +46,16 @@ export function setLocale(lang) {
 export const showModalLogin = modalLogin => ({
     type: SHOW_MODALLOGIN,
     payload: modalLogin
+})
+
+export const showMainMenu = menuVisibility => ({
+    type: SHOW_MAINMENU,
+    payload: menuVisibility
+})
+
+export const toggleBtn = menuVisibility => ({
+    type: TOGGLE_BUTTON,
+    payload: menuVisibility
 })
 
 export function parseResponse(status) {
@@ -87,19 +99,19 @@ export function loginUser(user) {
                 dispatch(parseResponse(response.status))
             })
             .catch(error => {
+                console.log('error.response', error.response)
                 dispatch(parseError(error.response.status))
             })
     }
 }
 
-export function logonUser(user, history) {
+export function logonUser(user) {
     console.log('logonUser user', user)
     return function(dispatch) {
         axios
             .post(`${BASE_URL}/signup`, user)
             .then(response => {
                 dispatch(parseResponse(response.status))
-                history.push('/')
             })
             .catch(error => {
                 dispatch(parseError(error.response.status))

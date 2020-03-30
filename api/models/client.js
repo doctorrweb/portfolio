@@ -13,7 +13,18 @@ const ClientSchema = new Schema({
         ref: 'image'
     },
     description: {
-        type: String
+        en: {
+            type: String,
+            lowercase: true
+        },
+        fr: {
+            type: String,
+            lowercase: true
+        },
+        de: {
+            type: String,
+            lowercase: true
+        }
     },
     category: {
         type: String,

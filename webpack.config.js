@@ -1,3 +1,5 @@
+const darkThemeVars = require('antd/dist/dark-theme')
+
 module.exports = {
     entry: './client/index.js',
     output: {
@@ -27,10 +29,22 @@ module.exports = {
                     {
                         loader: 'less-loader',
                         options: {
+                            /*
                             modifyVars: {
                                 'primary-color': '#FF9900',
                                 'link-color': '#FF9900',
                                 'border-radius-base': '2px'
+                            },
+                            */
+                            modifyVars: {
+                                //'hacks': `true,@import "${require.resolve('antd/lib/style/color/colorPalette')}";`,
+                                ...darkThemeVars,
+                                'primary-color': '#FF9900',
+                                'link-color': '#FF9900',
+                                'border-radius-base': '2px',
+                                'font-family': 'Helvetica Neue',
+                                'code-family': 'Menlo'
+                                
                             },
                             javascriptEnabled: true
                         }

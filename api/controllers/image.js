@@ -4,9 +4,23 @@ const Image = require('../models/image')
 const imageController = {
     create: async (req, res) => {
         try {
-            const image = new Image(req.body)
-            await image.save()
-            res.status(200).json(image)
+
+            let images = []
+
+            await req.files.map(file => {
+                const newFile = {
+                    name: file.originalname,
+                    path: file.path,
+                    extension: file.mimetype,
+                    creationDate: Date.now(),
+                    status: 'inactive'
+                }
+                const image = new Image(newFile)
+                images.push(newFile)
+                image.save()
+            })
+
+            res.status(200).json(images)
         } catch (error) {
             res.status(400).json({ message: 'Bad Request' })
         }

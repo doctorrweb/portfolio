@@ -1,5 +1,6 @@
 const express = require('express')
 const videoController = require('../controllers/video')
+const upload = require('../helpers/uploadHelpers')
 
 require('../authentication/jwtAuth')
 
@@ -9,7 +10,7 @@ const jwtAuthentication = passport.authenticate('jwt', { session: false })
 const videoRouter = express.Router()
 
 videoRouter.route('/videos')
-    .post(jwtAuthentication, videoController.create)
+    .post(jwtAuthentication, upload.array('videos', 10), videoController.create)
     .get(jwtAuthentication, videoController.readAll)
 
 videoRouter.route('/videos/:id')

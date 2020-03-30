@@ -42,7 +42,7 @@ const Language = () => {
     }
 
     return (
-        <Col md={6} sm={0} xs={0} style={{ textAlign: 'right' }}>
+        <Col style={{ marginBottom: '1em' }} >
             <Tooltip placement="bottom" title={intl.formatMessage({id: 'lang-en'})}>
                 <Button onClick={() => ChangeLanguage('en')} size="small"><img src="/img/lang-en.png" width="20" /></Button>
             </Tooltip>
@@ -54,7 +54,6 @@ const Language = () => {
             <Tooltip placement="bottom" title={intl.formatMessage({id: 'lang-de'})}>
                 <Button onClick={() => ChangeLanguage('de')} size="small"><img src="/img/lang-de.png" width="20" /></Button>
             </Tooltip>
-            <Divider type="vertical" />
         </Col>
     )
 }

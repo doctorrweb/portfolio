@@ -1,3 +1,65 @@
 .ant-layout {
-    background: none;
+  background: none;
+}
+  
+.container {
+  position: relative;
+  min-height: 300px;
+  max-height: 800px;
+  overflow: hidden;
+}
+
+/* Style the video: 100% width and height to cover the entire window */
+.videobg {
+    width: 100%;
+    height: 100%;
+    opacity: .3;
+  }
+  
+/* Add some content at the bottom of the video/page */
+.content {
+  position: absolute;
+  top: 0;
+  color:#f1f1f1;
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+.subcontent {
+  margin-top: 16em;
+}
+.const-highlight{
+	color: #4444FF;
+}
+
+.func-highlight{
+	color: #C1DD2A;
+}
+
+.string-highlight{
+	color: rgb(255, 153, 0);
+}
+.typewriter {
+	font-size: 2em;
+  margin: 0;
+}
+.typewriter:after {
+	content: "|";
+	animation: blink 500ms linear infinite alternate;
+}
+
+@-webkit-keyframes blink{
+	0%{opacity: 0;}
+	100%{opacity: 1;}
+}
+
+@-moz-keyframes blink{
+	0%{opacity: 0;}
+	100%{opacity: 1;}
+}
+
+@keyframes blink{
+	0%{opacity: 0;}
+	100%{opacity: 1;}
 }

@@ -1,5 +1,6 @@
 const express = require('express')
 const imageController = require('../controllers/image')
+const upload = require('../helpers/uploadHelpers')
 
 require('../authentication/jwtAuth')
 
@@ -9,7 +10,7 @@ const jwtAuthentication = passport.authenticate('jwt', { session: false })
 const imageRouter = express.Router()
 
 imageRouter.route('/images')
-    .post(jwtAuthentication, imageController.create)
+    .post(jwtAuthentication, upload.array('images', 10), imageController.create)
     .get(jwtAuthentication, imageController.readAll)
 
 imageRouter.route('/images/:id')

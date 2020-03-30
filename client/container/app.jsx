@@ -2,13 +2,23 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { IntlProvider } from 'react-intl'
 import { Layout } from 'antd'
-import { Switch, Route, Router, Link, useHistory } from 'react-router-dom'
+import { Switch, Route, Router, useHistory } from 'react-router-dom'
 import NavBar from './navBar'
-import Post from './post'
-import Formation from './formation'
+import About from './about'
+import Work from './work'
+import Blog from './blog'
+import Tutorial from './tutorial'
+import Project from './project'
+import Contact from './contact'
+import Dashboard from './dashboard'
+import CustomFooter from './customFooter'
+import MainMenu from '../component/mainMenu'
+import IntroMessage from '../component/introMessage'
+//import Home from './home'
 import messages from '../translation/'
 
-const { Header, Content, Footer } = Layout
+const { Header } = Layout
+//const bgImgUri = 'img/background-code.png'
 
 const App = () => {
     
@@ -18,50 +28,54 @@ const App = () => {
 
     return (
         <IntlProvider locale={lang} messages={messages[lang]}>
-            <Layout style={{ minHeight: 0 }}>
+            <Layout
+                style={{
+                    minHeight: 0,
+                    backgroundColor: 'transparent'
+                }}
+            >
                 <Header
-                    //theme="light"
                     style={{
                         position: 'fixed',
                         zIndex: 1,
                         minHeight: '100px',
                         padding: '18px 50px',
                         width: '100%',
-                        backgroundColor: '#EFEFEF',
-                        boxShadow: '2px 2px 2px 1px rgba(0, 0, 0, 0.2)',
+                        background: 'none'
                     }}
                 >
                     <NavBar />
                 </Header>
-                <Content
-                    style={{
-                        background: '#fff',
-                        minHeight: '100%',
-                        padding: '10px 50px',
-                        marginTop: 100
-                    }}
-                >
-                    <Router history={history}>
-                        <Switch>
-                            <Route path="/posts" component={Post} />
-                            <Route path="/formations" component={Formation} />
-                        </Switch>
-                    </Router>
-                    
-                    <Link to="/posts">posts</Link>
-                    <hr />
-                    <Link to="/formations">formations</Link>
-                </Content>
-                <Footer
-                    style={{
-                        //background: '#fff',
-                        //minHeight: '100%',
-                        padding: '10px 50px'
-                        //marginTop: 100
-                    }}
-                >
-                    Footer
-                </Footer>
+                <Router history={history}>
+                    <Switch>
+                        <Route exact path="/">
+                            <IntroMessage />
+                        </Route>
+                        <Route path="/about">
+                            <About />
+                        </Route>
+                        <Route path="/work">
+                            <Work />
+                        </Route>
+                        <Route path="/blog">
+                            <Blog />
+                        </Route>
+                        <Route path="/tutorial">
+                            <Tutorial />
+                        </Route>
+                        <Route path="/project">
+                            <Project />
+                        </Route>
+                        <Route path="/contact">
+                            <Contact />
+                        </Route>
+                        <Route path="/dashboard">
+                            <Dashboard />
+                        </Route>
+                    </Switch>
+                </Router>
+                <MainMenu />
+                <CustomFooter />
             </Layout>
         </IntlProvider>
     )

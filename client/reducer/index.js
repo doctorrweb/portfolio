@@ -4,10 +4,17 @@ import { combineReducers } from 'redux'
 import AuthenticationReducer from './authentication'
 import LocaleReducer from './locale'
 import ShowModalLoginReducer from './modalLogin'
-//import ShowSidebarReducer from './showsidebar'
+import ShowMainMenuReducer from './mainMenu'
+import ToggleBtnReducer from './menuBtn'
 import ResponseReducer from './response'
 import ErrorReducer from './error'
 import SetCurrentUserReducer from './user'
+import PostReducer from './post'
+import ProjectReducer from './project'
+import ClientReducer from './client'
+import TutorialReducer from './tutorial'
+import ImageReducer from './image'
+import VideoReducer from './video'
 
 const rootReducer = combineReducers({
     authentication: AuthenticationReducer,
@@ -15,9 +22,16 @@ const rootReducer = combineReducers({
     locale: LocaleReducer,
     //router: routerReducer,
     modalLogin: ShowModalLoginReducer,
-    //sidebar: ShowSidebarReducer,
+    mainMenu: ShowMainMenuReducer,
     response: ResponseReducer,
     error: ErrorReducer,
+    toggleBtn: ToggleBtnReducer,
+    posts: PostReducer,
+    project: ProjectReducer,
+    client: ClientReducer,
+    tutorial: TutorialReducer,
+    image: ImageReducer,
+    video: VideoReducer
     //form
 })
 

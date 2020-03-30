@@ -5,16 +5,18 @@ const { Schema } = mongoose
 const ImageSchema = new Schema({
     name: {
         type: String,
-        lowercase: true,
-        required: true
+        lowercase: true
     },
     caption: {
         type: String,
         lowercase: true
     },
-    path: {
+    extension: {
         type: String,
-        required: true
+        lowercase: true
+    },
+    path: {
+        type: String
     },
     creationDate: {
         type: Date,
