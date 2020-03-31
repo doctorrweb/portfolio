@@ -55,13 +55,13 @@ const UserForm = () => {
     }, [errorStatus, responseStatus])
 
     const requestNotification = () => {
-        if (errorStatus == 401) {
+        if (errorStatus === 400) {
             notification['error']({
                 message: `${intl.formatMessage({ id: 'login-fail' })}`
             })
             dispatch(resetError())
         }
-        if (responseStatus == 200) {
+        if (responseStatus === 201) {
             notification['success']({
                 message: `${intl.formatMessage({ id: 'login-success' })}`
             })
