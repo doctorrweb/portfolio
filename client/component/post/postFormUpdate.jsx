@@ -41,7 +41,7 @@ const tailFormItemLayout = {
     }
 }
 
-const PostForm = ({ itemToUpdate, initialValues }) => {
+const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
 
     const [form] = Form.useForm()
     const [, forceUpdate] = useState()
@@ -256,11 +256,11 @@ const PostForm = ({ itemToUpdate, initialValues }) => {
     )
 }
 
-PostForm.propTypes = {
+PostFormUpdate.propTypes = {
     itemToUpdate: PropTypes.string,
     initialValues: PropTypes.object
 }
 
-export default PostForm
+export default PostFormUpdate
 
 

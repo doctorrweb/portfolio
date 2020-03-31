@@ -8,7 +8,7 @@ import ShowMainMenuReducer from './mainMenu'
 import ToggleBtnReducer from './menuBtn'
 import ResponseReducer from './response'
 import ErrorReducer from './error'
-import SetCurrentUserReducer from './user'
+import { SetCurrentUserReducer, UserReducer } from './user'
 import PostReducer from './post'
 import ProjectReducer from './project'
 import ClientReducer from './client'
@@ -26,6 +26,7 @@ const rootReducer = combineReducers({
     response: ResponseReducer,
     error: ErrorReducer,
     toggleBtn: ToggleBtnReducer,
+    users: UserReducer,
     posts: PostReducer,
     projects: ProjectReducer,
     clients: ClientReducer,

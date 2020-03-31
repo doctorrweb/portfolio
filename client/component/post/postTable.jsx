@@ -3,7 +3,7 @@ import { Table } from 'antd'
 import { useSelector } from 'react-redux'
 import { useIntl } from 'react-intl'
 import moment from 'moment'
-import columns from '../../helper/columnTable'
+import columns from './columnTablePost'
 
 const PostTable = () => {
 

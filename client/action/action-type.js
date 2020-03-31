@@ -1,6 +1,3 @@
-export const SET_AUTHENTICATION = 'SET_AUTHENTICATION'
-export const SET_CURRENT_USER = 'SET_CURRENT_USER'
-
 // Settings General Actions Types
 export const LOCALE_SET = 'LOCALE_SET'
 export const SHOW_MODALLOGIN = 'SHOW_MODALLOGIN'
@@ -11,6 +8,14 @@ export const PARSE_RESPONSE = 'PARSE_RESPONSE'
 export const RESET_RESPONSE = 'RESET_RESPONSE'
 export const PARSE_ERROR = 'PARSE_ERROR'
 export const RESET_ERROR = 'RESET_ERROR'
+
+// Settings General Actions Types
+export const SET_AUTHENTICATION = 'SET_AUTHENTICATION'
+export const SET_CURRENT_USER = 'SET_CURRENT_USER'
+export const CREATE_USER = 'CREATE_USER'
+export const READALL_USER = 'READALL_USER'
+export const UPDATE_USER = 'UPDATE_USER'
+export const DELETE_USER = 'DELETE_USER'
 
 // Settings Post Types
 export const CREATE_POST = 'CREATE_POST'

@@ -9,7 +9,7 @@ import DashboardTutorial from '../component/tutorial/dashboardTutorial'
 import DashboardImage from '../component/dashboard/dashboardImage'
 import DashboardVideo from '../component/dashboard/dashboardVideo'
 import DashboardSettings from '../component/dashboard/dashboardSettings'
-import DashboardUser from '../component/dashboard/dashboardUser'
+import DashboardUser from '../component/user/dashboardUser'
 
 const { Sider, Content } = Layout
 
