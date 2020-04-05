@@ -9,7 +9,7 @@ import {
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { UploadOutlined } from '@ant-design/icons'
-import { logonUser, resetError, resetResponse } from '../../action'
+import { logonUser, resetError, resetResponse, resetRequestType } from '../../action'
 
 const { Option } = Select
 
@@ -44,6 +44,7 @@ const UserForm = () => {
 
     const errorStatus = useSelector(state => state.error.status)
     const responseStatus = useSelector(state => state.response.status)
+    const requestType = useSelector(state => state.requestType.status)
 
     // To disable submit button at the beginning.
     useEffect(() => {
@@ -55,17 +56,21 @@ const UserForm = () => {
     }, [errorStatus, responseStatus])
 
     const requestNotification = () => {
-        if (errorStatus === 400) {
+        if (errorStatus !== null && requestType === 'create-user') {
             notification['error']({
-                message: `${intl.formatMessage({ id: 'login-fail' })}`
+                message: 'An error occured',
+                description: 'We couldn\'t create this user'
             })
             dispatch(resetError())
+            dispatch(resetRequestType())
         }
-        if (responseStatus === 201) {
+        if (responseStatus >= 200 && requestType === 'create-user') {
             notification['success']({
-                message: `${intl.formatMessage({ id: 'login-success' })}`
+                message: 'User created Successfully',
+                description: 'Click on \'details\' to see the new user'
             })
             dispatch(resetResponse())
+            dispatch(resetRequestType())
         }
     }
 

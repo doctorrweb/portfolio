@@ -34,7 +34,7 @@ const UserTable = () => {
         let tmpData = []
         if (fetchedData !== undefined) {
             fetchedData.map(user => tmpData.push({
-                name: user.suname,
+                surname: user.surname,
                 firstname: user.firstname,
                 connexiontype: user.method,
                 email: user.local.email,

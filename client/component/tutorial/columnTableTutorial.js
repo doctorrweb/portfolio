@@ -3,6 +3,7 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { Dropdown, Button, Menu, Modal, Tag } from 'antd'
 import { DownOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import { useDispatch } from 'react-redux'
+import moment from 'moment'
 import { deleteTutorial } from '../../action/tutorial'
 import { ModalTutorialFormProvider } from '../../helper/modalFormProvider'
 
@@ -97,20 +98,39 @@ const columns = {
             title: <FormattedMessage id='category' />,
             width: 50,
             dataIndex: 'category',
-            key: 'category'
+            key: 'category',
+            filters: [
+                { text: 'graphic', value: 'graphic' },
+                { text: 'edition', value: 'edition' },
+                { text: 'web', value: 'web' },
+                { text: 'mobile', value: 'mobile' },
+                { text: 'desktop', value: 'desktop' },
+                { text: 'undefined', value: 'undefined' }
+            ],
+            onFilter: (value, record) => record.category.includes(value)
         },
         {
             title: <FormattedMessage id='status' />,
             width: 50,
             dataIndex: 'status',
             key: 'status',
+            filters: [
+                { text: 'pending', value: 'pending' },
+                { text: 'active', value: 'active' },
+                { text: 'trash', value: 'trash' }
+            ],
+            onFilter: (value, record) => record.status.includes(value),
             render: (text) => renderStatus(text)
         },
         {
             title: <FormattedMessage id='creationdate' />,
             width: 75,
             dataIndex: 'creationDate',
-            key: 'creationDate'
+            key: 'creationDate',
+            sorter: (a, b) => new Date(a.creationDate) - new Date(b.creationDate),
+            sortDirections: ['ascend', 'descend'],
+            defaultSortOrder: 'descend',
+            render: (text, record) => moment(record.creationDate).format('LLL')
         },
         {
             title: <FormattedMessage id='action' />,

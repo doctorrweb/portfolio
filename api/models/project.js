@@ -11,8 +11,11 @@ const ProjectSchema = new Schema({
         type: String,
         lowercase: true,
         enum: [
-            'personnal',
-            'professional',
+            'graphic',
+            'edition',
+            'web',
+            'mobile',
+            'desktop',
             'undefined'
         ],
         required: true,
@@ -24,18 +27,11 @@ const ProjectSchema = new Schema({
         required: true
     },
     startDate: {
-        type: Date,
-        default: Date.now(),
-        required: true,
+        type: Date
     },
     endDate: {
         type: Date
     },
-    publicationDate: [
-        {
-            type: Date
-        }
-    ],
     trashDate: [
         {
             type: Date
@@ -45,14 +41,17 @@ const ProjectSchema = new Schema({
         type: String,
         lowercase: true,
         enum: [
-            'pending',
-            'active',
-            'trash'
+            'waiting',
+            'inprogress',
+            'completed',
+            'rejected'
         ],
         required: true,
         default: 'pending'
     },
-    link: String,
+    link: {
+        type: String
+    },
     posts: [
         {
             type: Schema.Types.ObjectId,

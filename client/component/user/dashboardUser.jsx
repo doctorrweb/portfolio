@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { Row, Col, Button, Typography } from 'antd'
+import { Row, Col, Button, Typography, notification } from 'antd'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { PlusOutlined } from '@ant-design/icons'
@@ -7,6 +7,7 @@ import { useCustomModal } from '../../helper/utils'
 import UserTable from './userTable'
 import UserForm from './userForm'
 import UserFormUpdate from './userFormUpdate'
+import { resetRequestType, resetError, resetResponse } from '../../action'
 import { readAllUsers } from '../../action/user'
 import { ModalUserFormProvider } from '../../helper/modalFormProvider'
 
@@ -19,6 +20,8 @@ const DashboardUser = () => {
     const dispatch = useDispatch()
 
     const responseStatus = useSelector(state => state.response.status)
+    const errorStatus = useSelector(state => state.error.status)
+    const requestType = useSelector(state => state.requestType.status)
 
     const [modalVisibilityUpdate, setModalVisibilityUpdate] = useState(false)
     const [modalVisibilityCreate, setModalVisibilityCreate] = useState(false)
@@ -33,12 +36,27 @@ const DashboardUser = () => {
     }, [modalVisibilityUpdate])
 
     useEffect(() => {
-        if (responseStatus >= 200) {
-            setModalVisibilityUpdate(false)
-            setModalVisibilityCreate(false)
-            dispatch(readAllUsers())
+        requestNotification()
+    }, [errorStatus, responseStatus, requestType])
+
+    const requestNotification = () => {
+        if (errorStatus !== null && requestType === 'delete-user') {
+            notification['error']({
+                message: 'An error occured',
+                description: 'We couldn\'t delete this user'
+            })
+            dispatch(resetError())
+            dispatch(resetRequestType())
         }
-    }, [responseStatus])
+        if (responseStatus >= 200 && requestType === 'delete-user') {
+            notification['success']({
+                message: 'User deleted Successfully',
+                description: 'Click on \'details\' to see the updated user'
+            })
+            dispatch(resetResponse())
+            dispatch(resetRequestType())
+        }
+    }
 
     const title = <Title level={4}>User Form</Title>
     const componentUpdate = <UserFormUpdate itemToUpdate={itemToUpdate} />

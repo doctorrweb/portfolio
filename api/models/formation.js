@@ -4,50 +4,21 @@ const { Schema } = mongoose
 
 const FormationSchema = new Schema({
     title: {
-        en: {
-            type: String,
-            lowercase: true
-        },
-        fr: {
-            type: String,
-            lowercase: true
-        },
-        de: {
-            type: String,
-            lowercase: true
-        }
-    },
-    subTitle: {
-        en: {
-            type: String,
-            lowercase: true
-        },
-        fr: {
-            type: String,
-            lowercase: true
-        },
-        de: {
-            type: String,
-            lowercase: true
-        }
+        type: String,
+        required: true,
     },
     content: {
-        en: {
-            type: String
-        },
-        fr: {
-            type: String
-        },
-        de: {
-            type: String
-        }
+        type: String
     },
     category: {
         type: String,
         lowercase: true,
         enum: [
-            'personal',
-            'professional',
+            'graphic',
+            'edition',
+            'web',
+            'mobile',
+            'desktop',
             'undefined'
         ],
         required: true,

@@ -3,8 +3,10 @@ import {
     SET_CURRENT_USER,
     PARSE_RESPONSE,
     PARSE_ERROR,
+    PARSE_REQUESTTYPE,
     RESET_RESPONSE,
     RESET_ERROR,
+    RESET_REQUESTTYPE,
     LOCALE_SET,
     SHOW_MODALLOGIN,
     SHOW_MAINMENU,
@@ -81,6 +83,19 @@ export function parseError(status) {
 export function resetError() {
     return {
         type: RESET_ERROR
+    }
+}
+
+export function parseRequestType(status) {
+    return {
+        type: PARSE_REQUESTTYPE,
+        payload: status
+    }
+}
+
+export function resetRequestType() {
+    return {
+        type: RESET_REQUESTTYPE
     }
 }
 

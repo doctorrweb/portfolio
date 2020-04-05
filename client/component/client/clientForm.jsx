@@ -4,13 +4,12 @@ import {
     Input,
     Select,
     Button,
-    Transfer,
     notification
 } from 'antd'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { UploadOutlined } from '@ant-design/icons'
-import { resetResponse, resetError } from '../../action'
+import { resetResponse, resetError, resetRequestType } from '../../action'
 import { useValuesToSend } from '../../helper/utils'
 import { createClient } from '../../action/client'
 
@@ -49,7 +48,7 @@ const ClientForm = () => {
 
     const errorStatus = useSelector(state => state.error.status)
     const responseStatus = useSelector(state => state.response.status)
-    const lang = useSelector(state => state.locale.lang)
+    const requestType = useSelector(state => state.requestType.status)
 
     // To disable submit button at the beginning.
     useEffect(() => {
@@ -61,25 +60,27 @@ const ClientForm = () => {
     }, [errorStatus, responseStatus])
 
     const requestNotification = () => {
-        if (errorStatus === 400) {
+        if (errorStatus !== null && requestType === 'create-client') {
             notification['error']({
-                message: `${intl.formatMessage({ id: 'login-fail' })}`
+                message: 'An error occured',
+                description: 'We couldn\'t create this client'
             })
             dispatch(resetError())
+            dispatch(resetRequestType())
         }
-        if (responseStatus === 201) {
+        if (responseStatus >= 200 && requestType === 'create-client') {
             notification['success']({
-                message: `${intl.formatMessage({ id: 'login-success' })}`
+                message: 'Client created Successfully',
+                description: 'Click on \'details\' to see the new client'
             })
             dispatch(resetResponse())
+            dispatch(resetRequestType())
         }
     }
 
     const onFinish = values => {
         const valuesToSend = useValuesToSend(values)
-        console.log('valuesToSend', valuesToSend)
         dispatch(createClient({
-            description: { [lang]: valuesToSend.description },
             ...valuesToSend
         }))
         form.resetFields()
@@ -137,18 +138,14 @@ const ClientForm = () => {
                     //placeholder="Select a option and change input text above"
                     allowClear
                 >
-                    <Option value="professional"><FormattedMessage id='professional' /></Option>
-                    <Option value="personal"><FormattedMessage id='personal' /></Option>
+                    <Option value="international">international</Option>
+                    <Option value="company">company</Option>
+                    <Option value="individual">individual</Option>
+                    <Option value="organisation">organisation</Option>
+                    <Option value="government">government</Option>
+                    <Option value="ngo">ngo</Option>
+                    <Option value="other">other</Option>
                 </Select>
-            </Form.Item>
-
-            <Form.Item
-                name="projects"
-                label={
-                    <span><FormattedMessage id='project' /></span>
-                }
-            >
-                <Transfer />
             </Form.Item>
 
             <Form.Item

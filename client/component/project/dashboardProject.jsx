@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Row, Col, Button, Typography } from 'antd'
+import { Row, Col, Button, Typography, notification } from 'antd'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useSelector, useDispatch } from 'react-redux'
 import { PlusOutlined } from '@ant-design/icons'
@@ -8,6 +8,7 @@ import ProjectTable from './projectTable'
 import ProjectForm from './projectForm'
 import ProjectFormUpdate from './projectFormUpdate'
 import { readAllProjects } from '../../action/project'
+import { resetRequestType, resetError, resetResponse } from '../../action'
 import { ModalProjectFormProvider } from '../../helper/modalFormProvider'
 
 const { Title } = Typography
@@ -20,6 +21,8 @@ const DashboardProject = () => {
 
 
     const responseStatus = useSelector(state => state.response.status)
+    const errorStatus = useSelector(state => state.error.status)
+    const requestType = useSelector(state => state.requestType.status)
     const projects = useSelector(state => state.projects.projects)
 
     const [modalVisibilityUpdate, setModalVisibilityUpdate] = useState(false)
@@ -30,6 +33,7 @@ const DashboardProject = () => {
     useEffect(() => {
         dispatch(readAllProjects())
     }, [])
+    
     useEffect(() => {
         if (itemToUpdate !== '') {
             let initialData = projects.filter(project => project._id === itemToUpdate)
@@ -42,12 +46,38 @@ const DashboardProject = () => {
     }, [modalVisibilityUpdate])
 
     useEffect(() => {
-        if (responseStatus >= 200) {
-            setModalVisibilityUpdate(false)
+        if (requestType === 'create-project') {
             setModalVisibilityCreate(false)
-            dispatch(readAllProjects())
+            //dispatch(readAllPosts())
         }
-    }, [responseStatus])
+        if (requestType === 'update-project') {
+            setModalVisibilityUpdate(false)
+        }
+        dispatch(readAllProjects())
+    }, [requestType])
+
+    useEffect(() => {
+        requestNotification()
+    }, [errorStatus, responseStatus, requestType])
+
+    const requestNotification = () => {
+        if (errorStatus !== null && requestType === 'delete-project') {
+            notification['error']({
+                message: 'An error occured',
+                description: 'We couldn\'t delete this project'
+            })
+            dispatch(resetError())
+            dispatch(resetRequestType())
+        }
+        if (responseStatus >= 200 && requestType === 'delete-project') {
+            notification['success']({
+                message: 'Project deleted Successfully',
+                description: 'Click on \'details\' to see the updated project'
+            })
+            dispatch(resetResponse())
+            dispatch(resetRequestType())
+        }
+    }
 
     const title = <Title level={4}>Project Form</Title>
     const componentUpdate = <ProjectFormUpdate itemToUpdate={itemToUpdate} initialValues={initialValues} />

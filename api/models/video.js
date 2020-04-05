@@ -4,16 +4,13 @@ const { Schema } = mongoose
 
 const VideoSchema = new Schema({
     name: {
-        type: String,
-        lowercase: true
+        type: String
     },
     caption: {
-        type: String,
-        lowercase: true
+        type: String
     },
     extension: {
-        type: String,
-        lowercase: true
+        type: String
     },
     path: {
         type: String

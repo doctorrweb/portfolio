@@ -37,7 +37,7 @@ const PostTable = () => {
                 title: post.title,
                 category: post.category,
                 status: post.status,
-                creationDate: moment(post.creationDate).format('LLL'),
+                creationDate: post.creationDate,
                 key: post._id
             }))
         }

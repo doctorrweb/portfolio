@@ -11,8 +11,10 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import CKEditor from 'ckeditor4-react'
 import { UploadOutlined } from '@ant-design/icons'
-import { resetResponse, resetError } from '../../action'
+import { resetResponse, resetError, resetRequestType } from '../../action'
 import { createPost } from '../../action/post'
+import { readAllTutorials } from '../../action/tutorial'
+import { readAllProjects } from '../../action/project'
 
 const { Option } = Select
 
@@ -48,40 +50,48 @@ const PostForm = () => {
     const dispatch = useDispatch()
 
     const [content, setContent] = useState('')   
-    //const [postInitialValues, setPostInitialValues] = useState({}) 
     const [relation, setRelation] = useState('blog')
+    const [relationItems, setRelationItems] = useState([])
+    const [relationItem, setRelationItem] = useState('')
 
     const errorStatus = useSelector(state => state.error.status)
     const responseStatus = useSelector(state => state.response.status)
+    const requestType = useSelector(state => state.requestType.status)
     const lang = useSelector(state => state.locale.lang)
-
-    /*
-
-    */
+    const tutorials = useSelector(state => state.tutorials.tutorials)
+    const projects = useSelector(state => state.projects.projects)
 
     // To disable submit button at the beginning.
     useEffect(() => {
+        dispatch(readAllTutorials())
+        dispatch(readAllProjects())
         forceUpdate()
     }, [])
 
-    
+    useEffect(() => {
+        handleRelationItemsChange()
+    }, [relation])
 
     useEffect(() => {
         requestNotification()
-    }, [errorStatus, responseStatus])
+    }, [errorStatus, responseStatus, requestType])
 
     const requestNotification = () => {
-        if (errorStatus === 400) {
+        if (errorStatus !== null && requestType === 'create-post') {
             notification['error']({
-                message: `${intl.formatMessage({ id: 'login-fail' })}`
+                message: 'An error occured',
+                description: 'We couldn\'t create this post'
             })
             dispatch(resetError())
+            dispatch(resetRequestType())
         }
-        if (responseStatus === 201) {
+        if (responseStatus >= 200 && requestType === 'create-post') {
             notification['success']({
-                message: `${intl.formatMessage({ id: 'login-success' })}`
+                message: 'Post created Successfully',
+                description: 'Click on \'details\' to see the new post'
             })
             dispatch(resetResponse())
+            dispatch(resetRequestType())
         }
     }
 
@@ -90,7 +100,15 @@ const PostForm = () => {
     }
 
     const onFinish = (values) => {
-        dispatch(createPost({ ...values, lang: lang, content: content }))
+        dispatch(resetResponse())
+        dispatch(createPost({ 
+            ...values, 
+            lang: lang, 
+            content: content,
+            relation: relation,
+            project: relation === 'project' ? relationItem : null,
+            formation: relation === 'tutorial' ? relationItem : null
+        }))
         setContent('')
         form.resetFields()
     }
@@ -101,6 +119,34 @@ const PostForm = () => {
             description: errorInfo
         })
         form.resetFields()
+    }
+
+    const handleRelationChange = (e) => {
+        setRelation(e.target.value)
+        form.resetFields(['relationItem'])
+    }
+
+    const onChangeRelationItem = (value, option) => {
+        setRelationItem(option.key)
+    }
+
+    const handleRelationItemsChange = () => {
+        let items = []
+        if (relation === 'tutorial') {
+            tutorials.map(
+                tuto => items.push(
+                    <Option key={tuto._id} value={tuto.title} >{tuto.title}</Option>
+                )
+            )
+        }
+        if (relation === 'project') {
+            projects.map(
+                project => items.push(
+                    <Option key={project._id} value={project.title} >{project.title}</Option>
+                )
+            )
+        }
+        setRelationItems([items])
     }
 
     return (
@@ -160,7 +206,7 @@ const PostForm = () => {
                 <Radio.Group
                     defaultValue='blog'
                     buttonStyle="solid"
-                    onChange={e => setRelation(e.target.value)}
+                    onChange={e => handleRelationChange(e)}
 
                 >
                     <Radio.Button value="blog">Blog</Radio.Button>
@@ -178,11 +224,9 @@ const PostForm = () => {
                     allowClear
                     showSearch
                     disabled={relation === 'blog'}
+                    onChange={(value, option) => onChangeRelationItem(value, option)}
                 >
-                    <Option value="option1">Option 1</Option>
-                    <Option value="option2">Option 2</Option>
-                    <Option value="option3">Option 3</Option>
-                    <Option value="option4">Option 4</Option>
+                    {[...relationItems]}
                 </Select>
             </Form.Item>
 

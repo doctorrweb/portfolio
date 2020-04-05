@@ -5,14 +5,20 @@ import {
     DELETE_PROJECT
 } from './action-type'
 import axios from 'axios'
-import { parseResponse, parseError } from './index'
+import {
+    parseResponse, 
+    parseError,
+    parseRequestType,
+    resetResponse
+} from './index'
 
 const BASE_URL = 'http://localhost:3000/api'
 
 
 export function createProject(project) {
     return function (dispatch) {
-
+        dispatch(resetResponse())
+        dispatch(parseRequestType('create-project'))
         axios({
             method: 'post',
             url: `${BASE_URL}/projects`,
@@ -41,12 +47,10 @@ export function readAllProjects() {
             url: `${BASE_URL}/projects`
         })
             .then((response) => {
-                //console.log(response.data)
                 dispatch({
                     type: READALL_PROJECT,
                     payload: response.data
                 })
-                dispatch(parseResponse(response.status))
             })
 
             .catch((error) => {
@@ -58,6 +62,8 @@ export function readAllProjects() {
 
 export function updateProject(projectId, updatedContent) {
     return function (dispatch) {
+        dispatch(resetResponse())
+        dispatch(parseRequestType('update-project'))
         axios({
             method: 'put',
             url: `${BASE_URL}/projects/${projectId}`,
@@ -79,6 +85,8 @@ export function updateProject(projectId, updatedContent) {
 
 export function deleteProject(projectId) {
     return function (dispatch) {
+        dispatch(resetResponse())
+        dispatch(parseRequestType('delete-project'))
         axios({
             method: 'delete',
             url: `${BASE_URL}/projects/${projectId}`

@@ -10,20 +10,17 @@ const UserSchema = new Schema({
     },
     local: {
         email: {
-            type: String,
-            lowercase: true
+            type: String
         },
         password: {
             type: String
         }
     },
     surname: {
-        type: String,
-        lowercase: true
+        type: String
     },
     firstname: {
-        type: String,
-        lowercase: true
+        type: String
     },
     role: {
         type: String,
@@ -36,7 +33,9 @@ const UserSchema = new Schema({
         required: true,
         default: 'suscriber'
     },
-    pic: String,
+    pic: {
+        type: String
+    },
 })
 
 

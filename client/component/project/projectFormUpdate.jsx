@@ -6,19 +6,19 @@ import {
     Select,
     Button,
     DatePicker,
-    Transfer,
     Switch,
-    notification
+    notification,
+    Radio
 } from 'antd'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
 import { UploadOutlined } from '@ant-design/icons'
-import { resetResponse, resetError } from '../../action'
-import { createProject } from '../../action/project'
+import { resetResponse, resetError, resetRequestType } from '../../action'
+import { updateProject } from '../../action/project'
+import { readAllClients } from '../../action/client'
 
 const { Option } = Select
-const { RangePicker } = DatePicker
 
 const formItemLayout = {
     labelCol: {
@@ -43,7 +43,7 @@ const tailFormItemLayout = {
     }
 }
 
-const ProjectFormUpdate = ({ itemToUpdate, initialValues }) => {
+const ProjectFormUpdate = ({ itemToUpdate }) => {
     const [form] = Form.useForm()
     const [, forceUpdate] = useState()
 
@@ -51,12 +51,16 @@ const ProjectFormUpdate = ({ itemToUpdate, initialValues }) => {
     const dispatch = useDispatch()
 
     const [checkStatus, setChekStatus] = useState(false)
-    const [rangePickerPeriod, setRangePickerPeriod] = useState(moment())
+    const [startDate, setStartDate] = useState(moment())
+    const [endDate, setEndDate] = useState(moment())
 
     const errorStatus = useSelector(state => state.error.status)
     const responseStatus = useSelector(state => state.response.status)
-    const lang = useSelector(state => state.locale.lang)
+    const requestType = useSelector(state => state.requestType.status)
     const projects = useSelector(state => state.projects.projects)
+    const clients = useSelector(state => state.clients.clients)
+
+
 
     useEffect(() => {
         if (itemToUpdate === '') {
@@ -64,68 +68,74 @@ const ProjectFormUpdate = ({ itemToUpdate, initialValues }) => {
         }
         if (itemToUpdate !== '') {
             let initialData = projects.filter(project => project._id === itemToUpdate)
-            form.setFieldsValue({ ...initialData[0] })
+
+            form.setFieldsValue({ 
+                ...initialData[0],
+                client: initialData[0].client,
+                startdate: moment(initialData[0].startDate),
+                enddate: initialData[0].endDate === null ? null : moment(initialData[0].endDate),
+            })
+            setChekStatus(initialData[0].endDate === null)
         }
-    })
+    }, [itemToUpdate])
 
     // To disable submit button at the beginning.
     useEffect(() => {
+        dispatch(readAllClients())
         forceUpdate({})
     }, [])
+
+    useEffect(() => {
+        if (checkStatus === true) {
+            form.resetFields(['enddate'])
+        }
+    }, [checkStatus])
 
     useEffect(() => {
         requestNotification()
     }, [errorStatus, responseStatus])
 
     const requestNotification = () => {
-        if (errorStatus === 400) {
+        if (errorStatus !== null && requestType === 'update-project') {
             notification['error']({
-                message: `${intl.formatMessage({ id: 'login-fail' })}`
+                message: 'An error occured',
+                description: 'We couldn\'t update this project'
             })
             dispatch(resetError())
+            dispatch(resetRequestType())
         }
-        if (responseStatus === 201) {
+        if (responseStatus >= 200 && requestType === 'update-project') {
             notification['success']({
-                message: `${intl.formatMessage({ id: 'login-success' })}`
+                message: 'Project updated Successfully',
+                description: 'Click on \'details\' to see the updated project'
             })
             dispatch(resetResponse())
+            dispatch(resetRequestType())
         }
     }
 
-    const rangeHandler = (value, dateString) => {
-        console.log('Selected Time: ', value)
-        console.log('Formatted Selected Time: ', dateString)
-        setRangePickerPeriod(value)
+    const startDateHandler = (value) => {
+        setStartDate(value)
     }
 
-    /*
-    const onFinish = ({ title, subtitle, cateory, period }) => {
-        //console.log('Received values of form: ', values)
-        dispatch(createProject({
-            title,
-            subtitle,
-            cateory,
-            startDate: period[0],
-            endDate: period[1]
-        }))
+    const endDateHandler = (value) => {
+        setEndDate(value)
     }
-    */
 
-    const onFinish = ({ title, subtitle, category }) => {
+    const checkStatusHandler = () => {
+        setChekStatus(!checkStatus)
 
-        console.log('rangePickerPeriod[0]', rangePickerPeriod[0].toDate())
-        console.log('rangePickerPeriod[1]', rangePickerPeriod[1].toDate())
+    } 
 
+    const onFinish = (values) => {
         dispatch(
-            createProject({
-                title: { [lang]: title },
-                subTitle: { [lang]: subtitle },
-                category,
-                client: '5e434649e18b8e45ed171cf4',
-                startDate: rangePickerPeriod[0].toDate(),
-                endDate: rangePickerPeriod[1].toDate()
+            updateProject(itemToUpdate, {
+                ...values,
+                startDate: startDate.toDate(),
+                endDate: endDate.toDate() 
             })
         )
+        form.resetFields()
     }
 
 
@@ -175,11 +185,20 @@ const ProjectFormUpdate = ({ itemToUpdate, initialValues }) => {
                     //placeholder="Select a option and change input text above"
                     allowClear
                 >
-                    <Option value="professional">
-                        <FormattedMessage id="professional" />
+                    <Option value="graphic">
+                        Graphic
                     </Option>
-                    <Option value="personal">
-                        <FormattedMessage id="personal" />
+                    <Option value="edition">
+                        Edition
+                    </Option>
+                    <Option value="web">
+                        Web
+                    </Option>
+                    <Option value="mobile">
+                        Mobile
+                    </Option>
+                    <Option value="desktop">
+                        Desktop
                     </Option>
                 </Select>
             </Form.Item>
@@ -198,55 +217,103 @@ const ProjectFormUpdate = ({ itemToUpdate, initialValues }) => {
                 ]}
             >
                 <Select
-                    //placeholder="Select a option and change input text above"
                     allowClear
                     showSearch
                 >
-                    <Option value="professional">Client 1</Option>
-                    <Option value="personal">Client 2</Option>
+                    {
+                        clients.map(
+                            client => <Option key={client._id} value={client._id}>
+                                {client.name}
+                            </Option>
+                        )
+                    }
                 </Select>
             </Form.Item>
 
             <Form.Item
-                label="Period"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please input the content !',
-                        whitespace: true
-                    }
-                ]}
+                name="link"
+                label='Project Link'
             >
-                <RangePicker
-                    name="period"
-                    placeholder={[
-                        `${intl.formatMessage({ id: 'startdate' })}`,
-                        `${intl.formatMessage({ id: 'enddate' })}`
-                    ]}
-                    //format={}
-                    disabled={checkStatus ? [false, true] : [false, false]}
-                    allowEmpty={checkStatus ? [false, true] : [false, false]}
-                    onChange={(date, dateString) => rangeHandler(date, dateString)}
-                />
-                <span style={{ marginLeft: '1em' }}>
-                    <Switch
-                        name="pendingCheck"
-                        checked={checkStatus}
-                        onChange={() => setChekStatus(!checkStatus)}
-                    />
-                    {` ${intl.formatMessage({ id: 'still-in-progress' })}`}
-                </span>
+                <Input allowClear />
             </Form.Item>
 
+            <Form.Item label="Period" style={{ marginBottom: 0 }}>
+                <Form.Item
+                    // label="Start Date"
+                    name="startdate"
+                    style={{ display: 'inline-block', width: 'calc(30% - 12px)' }}
+                    rules={[
+                        {
+                            required: true
+                        }
+                    ]}
+                >
+                    <DatePicker
+                        format='DD-MM-YYYY'
+                        placeholder={`${intl.formatMessage({ id: 'startdate' })}`}
+                        onChange={(date, dateString) => startDateHandler(date, dateString)}
+                    />
+                </Form.Item>
+                <span
+                    style={{ display: 'inline-block', width: '24px', lineHeight: '32px', textAlign: 'center' }}
+                >
+                    -
+                </span>
+                <Form.Item
+                    // label="End Date"
+                    name="enddate"
+                    style={{ display: 'inline-block', width: 'calc(30% - 12px)' }}
+                >
+                    <DatePicker
+                        format='DD-MM-YYYY'
+                        disabled={checkStatus}
+                        placeholder={`${intl.formatMessage({ id: 'enddate' })}`}
+                        onChange={(date, dateString) => endDateHandler(date, dateString)}
+                    />
+                </Form.Item>
+                <span
+                    style={{ display: 'inline-block', width: '24px', lineHeight: '32px', textAlign: 'center' }}
+                >
+                    -
+                </span>
+                <Form.Item
+                    style={{ display: 'inline-block', width: 'calc(30% - 12px)' }}
+                >
+                    <Form.Item
+                        label={` ${intl.formatMessage({ id: 'still-in-progress' })}`}
+                        name="pendingCheck"
+                    >
+                        <Switch
+                            style={{ marginLeft: '1em' }}
+                            checked={checkStatus}
+                            onChange={() => checkStatusHandler(!checkStatus)}
+                        />
+                    </Form.Item>
+                </Form.Item>
+            </Form.Item>
+            
             <Form.Item
-                name="posts"
-                label={
-                    <span>
-                        <FormattedMessage id="post" />
-                    </span>
-                }
+                label="Status"
+                name="status"
             >
-                <Transfer />
+                <Radio.Group
+                    buttonStyle="solid"
+                    //onChange={e => setRelation(e.target.value)}
+                >
+                    <Radio.Button value="pending">Pending</Radio.Button>
+                    <Radio.Button value="rejected">
+                        Rejected
+                    </Radio.Button>
+                    <Radio.Button value="waiting">
+                        Waiting
+                    </Radio.Button>
+                    <Radio.Button value="inprogress">
+                        In Progress
+                    </Radio.Button>
+                    <Radio.Button value="completed">
+                        Completed
+                    </Radio.Button>
+                </Radio.Group>
             </Form.Item>
 
             <Form.Item
@@ -289,7 +356,6 @@ const ProjectFormUpdate = ({ itemToUpdate, initialValues }) => {
 
 ProjectFormUpdate.propTypes = {
     itemToUpdate: PropTypes.string,
-    initialValues: PropTypes.object
 }
 
 export default ProjectFormUpdate

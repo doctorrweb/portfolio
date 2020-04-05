@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Row, Col, Button, Typography } from 'antd'
+import { Row, Col, Button, Typography, notification } from 'antd'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useSelector, useDispatch } from 'react-redux'
 import { PlusOutlined } from '@ant-design/icons'
@@ -7,6 +7,7 @@ import { useCustomModal } from '../../helper/utils'
 import TutorialTable from './tutorialTable'
 import FormationForm from './formationForm'
 import FormationFormUpdate from './formationFormUpdate'
+import { resetRequestType, resetError, resetResponse } from '../../action'
 import { readAllTutorials } from '../../action/tutorial'
 import { ModalTutorialFormProvider } from '../../helper/modalFormProvider'
 
@@ -18,7 +19,9 @@ const DashboardTutorial = () => {
     const dispatch = useDispatch()
 
     const responseStatus = useSelector(state => state.response.status)
+    const errorStatus = useSelector(state => state.error.status)
     const tutorials = useSelector(state => state.tutorials.tutorials)
+    const requestType = useSelector(state => state.requestType.status)
 
     const [modalVisibilityUpdate, setModalVisibilityUpdate] = useState(false)
     const [modalVisibilityCreate, setModalVisibilityCreate] = useState(false)
@@ -41,12 +44,27 @@ const DashboardTutorial = () => {
     }, [modalVisibilityUpdate])
 
     useEffect(() => {
-        if (responseStatus >= 200) {
-            setModalVisibilityUpdate(false)
-            setModalVisibilityCreate(false)
-            dispatch(readAllTutorials())
+        requestNotification()
+    }, [errorStatus, responseStatus, requestType])
+
+    const requestNotification = () => {
+        if (errorStatus !== null && requestType === 'delete-tutorial') {
+            notification['error']({
+                message: 'An error occured',
+                description: 'We couldn\'t delete this tutorial'
+            })
+            dispatch(resetError())
+            dispatch(resetRequestType())
         }
-    }, [responseStatus])
+        if (responseStatus >= 200 && requestType === 'delete-tutorial') {
+            notification['success']({
+                message: 'Tutorial deleted Successfully',
+                description: 'Click on \'details\' to see the updated tutorial'
+            })
+            dispatch(resetResponse())
+            dispatch(resetRequestType())
+        }
+    }
 
     const title = <Title level={4}>{` ${intl.formatMessage({ id: 'tutorial' })} Form`}</Title>
     const componentCreate = <FormationForm />
@@ -61,7 +79,7 @@ const DashboardTutorial = () => {
     }
 
     const handleOnClick = () => {
-        setModalVisibilityCreate(!modalVisibilityUpdate)
+        setModalVisibilityCreate(!modalVisibilityCreate)
     }
 
 

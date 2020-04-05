@@ -7,9 +7,6 @@ const PostSchema = new Schema({
         type: String,
         required: true
     },
-    subTitle: {
-        type: String
-    },
     content: {
         type: String,
         required: true
@@ -50,6 +47,9 @@ const PostSchema = new Schema({
         ],
         required: true,
         default: 'pending'
+    },
+    relation: {
+        type: String
     },
     project: {
         type: Schema.Types.ObjectId,

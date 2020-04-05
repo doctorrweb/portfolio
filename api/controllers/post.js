@@ -58,9 +58,99 @@ const postController = {
                     err ? res.status(500).send(err) : Object.assign(response, { post: true, updatedPost: updatedPost })
                 }
             )
+            
+            /* 
+            Handle the project update
+             */
+            const oldProject = await Project.findById(post.project)
+            const oldFormation = await Formation.findById(post.formation)
+            const newPost = await Post.findById(id) //redo this query to get the updated post
 
-            // Handle the project update //
-            if (req.body.project !== undefined && (req.body.project !== post.project)) {
+            if (req.body.relation === 'project') {
+
+                // the previous and the new relation are 'project'
+                if (post.relation === 'project') {
+                    const projectPosts = await oldProject.posts.filter(post => post != id)
+
+                    //Delete the post in the old project
+                    oldProject.posts = projectPosts
+                    await oldProject.save()
+                    Object.assign(response, { oldPost: true })
+                }
+
+                // the previous relation is 'tutorial' and the new is 'project'
+                if (post.relation === 'tutorial') {
+                    const formationPosts = await oldFormation.posts.filter(formation => formation != id)
+
+                    //Delete the post in the old tutorial
+                    oldFormation.posts = formationPosts
+                    await oldFormation.save()
+                    Object.assign(response, { oldPost: true })
+                }
+
+                //Add the post in the new project
+                const newProject = await Project.findById(newPost.project)
+                await newProject.posts.push(newPost._id)
+                await newProject.save()
+                Object.assign(response, { newPost: true })
+            }   
+
+            if (req.body.relation === 'tutorial') {
+                
+                // the previous and the new relation are 'project'
+                if (post.relation === 'tutorial') {
+                    const formationPosts = await oldFormation.posts.filter(formation => formation != id)
+
+                    //Delete the post in the old project
+                    oldFormation.posts = formationPosts
+                    await oldFormation.save()
+                    Object.assign(response, { oldPost: true })
+                }
+
+                // the previous relation is 'project and the new is 'tutorial'
+                if (post.relation === 'project') {
+                    const projectPosts = await oldProject.posts.filter(post => post != id)
+
+                    //Delete the post in the old project
+                    oldProject.posts = projectPosts
+                    await oldProject.save()
+                    Object.assign(response, { oldPost: true })
+                }
+
+                //Add the post in the new project
+                const newPost = await Post.findById(id) //redo this query to get the updated post
+                const newFormation = await Formation.findById(newPost.formation)
+                await newFormation.posts.push(newPost._id)
+                await newFormation.save()
+                Object.assign(response, { newPost: true })
+            }
+
+            if (req.body.relation === 'blog') {
+
+                // the previous relation is 'project
+                if (post.relation === 'project') {
+                    const projectPosts = await oldProject.posts.filter(post => post != id)
+
+                    //Delete the post in the old project
+                    oldProject.posts = projectPosts
+                    await oldProject.save()
+                    Object.assign(response, { oldPost: true })
+                }
+
+                // the previous relation is 'tutorial
+                if (post.relation === 'tutorial') {
+                    const formationPosts = await oldFormation.posts.filter(formation => formation != id)
+
+                    //Delete the post in the old project
+                    oldFormation.posts = formationPosts
+                    await oldFormation.save()
+                    Object.assign(response, { oldPost: true })
+                }
+
+            }
+
+            /**
+             if (req.body.project !== undefined && (req.body.project !== post.project)) {
                 const oldProject = await Project.findById(post.project)
                 const projectPosts = await oldProject.posts.filter(post => post != id)
 
@@ -94,6 +184,7 @@ const postController = {
                 await newFormation.save()
                 Object.assign(response, { newPost: true })
             }
+             */
 
             res.status(200).json(response)
 

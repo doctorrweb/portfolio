@@ -12,9 +12,10 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import CKEditor from 'ckeditor4-react'
 import { UploadOutlined } from '@ant-design/icons'
-import { resetResponse, resetError } from '../../action'
+import { resetResponse, resetError, resetRequestType } from '../../action'
 import { updatePost } from '../../action/post'
-//import 'braft-editor/dist/index.css'
+import { readAllTutorials } from '../../action/tutorial'
+import { readAllProjects } from '../../action/project'
 
 const { Option } = Select
 
@@ -50,54 +51,66 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
     const dispatch = useDispatch()
 
     const [content, setContent] = useState('')
-    //const [postInitialValues, setPostInitialValues] = useState({}) 
-    const [relation, setRelation] = useState('blog')
+    const [relation, setRelation] = useState('')
+    const [relationItem, setRelationItem] = useState('')
+    const [relationItems, setRelationItems] = useState([])
 
     const errorStatus = useSelector(state => state.error.status)
     const responseStatus = useSelector(state => state.response.status)
+    const requestType = useSelector(state => state.requestType.status)
     const lang = useSelector(state => state.locale.lang)
     const posts = useSelector(state => state.posts.posts)
+    const tutorials = useSelector(state => state.tutorials.tutorials)
+    const projects = useSelector(state => state.projects.projects)
+
 
     useEffect(() => {
         if (itemToUpdate === '') {
             setContent('')
             form.resetFields()
-            //setPostInitialValues({})
         }
         if (itemToUpdate !== '') {
             let initialData = posts.filter(post => post._id === itemToUpdate)
             setContent(initialData[0].content)
-            form.setFieldsValue({ ...initialData[0] })
+            form.setFieldsValue({ 
+                ...initialData[0],
+                relationItem: findoutRelatedItem(initialData[0])
+            })
         }
     })
 
-    /*
+    useEffect(() => {
+        handleRelationItemsChange()
+    }, [relation])
 
-    */
 
     // To disable submit button at the beginning.
     useEffect(() => {
+        dispatch(readAllTutorials())
+        dispatch(readAllProjects())
         forceUpdate()
     }, [])
 
-
-
     useEffect(() => {
         requestNotification()
-    }, [errorStatus, responseStatus])
+    }, [errorStatus, responseStatus, requestType])
 
     const requestNotification = () => {
-        if (errorStatus === 400) {
+        if (errorStatus !== null && requestType === 'update-post') {
             notification['error']({
-                message: `${intl.formatMessage({ id: 'login-fail' })}`
+                message: 'An error occured',
+                description: 'We couldn\'t update this post'
             })
             dispatch(resetError())
+            dispatch(resetRequestType())
         }
-        if (responseStatus === 201) {
+        if (responseStatus >= 200 && requestType === 'update-post') {
             notification['success']({
-                message: `${intl.formatMessage({ id: 'login-success' })}`
+                message: 'Post updated Successfully',
+                description: 'Click on \'details\' to see the updated post'
             })
             dispatch(resetResponse())
+            dispatch(resetRequestType())
         }
     }
 
@@ -106,7 +119,13 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
     }
 
     const onFinish = (values) => {
-        dispatch(updatePost({ ...values, lang: lang, content: content }))
+        dispatch(updatePost(itemToUpdate, {
+            ...values, 
+            lang: lang, 
+            content: content,
+            project: relation === 'project' ? relationItem : null,
+            formation: relation === 'tutorial' ? relationItem : null 
+        }))
         setContent('')
         form.resetFields()
     }
@@ -117,6 +136,47 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
             description: errorInfo
         })
         form.resetFields()
+    }
+
+    const handleRelationChange = (e) => {
+        setRelation(e.target.value)
+        form.resetFields(['relationItem'])
+    }
+
+    const handleRelationItemsChange = () => {
+        let items = []       
+        if (relation === 'tutorial') {
+            tutorials.map(
+                tuto => items.push(
+                    <Option key={tuto._id} value={tuto.title} >{tuto.title}</Option>
+                )
+            )
+        }   
+        if (relation === 'project') {
+            projects.map(
+                project => items.push(
+                    <Option key={project._id} value={project.title} >{project.title}</Option>
+                )
+            )
+        }   
+        setRelationItems([items]) 
+    }
+
+    const findoutRelatedItem = (item) => {
+        let result = {}
+        if (item.relation === 'project') {
+            const newItem = projects.find(project => project._id === item.project)
+            Object.assign(result, newItem)
+        }
+        if (item.relation === 'tutorial') {
+            const newItem = tutorials.find(tutorial => tutorial._id === item.formation)
+            Object.assign(result, newItem)
+        }
+        return result.title
+    }
+
+    const onChangeRelationItem = (value, option) => {
+        setRelationItem(option.key)
     }
 
     return (
@@ -141,7 +201,6 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
                         whitespace: true
                     }
                 ]}
-            //shouldUpdate
             >
                 <Input />
             </Form.Item>
@@ -157,7 +216,6 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
                 <CKEditor
                     onBeforeLoad={(CKEDITOR) => (CKEDITOR.disableAutoInline = true)}
                     onChange={e => ckeditor4Handler(e.editor.getData())}
-                    //data={content}
                     data={itemToUpdate === '' ? '' : initialValues.content}
                 />
             </Form.Item>
@@ -175,9 +233,9 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
                 
             >
                 <Radio.Group
-                    defaultValue="blog"
+                    //defaultValue="blog"
                     buttonStyle="solid"
-                    onChange={e => setRelation(e.target.value)}
+                    onChange={e => handleRelationChange(e)}
                 >
                     <Radio.Button value="blog">Blog</Radio.Button>
                     <Radio.Button value="tutorial">
@@ -193,12 +251,10 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
                 <Select
                     allowClear
                     showSearch
-                    disabled={relation === 'blog'}
+                    disabled={relation === 'blog' ? true : false}
+                    onChange={(value, option) => onChangeRelationItem(value, option)}
                 >
-                    <Option value="option1">Option 1</Option>
-                    <Option value="option2">Option 2</Option>
-                    <Option value="option3">Option 3</Option>
-                    <Option value="option4">Option 4</Option>
+                    {[...relationItems]}
                 </Select>
             </Form.Item>
 
@@ -211,7 +267,6 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
                 }
             >
                 <Select
-                    //placeholder="Select a option and change input text above"
                     allowClear
                 >
                     <Option value="professional">
@@ -221,6 +276,23 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
                         <FormattedMessage id="personal" />
                     </Option>
                 </Select>
+            </Form.Item>
+
+            <Form.Item 
+                label="Status" 
+                name="status"
+            >
+                <Radio.Group
+                    buttonStyle="solid"
+                >
+                    <Radio.Button value="pending">Pending</Radio.Button>
+                    <Radio.Button value="active">
+                        Active
+                    </Radio.Button>
+                    <Radio.Button value="trash">
+                        Trash
+                    </Radio.Button>
+                </Radio.Group>
             </Form.Item>
 
             <Form.Item

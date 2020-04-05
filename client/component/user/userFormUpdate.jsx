@@ -10,7 +10,7 @@ import {
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { UploadOutlined } from '@ant-design/icons'
-import { resetError, resetResponse } from '../../action'
+import { resetError, resetResponse, resetRequestType } from '../../action'
 import { updateUser } from '../../action/user'
 
 const { Option } = Select
@@ -47,7 +47,7 @@ const UserFormUpdate = ({ itemToUpdate }) => {
 
     const errorStatus = useSelector(state => state.error.status)
     const responseStatus = useSelector(state => state.response.status)
-    //const lang = useSelector(state => state.locale.lang)
+    const requestType = useSelector(state => state.requestType.status)
     const users = useSelector(state => state.users.users)
 
     useEffect(() => {
@@ -56,7 +56,10 @@ const UserFormUpdate = ({ itemToUpdate }) => {
         }
         if (itemToUpdate !== '') {
             let initialData = users.filter(user => user._id === itemToUpdate)
-            form.setFieldsValue({ ...initialData[0] })
+            form.setFieldsValue({
+                ...initialData[0],
+                email: initialData[0].local.email
+            })
         }
     })
 
@@ -70,17 +73,21 @@ const UserFormUpdate = ({ itemToUpdate }) => {
     }, [errorStatus, responseStatus])
 
     const requestNotification = () => {
-        if (errorStatus === 400) {
+        if (errorStatus !== null && requestType === 'update-user') {
             notification['error']({
-                message: `${intl.formatMessage({ id: 'login-fail' })}`
+                message: 'An error occured',
+                description: 'We couldn\'t update this user'
             })
             dispatch(resetError())
+            dispatch(resetRequestType())
         }
-        if (responseStatus === 201) {
+        if (responseStatus >= 200 && requestType === 'update-user') {
             notification['success']({
-                message: `${intl.formatMessage({ id: 'login-success' })}`
+                message: 'User updated Successfully',
+                description: 'Click on \'details\' to see the updated user'
             })
             dispatch(resetResponse())
+            dispatch(resetRequestType())
         }
     }
 
@@ -112,7 +119,7 @@ const UserFormUpdate = ({ itemToUpdate }) => {
                     <span><FormattedMessage id='surname' /></span>
                 }
             >
-                <Input />
+                <Input disabled />
             </Form.Item>
 
             <Form.Item
@@ -120,6 +127,13 @@ const UserFormUpdate = ({ itemToUpdate }) => {
                 label={
                     <span><FormattedMessage id='firstname' /></span>
                 }
+            >
+                <Input disabled />
+            </Form.Item>
+
+            <Form.Item
+                name="nickname"
+                label='Nick name'
             >
                 <Input />
             </Form.Item>
@@ -138,7 +152,7 @@ const UserFormUpdate = ({ itemToUpdate }) => {
                     }
                 ]}
             >
-                <Input />
+                <Input disabled />
             </Form.Item>
 
             <Form.Item
@@ -222,7 +236,7 @@ const UserFormUpdate = ({ itemToUpdate }) => {
                             form.getFieldsError().filter(({ errors }) => errors.length).length
                         }
                     >
-                        <FormattedMessage id='register' />
+                        <FormattedMessage id='update' />
                     </Button>
                 )}
             </Form.Item>

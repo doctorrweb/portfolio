@@ -1,6 +1,6 @@
 import {
     CREATE_CLIENT, 
-    READALL_CLEINT,
+    READALL_CLIENT,
     UPDATE_CLIENT,
     DELETE_CLIENT,
 } from '../action/action-type'
@@ -15,7 +15,7 @@ export default function (state = initialState, action) {
         return {
             clients: [...state.clients, action.payload]
         }
-    case READALL_CLEINT:
+    case READALL_CLIENT:
         return {
             clients: [...action.payload]
         }

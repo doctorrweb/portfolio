@@ -4,8 +4,7 @@ const { Schema } = mongoose
 
 const ImageSchema = new Schema({
     name: {
-        type: String,
-        lowercase: true
+        type: String
     },
     caption: {
         type: String,

@@ -99,7 +99,13 @@ const columns = {
             title: 'Role',
             width: 75,
             dataIndex: 'role',
-            key: 'role'
+            key: 'role',
+            filters: [
+                { text: 'suscriber', value: 'suscriber' },
+                { text: 'manager', value: 'manager' },
+                { text: 'administrator', value: 'administrator' }
+            ],
+            onFilter: (value, record) => record.role.includes(value)
         },
         {
             title: <FormattedMessage id='action' />,

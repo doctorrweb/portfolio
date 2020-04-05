@@ -5,7 +5,6 @@ import {
     Input,
     Select,
     Button,
-    Transfer,
     notification
 } from 'antd'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -149,18 +148,14 @@ const ClientFormUpdate = ({ itemToUpdate }) => {
                     //placeholder="Select a option and change input text above"
                     allowClear
                 >
-                    <Option value="professional"><FormattedMessage id='professional' /></Option>
-                    <Option value="personal"><FormattedMessage id='personal' /></Option>
+                    <Option value="international">international</Option>
+                    <Option value="company">company</Option>
+                    <Option value="individual">individual</Option>
+                    <Option value="organisation">organisation</Option>
+                    <Option value="government">government</Option>
+                    <Option value="ngo">ngo</Option>
+                    <Option value="other">other</Option>
                 </Select>
-            </Form.Item>
-
-            <Form.Item
-                name="projects"
-                label={
-                    <span><FormattedMessage id='project' /></span>
-                }
-            >
-                <Transfer />
             </Form.Item>
 
             <Form.Item

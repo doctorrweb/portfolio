@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Row, Col, Button, Typography } from 'antd'
+import { Row, Col, Button, Typography, notification } from 'antd'
 import { useSelector, useDispatch } from 'react-redux'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { PlusOutlined } from '@ant-design/icons'
@@ -8,15 +8,19 @@ import PostTable from './postTable'
 import PostFormUpdate from './postFormUpdate'
 import PostForm from './postForm'
 import { readAllPosts } from '../../action/post'
+import { resetRequestType, resetError, resetResponse } from '../../action'
 import { ModalPostFormProvider } from '../../helper/modalFormProvider'
 
 const { Title } = Typography
 
 const DashboardPost = () => {
+    
     const intl = useIntl()
     const dispatch = useDispatch()
 
+    const errorStatus = useSelector(state => state.error.status)
     const responseStatus = useSelector(state => state.response.status)
+    const requestType = useSelector(state => state.requestType.status)
     const posts = useSelector(state => state.posts.posts)
 
     const [modalVisibilityUpdate, setModalVisibilityUpdate] = useState(false)
@@ -27,6 +31,10 @@ const DashboardPost = () => {
     useEffect(() => {
         dispatch(readAllPosts())
     }, [])
+
+    useEffect(() => {
+        dispatch(readAllPosts())
+    }, [requestType])
 
     useEffect(() => {
         if (itemToUpdate !== '') {
@@ -40,12 +48,38 @@ const DashboardPost = () => {
     }, [modalVisibilityUpdate])    
     
     useEffect(() => {
-        if (responseStatus >= 200) {
-            setModalVisibilityUpdate(false)
+        if (requestType === 'create-post') {
             setModalVisibilityCreate(false)
-            dispatch(readAllPosts())
+            //dispatch(readAllPosts())
         }
-    }, [responseStatus])
+        if (requestType === 'update-post') {
+            setModalVisibilityUpdate(false)
+        }
+        dispatch(readAllPosts())
+    }, [requestType])
+
+    useEffect(() => {
+        requestNotification()
+    }, [errorStatus, responseStatus, requestType])
+
+    const requestNotification = () => {
+        if (errorStatus !== null && requestType === 'delete-post') {
+            notification['error']({
+                message: 'An error occured',
+                description: 'We couldn\'t delete this post'
+            })
+            dispatch(resetError())
+            dispatch(resetRequestType())
+        }
+        if (responseStatus >= 200 && requestType === 'delete-post') {
+            notification['success']({
+                message: 'Post deleted Successfully',
+                description: 'Click on \'details\' to see the updated post'
+            })
+            dispatch(resetResponse())
+            dispatch(resetRequestType())
+        }
+    }
 
     const title = <Title level={4}>Post Form</Title>
     const componentUpdate = <PostFormUpdate itemToUpdate={itemToUpdate} initialValues={initialValues} />
@@ -58,12 +92,6 @@ const DashboardPost = () => {
     const renderModalCreate = () => {
         return useCustomModal(title, componentCreate, modalVisibilityCreate, setModalVisibilityCreate)
     }
-
-    /*
-    const renderModalCreate = () => {
-        return useCustomModal(title, component, modalVisibility, setModalVisibility)
-    }
-    */
 
     const handleOnClick = () => {
         setModalVisibilityCreate(!modalVisibilityUpdate)

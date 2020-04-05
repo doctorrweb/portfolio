@@ -1,18 +1,24 @@
 import {
     CREATE_CLIENT,
-    READALL_CLEINT,
+    READALL_CLIENT,
     UPDATE_CLIENT,
     DELETE_CLIENT
 } from './action-type'
 import axios from 'axios'
-import { parseResponse, parseError } from './index'
+import {
+    parseResponse, 
+    parseError,
+    parseRequestType,
+    resetResponse
+} from './index'
 
 const BASE_URL = 'http://localhost:3000/api'
 
 
 export function createClient(client) {
     return function (dispatch) {
-
+        dispatch(resetResponse())
+        dispatch(parseRequestType('create-client'))
         axios({
             method: 'post',
             url: `${BASE_URL}/clients`,
@@ -42,7 +48,7 @@ export function readAllClients() {
             .then((response) => {
                 //console.log(response.data)
                 dispatch({
-                    type: READALL_CLEINT,
+                    type: READALL_CLIENT,
                     payload: response.data
                 })
                 dispatch(parseResponse(response.status))
@@ -57,6 +63,8 @@ export function readAllClients() {
 
 export function updateClient(clientId, updatedContent) {
     return function (dispatch) {
+        dispatch(resetResponse())
+        dispatch(parseRequestType('update-client'))
         axios({
             method: 'put',
             url: `${BASE_URL}/clients/${clientId}`,
@@ -78,6 +86,8 @@ export function updateClient(clientId, updatedContent) {
 
 export function deleteClient(clientId) {
     return function (dispatch) {
+        dispatch(resetResponse())
+        dispatch(parseRequestType('delete-client'))
         axios({
             method: 'delete',
             url: `${BASE_URL}/clients/${clientId}`

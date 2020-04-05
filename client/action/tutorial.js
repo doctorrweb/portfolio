@@ -5,16 +5,20 @@ import {
     DELETE_TUTORIAL,
 } from './action-type'
 import axios from 'axios'
-import { parseResponse, parseError } from './index'
+import {
+    parseResponse, 
+    parseError,
+    parseRequestType,
+    resetResponse
+} from './index'
 
 const BASE_URL = 'http://localhost:3000/api'
 
 
 export function createTutorial(tutorial) {
     return function (dispatch) {
-        /*
-        
-        */
+        dispatch(resetResponse())
+        dispatch(parseRequestType('create-tutorial'))
         axios({
             method: 'post',
             url: `${BASE_URL}/formations`,
@@ -46,7 +50,6 @@ export function readAllTutorials() {
                     type: READALL_TUTORIAL,
                     payload: response.data
                 })
-                dispatch(parseResponse(response.status))
             })
 
             .catch((error) => {
@@ -57,6 +60,8 @@ export function readAllTutorials() {
 
 export function updateTutorial(tutoId, updatedContent) {
     return function (dispatch) {
+        dispatch(resetResponse())
+        dispatch(parseRequestType('update-tutorial'))
         axios({
             method: 'put',
             url: `${BASE_URL}/formations/${tutoId}`,
@@ -78,6 +83,8 @@ export function updateTutorial(tutoId, updatedContent) {
 
 export function deleteTutorial(tutoId) {
     return function (dispatch) {
+        dispatch(resetResponse())
+        dispatch(parseRequestType('delete-tutorial'))
         axios({
             method: 'delete',
             url: `${BASE_URL}/formations/${tutoId}`

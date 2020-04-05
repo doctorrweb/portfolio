@@ -5,7 +5,6 @@ const Project = require('../models/project')
 const ClientSchema = new Schema({
     name: {
         type: String,
-        lowercase: true,
         required: true
     },
     image: {
@@ -13,24 +12,22 @@ const ClientSchema = new Schema({
         ref: 'image'
     },
     description: {
-        en: {
-            type: String,
-            lowercase: true
-        },
-        fr: {
-            type: String,
-            lowercase: true
-        },
-        de: {
-            type: String,
-            lowercase: true
-        }
+        type: String,
     },
     category: {
         type: String,
         lowercase: true,
         required: true,
-        default: 'undefined'
+        enum: [
+            'international',
+            'company',
+            'individual',
+            'organisation',
+            'government',
+            'ngo',
+            'other'
+        ],
+        default: 'other'
     },
     projects: [
         {

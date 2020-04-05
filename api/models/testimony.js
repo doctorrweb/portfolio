@@ -3,8 +3,7 @@ const { Schema } = mongoose
 
 const TestimonySchema = new Schema({
     title: {
-        type: String,
-        lowercase: true
+        type: String
     },
     content: {
         type: String,

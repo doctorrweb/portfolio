@@ -84,9 +84,19 @@ const columns = {
         },
         {
             title: <FormattedMessage id='category' />,
-            width: 50,
+            width: 75,
             dataIndex: 'category',
-            key: 'category'
+            key: 'category',
+            filters: [
+                { text: 'international', value: 'international' },
+                { text: 'company', value: 'company' },
+                { text: 'individual', value: 'individual' },
+                { text: 'organisation', value: 'organisation' },
+                { text: 'government', value: 'government' },
+                { text: 'ngo', value: 'ngo' },
+                { text: 'other', value: 'other' }
+            ],
+            onFilter: (value, record) => record.category.includes(value)
         },
         {
             title: <FormattedMessage id='action' />,

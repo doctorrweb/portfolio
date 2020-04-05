@@ -5,13 +5,20 @@ import {
     DELETE_POST
 } from './action-type'
 import axios from 'axios'
-import { parseResponse, parseError } from './index'
+import {
+    parseResponse, 
+    parseError, 
+    parseRequestType,
+    resetResponse
+} from './index'
 
 const BASE_URL = 'http://localhost:3000/api'
 
 
 export function createPost(post) {
     return function (dispatch) {
+        dispatch(resetResponse())
+        dispatch(parseRequestType('create-post'))
         axios({
             method: 'post',
             url: `${BASE_URL}/posts`,
@@ -38,12 +45,10 @@ export function readAllPosts() {
             url: `${BASE_URL}/posts`
         })
             .then((response) => {
-                //console.log(response.data)
                 dispatch({
                     type: READALL_POST,
                     payload: response.data
                 })
-                dispatch(parseResponse(response.status))
             })
 
             .catch((error) => {
@@ -53,20 +58,26 @@ export function readAllPosts() {
 }
 
 export function updatePost(postId, updatedContent) {
+    console.log('updatedContent', updatedContent)
     return function (dispatch) {
+        dispatch(resetResponse())
+        dispatch(parseRequestType('update-post'))
         axios({
             method: 'put',
-            url: `${BASE_URL}/entries/${postId}`,
+            url: `${BASE_URL}/posts/${postId}`,
             data: updatedContent,
         })
             .then((response) => {
+                console.log('response', response.data)
                 dispatch({
                     type: UPDATE_POST,
                     payload: postId
                 })
+                
                 dispatch(parseResponse(response.status))
             })
             .catch((error) => {
+                console.log('error', error)
                 dispatch(parseError(error.response))
             })
     }
@@ -74,7 +85,10 @@ export function updatePost(postId, updatedContent) {
 }
 
 export function deletePost(postId) {
+    
     return function (dispatch) {
+        dispatch(resetResponse())
+        dispatch(parseRequestType('delete-post'))
         axios({
             method: 'delete',
             url: `${BASE_URL}/posts/${postId}`
