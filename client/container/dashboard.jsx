@@ -6,10 +6,11 @@ import DashboardPost from '../component/post/dashboardPost'
 import DashboardProject from '../component/project/dashboardProject'
 import DashboardClient from '../component/client/dashboardClient'
 import DashboardTutorial from '../component/tutorial/dashboardTutorial'
-import DashboardImage from '../component/dashboard/dashboardImage'
-import DashboardVideo from '../component/dashboard/dashboardVideo'
+import DashboardImage from '../component/image/dashboardImage'
+import DashboardVideo from '../component/video/dashboardVideo'
 import DashboardSettings from '../component/dashboard/dashboardSettings'
 import DashboardUser from '../component/user/dashboardUser'
+import Demo from '../component/testProviderForm'
 
 const { Sider, Content } = Layout
 
@@ -56,7 +57,7 @@ const Dashboard = () => {
                             <DashboardUser />
                         </Route>
                         <Route exact path='/dashboard/settings'>
-                            <DashboardSettings />
+                            <Demo />
                         </Route>
                     </Switch>
                 </Router>

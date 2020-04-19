@@ -25,8 +25,6 @@ module.exports = upload
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        console.log('req.files multer', req.files)
-        console.log('file multer', file)
         if (file.mimetype.includes('video')) {
             cb(null, 'public/video/')
         }
@@ -41,8 +39,6 @@ const storage = multer.diskStorage({
         
     },
     filename: (req, file, cb) => {
-        console.log('req.files multer', req.files)
-        console.log('file multer', file)
         const { originalname, fieldname } = file
 
         const originalnameParts = originalname.split('.')

@@ -34,10 +34,6 @@ const renderAction = (text, record) => {
         modalForm.setItemToUpdate(record.key)
     }
 
-    /*
-   
-    */
-
     return (
         <Dropdown overlay={
             <Menu>
@@ -188,7 +184,7 @@ const columns = {
             key: 'operation',
             fixed: 'right',
             width: 75,
-            render: (text, record) => renderAction(text, record),
+            render: (text, record) => renderAction(text, record)
         },
     ]
 }

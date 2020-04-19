@@ -1,6 +1,9 @@
 const darkThemeVars = require('antd/dist/dark-theme')
 
 module.exports = {
+    devServer: {
+        historyApiFallback: true
+    },
     entry: './client/index.js',
     output: {
         path: __dirname + '/public',

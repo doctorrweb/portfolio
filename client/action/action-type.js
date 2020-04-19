@@ -45,8 +45,10 @@ export const DELETE_TUTORIAL = 'DELETE_TUTORIAL'
 
 // Settings Tutorial Types
 export const ADD_IMAGE = 'ADD_IMAGE'
+export const READALL_IMAGE = 'READALL_IMAGE'
 export const DELETE_IMAGE = 'DELETE_IMAGE'
 
 // Settings Tutorial Types
 export const ADD_VIDEO = 'ADD_VIDEO'
+export const READALL_VIDEO  = 'READALL_VIDEO'
 export const DELETE_VIDEO = 'DELETE_VIDEO'

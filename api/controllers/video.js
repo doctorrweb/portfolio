@@ -6,9 +6,12 @@ const videoController = {
             let videos = []
 
             await req.files.map(file => {
+                const { path } = file
+                const newPath = path.slice(6, path.length)
+
                 const newFile = {
                     name: file.originalname,
-                    path: file.path,
+                    path: newPath,
                     extension: file.mimetype,
                     creationDate: Date.now(),
                     status: 'inactive'
