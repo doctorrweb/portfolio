@@ -15,6 +15,7 @@ import { UploadOutlined } from '@ant-design/icons'
 import { resetResponse, resetError, resetRequestType } from '../../action'
 import { createProject } from '../../action/project'
 import { readAllClients } from '../../action/client'
+import { readAllImages } from '../../action/image'
 
 
 const { Option } = Select
@@ -56,11 +57,13 @@ const ProjectForm = () => {
     const errorStatus = useSelector(state => state.error.status)
     const responseStatus = useSelector(state => state.response.status)
     const clients = useSelector(state => state.clients.clients)
+    const images = useSelector(state => state.images.images)
     const requestType = useSelector(state => state.requestType.status)
 
     // To disable submit button at the beginning.
     useEffect(() => {
         dispatch(readAllClients())
+        dispatch(readAllImages())
         forceUpdate({})
     }, [])
 
@@ -286,15 +289,21 @@ const ProjectForm = () => {
 
             <Form.Item
                 name="image"
-                label={
-                    <span>
-                        <FormattedMessage id="image" />
-                    </span>
-                }
+                label={<FormattedMessage id="image" />}
             >
-                <Button>
-                    <UploadOutlined /> <FormattedMessage id="click-upload" />
-                </Button>
+                <Select
+                    allowClear
+                    showSearch
+                // onChange={(value, option) => onChangeRelationItem(value, option)}
+                >
+                    {images.map(
+                        img => (
+                            <Option key={img._id} value={img.path} >
+                                <img src={img.path} width={30} /> {` ${img.name}`}
+                            </Option>
+                        )
+                    )}
+                </Select>
             </Form.Item>
 
             <Form.Item shouldUpdate={true} {...tailFormItemLayout}>

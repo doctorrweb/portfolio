@@ -4,16 +4,14 @@ import {
     Input,
     Select,
     Button,
-    Typography,
-    Avatar,
     notification
 } from 'antd'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
-import { UploadOutlined, SmileOutlined, UserOutlined } from '@ant-design/icons'
 import { resetResponse, resetError, resetRequestType } from '../../action'
 import { useValuesToSend } from '../../helper/utils'
 import { createClient } from '../../action/client'
+import { readAllImages } from '../../action/image'
 import ModalImageBox from '../modalImageBox'
 
 const { Option } = Select
@@ -56,8 +54,11 @@ const ClientForm = () => {
     const responseStatus = useSelector(state => state.response.status)
     const requestType = useSelector(state => state.requestType.status)
 
+    const images = useSelector(state => state.images.images)
+
     // To disable submit button at the beginning.
     useEffect(() => {
+        dispatch(readAllImages())
         forceUpdate({})
     }, [])
 
@@ -85,10 +86,6 @@ const ClientForm = () => {
     }
 
     // handle ModalMediaBox Visibility
-    const showModalImageBox = () => {
-        setVisibleMediaBox(true)
-        console.log('visibleMediaBox', visibleMediaBox)
-    }
 
     const hideModalImageBox = () => {
         console.log('visibleMediaBox', visibleMediaBox)
@@ -185,41 +182,22 @@ const ClientForm = () => {
                 </Form.Item>
 
                 <Form.Item
-                    label="User List"
-                    shouldUpdate={(prevValues, curValues) =>
-                        prevValues.users !== curValues.users
-                    }
-                >
-                    {({ getFieldValue }) => {
-                        const users = getFieldValue('users') || []
-                        return users.length ? (
-                            <ul>
-                                {users.map((user, index) => (
-                                    <li key={index} className="user">
-                                        <Avatar icon={<UserOutlined />} />
-                                        {user.name} - {user.age}
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <Typography.Text className="ant-form-text" type="secondary">
-                  ( <SmileOutlined /> No user yet. )
-                            </Typography.Text>
-                        )
-                    }}
-                </Form.Item>
-
-                <Form.Item
                     name="image"
-                    label={
-                        <span>
-                            <FormattedMessage id="image" />
-                        </span>
-                    }
+                    label={<FormattedMessage id="image" />}
                 >
-                    <Button htmlType="button" onClick={showModalImageBox}>
-                        <UploadOutlined /> <FormattedMessage id="click-upload" />
-                    </Button>
+                    <Select
+                        allowClear
+                        showSearch
+                    // onChange={(value, option) => onChangeRelationItem(value, option)}
+                    >
+                        {images.map(
+                            img => (
+                                <Option key={img._id} value={img.path} >
+                                    <img src={img.path} width={30} /> {` ${img.name}`}
+                                </Option>
+                            )
+                        )}
+                    </Select>
                 </Form.Item>
             
 

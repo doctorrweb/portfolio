@@ -79,12 +79,11 @@ const ImageForm = () => {
         dispatch(addImage(imageFormData))
         console.log('Received values of form: ', imageFormData)
     }
-
-    
     */
 
     const onFinish = values => {
-        console.log('values: ', values.images.fileList)
+        console.log('values: ', values.images)
+        console.log('CustomFileList: ', CustomFileList)
         let imageFormData = new FormData()
         const images = values.images.fileList
         images.map(image => {
@@ -112,8 +111,6 @@ const ImageForm = () => {
 
     const onRemove = file => {
         const newCustomFileList = CustomFileList.filter(item => item !== file )
-        //console.log('CustomFileList', CustomFileList)
-        //console.log('newCustomFileList', newCustomFileList)
         setCustomFileList(newCustomFileList)
     } 
 
@@ -142,9 +139,7 @@ const ImageForm = () => {
 
             <Form.Item
                 name="images"
-                label={
-                    <span><FormattedMessage id='image' /></span>
-                }
+                label={<FormattedMessage id='image' />}
             >
                 <Dragger 
                     fileList={CustomFileList}

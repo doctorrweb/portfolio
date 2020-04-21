@@ -2,12 +2,12 @@ const darkThemeVars = require('antd/dist/dark-theme')
 
 module.exports = {
     devServer: {
-        historyApiFallback: true
+        historyApiFallback: true,
     },
     entry: './client/index.js',
     output: {
         path: __dirname + '/public',
-        filename: 'main.js'
+        filename: 'main.js',
     },
     module: {
         rules: [
@@ -17,9 +17,9 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['@babel/preset-env', '@babel/preset-react']
-                    }
-                }
+                        presets: ['@babel/preset-env', '@babel/preset-react'],
+                    },
+                },
             },
             {
                 //test: /\.(css|less)$/,
@@ -32,38 +32,26 @@ module.exports = {
                     {
                         loader: 'less-loader',
                         options: {
-                            /*
                             modifyVars: {
-                                'primary-color': '#FF9900',
-                                'link-color': '#FF9900',
-                                'border-radius-base': '2px'
-                            },
-                            */
-                            modifyVars: {
-                                //'hacks': `true,@import "${require.resolve('antd/lib/style/color/colorPalette')}";`,
                                 ...darkThemeVars,
                                 'primary-color': '#FF9900',
                                 'link-color': '#FF9900',
                                 'border-radius-base': '2px',
                                 'font-family': 'Helvetica Neue',
-                                'code-family': 'Menlo'
-                                
+                                'code-family': 'Menlo',
                             },
-                            javascriptEnabled: true
-                        }
-                    }
-                ]
-            }
-        ]
+                            javascriptEnabled: true,
+                        },
+                    },
+                ],
+            },
+        ],
     },
     resolve: {
-        extensions: ['*', '.js', '.jsx', '.css']
-    },
-    devServer: {
-        historyApiFallback: true
+        extensions: ['*', '.js', '.jsx', '.css'],
     },
     stats: {
-        colors: true
+        colors: true,
     },
-    devtool: 'source-map'
+    devtool: 'source-map',
 }

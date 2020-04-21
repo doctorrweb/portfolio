@@ -82,6 +82,7 @@ export function deleteImage(imageId) {
     }
 
 }
+
 /*
 export function creatEntryFormOffer(entry, history) {
     return function (dispatch) {

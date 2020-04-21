@@ -27,11 +27,7 @@ const ImageGallery = ({ images, setImageToDisplay, modalDisplayVisibility, setMo
     const [imagesList, setImageList] = useState([])
     const [imageToSearch, setImageToSearch] = useState('')
     const [listLoading, setListLoading] = useState(true)
-    
 
-    useEffect(() => {
-        console.log('images', images)
-    })
 
     useEffect(() => {
         setImageList(images)

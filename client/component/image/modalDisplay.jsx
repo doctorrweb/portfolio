@@ -12,6 +12,7 @@ const ModalDisplay = ({ imageToDisplay, modalDisplayVisibility, setModalDisplayV
         setModalDisplayVisibility(modalDisplayVisibility)
     }, [imageToDisplay, modalDisplayVisibility])
 
+
     return (
         <Modal
             title="Vertically centered modal dialog"

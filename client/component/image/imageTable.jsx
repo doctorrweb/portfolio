@@ -15,12 +15,6 @@ const ImageTable = ({images}) => {
 
     const lang = useSelector(state => state.locale.lang)
 
-    //const responseStatus = useSelector(state => state.response.status)
-
-    useEffect(() => {
-        console.log('images', images)
-    })
-
     useEffect(() => {
         setloading(!loading)
     }, [])

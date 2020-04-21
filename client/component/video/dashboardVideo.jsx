@@ -1,53 +1,40 @@
 import React, { useState, useEffect } from 'react'
-import { Table, Row, Col, Button, Typography } from 'antd'
+import {
+    Row, 
+    Col, 
+    Button, 
+    Typography,
+    Radio
+} from 'antd'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { useSelector } from 'react-redux'
-import { PlusOutlined } from '@ant-design/icons'
+import { useSelector, useDispatch } from 'react-redux'
+import { PlusOutlined, TableOutlined, AppstoreOutlined } from '@ant-design/icons'
 import { useCustomModal } from '../../helper/utils'
+import { readAllVideos } from '../../action/video'
 import VideoForm from './videoForm'
+import VideoGallery from './videoGallery'
+import VideoTable from './videoTable'
+import ModalDisplay from './modalDisplay'
+import { ModalVideoFormProvider } from '../../helper/modalFormProvider'
 
 const { Title } = Typography
 
-const columns = [
-    {
-        title: <FormattedMessage id='name' />,
-        width: 100,
-        dataIndex: 'name',
-        key: 'name',
-        fixed: 'left'
-    },
-    {
-        title: <FormattedMessage id='path' />,
-        width: 100,
-        dataIndex: 'path',
-        key: 'path'
-    },
-    {
-        title: <FormattedMessage id='creationdate' />,
-        width: 100,
-        dataIndex: 'creationDate',
-        key: 'creationDate'
-    },
-    {
-        title: <FormattedMessage id='status' />,
-        width: 100,
-        dataIndex: 'status',
-        key: 'status'
-    },
-    {
-        title: <FormattedMessage id='action' />,
-        key: 'operation',
-        fixed: 'right',
-        width: 100,
-        //render: () => <a>action</a>,
-    },
-]
 const DashboardVideo = () => {
 
     const intl = useIntl()
+    const dispatch = useDispatch()
 
     const responseStatus = useSelector(state => state.response.status)
+    const videos = useSelector(state => state.videos.videos)
+
+    const [displayType, setDisplayType] = useState('table')
     const [modalVisibility, setModalVisibility] = useState(false)
+    const [modalDisplayVisibility, setModalDisplayVisibility] = useState(false)
+    const [videoToDisplay, setVideoToDisplay] = useState('')
+
+    useEffect(() => {
+        dispatch(readAllVideos())
+    }, [])
 
     useEffect(() => {
         renderModal()
@@ -66,25 +53,71 @@ const DashboardVideo = () => {
         return useCustomModal(title, component, modalVisibility, setModalVisibility)
     }
 
+    const renderDisplay = () => {
+        if (displayType === 'gallery') {
+            return <VideoGallery
+                videos={videos}
+                setVideoToDisplay={setVideoToDisplay}
+                setModalDisplayVisibility={setModalDisplayVisibility}
+                modalDisplayVisibility={modalDisplayVisibility}
+            />
+        }
+
+        if (displayType === 'table') {
+            return (
+                <Row>
+                    <Col lg={24} md={24} sm={24} xs={24}>
+                        <VideoTable videos={videos} />
+                    </Col>
+                </Row>
+            )
+        }
+
+    }
+
+    const handleChangeDisplay = (e) => {
+        setDisplayType(e.target.value)
+    }
+
     return (
-        <Row>
-            <Row >
-                <Col lg={18} md={18} sm={18} xs={24}>
-                    <Title level={2}>Video</Title>
-                </Col>
-                <Col lg={6} md={6} sm={6} xs={24}>
-                    <Button type="primary" onClick={() => setModalVisibility(!modalVisibility)} icon={<PlusOutlined />} size='middle'>
-                        {` ${intl.formatMessage({ id: 'addvideo' })}`}
-                    </Button>
-                </Col>
-                {renderModal()}
-            </Row>
+        <ModalVideoFormProvider.Provider value={{
+            setVideoToDisplay,
+            setModalDisplayVisibility,
+            modalDisplayVisibility
+        }}>
             <Row>
-                <Col lg={24} md={24} sm={24} xs={24}>
-                    <Table columns={columns} dataSource={null} scroll={{ x: 1300 }} />
-                </Col>
+                <Row gutter={[48, 8]}>
+                    <Col>
+                        <Title level={2}>
+                            <FormattedMessage id="video" />
+                        </Title>
+                    </Col>
+                    <Col>
+                        <Button
+                            type="primary"
+                            onClick={() => setModalVisibility(!modalVisibility)}
+                            icon={<PlusOutlined />}
+                            size="middle"
+                        >
+                            {` ${intl.formatMessage({ id: 'addimage' })}`}
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Radio.Group defaultValue={displayType} buttonStyle="solid">
+                            <Radio.Button value="table" onClick={e => handleChangeDisplay(e)} ><TableOutlined /></Radio.Button>
+                            <Radio.Button value="gallery" onClick={e => handleChangeDisplay(e)}><AppstoreOutlined /></Radio.Button>
+                        </Radio.Group>
+                    </Col>
+                    {renderModal()}
+                </Row>
+                {renderDisplay()}
+                <ModalDisplay
+                    videoToDisplay={videoToDisplay}
+                    setModalDisplayVisibility={setModalDisplayVisibility}
+                    modalDisplayVisibility={modalDisplayVisibility}
+                />
             </Row>
-        </Row>
+        </ModalVideoFormProvider.Provider>
     )
 }
 

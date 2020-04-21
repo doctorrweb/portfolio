@@ -27,20 +27,15 @@ const DashboardImage = () => {
 
     const responseStatus = useSelector(state => state.response.status)
     const images = useSelector(state => state.images.images)
+    
     const [displayType, setDisplayType] = useState('table')
-
     const [modalDisplayVisibility, setModalDisplayVisibility] = useState(false)
     const [imageToDisplay, setImageToDisplay] = useState('')
 
     const [modalVisibility, setModalVisibility] = useState(false)
 
     useEffect(() => {
-        console.log('modalVisibility', modalVisibility)
-    })
-
-    useEffect(() => {
         dispatch(readAllImages())
-        
     }, [])
 
 

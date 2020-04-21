@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Dropdown, Button, Menu, Modal, Tag } from 'antd'
+import { Dropdown, Button, Menu, Modal, Typography, Tag } from 'antd'
 import { DownOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import { useDispatch } from 'react-redux'
 import moment from 'moment'
@@ -8,6 +8,7 @@ import { deleteImage } from '../../action/image'
 import { ModalImageFormProvider } from '../../helper/modalFormProvider'
 
 const { confirm } = Modal
+const { Paragraph } = Typography
 
 
 const renderAction = (text, record) => {
@@ -59,6 +60,23 @@ const renderAction = (text, record) => {
     )
 }
 
+const renderStatus = (text) => {
+    switch (text) {
+    case 'trash':
+        return (
+            <Tag color="red">{text}</Tag>
+        )
+    case 'active':
+        return (
+            <Tag color="green">{text}</Tag>
+        )
+    default:
+        return (
+            <Tag color="orange">{text}</Tag>
+        )
+    }
+}
+
 const columns = [
     {
         title: <FormattedMessage id='name' />,
@@ -71,7 +89,12 @@ const columns = [
         title: <FormattedMessage id='path' />,
         width: 200,
         dataIndex: 'path',
-        key: 'path'
+        key: 'path',
+        render(text, record) {
+            return (
+                <Paragraph copyable>{record.path}</Paragraph>
+            )
+        }
     },
     {
         title: 'Preview',
@@ -102,8 +125,10 @@ const columns = [
         filters: [
             { text: 'inactive', value: 'inactive' },
             { text: 'active', value: 'active' },
-            { text: 'pending', value: 'pending' }
+            { text: 'trash', value: 'trash' }
         ],
+        onFilter: (value, record) => record.status.includes(value),
+        render: (text) => renderStatus(text)
     },
     {
         title: <FormattedMessage id='action' />,
