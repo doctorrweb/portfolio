@@ -10,11 +10,12 @@ import {
 } from 'antd'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
-import { UploadOutlined } from '@ant-design/icons'
 import { resetResponse, resetError, resetRequestType } from '../../action'
 import CKEditor from 'ckeditor4-react'
 import { useValuesToSend } from '../../helper/utils'
 import { updateTutorial } from '../../action/tutorial'
+import { readAllImages } from '../../action/image'
+import { readAllVideos } from '../../action/video'
 
 const { Option } = Select
 
@@ -54,6 +55,8 @@ const FormationFormUpdate = ({ itemToUpdate, initialValues }) => {
     const responseStatus = useSelector(state => state.response.status)
     const tutorials = useSelector(state => state.tutorials.tutorials)
     const requestType = useSelector(state => state.requestType.status)
+    const images = useSelector(state => state.images.images)
+    const videos = useSelector(state => state.videos.videos)
 
     useEffect(() => {
         if (itemToUpdate === '') {
@@ -70,6 +73,8 @@ const FormationFormUpdate = ({ itemToUpdate, initialValues }) => {
 
     // To disable submit button at the beginning.
     useEffect(() => {
+        dispatch(readAllImages())
+        dispatch(readAllVideos())
         forceUpdate({})
     }, [])
 
@@ -204,24 +209,42 @@ const FormationFormUpdate = ({ itemToUpdate, initialValues }) => {
 
             <Form.Item
                 name="image"
-                label={
-                    <span><FormattedMessage id='image' /></span>
-                }
+                label={<FormattedMessage id="image" />}
             >
-                <Button>
-                    <UploadOutlined /> <FormattedMessage id='click-upload' />
-                </Button>
+                <Select
+                    allowClear
+                    showSearch
+                // onChange={(value, option) => onChangeRelationItem(value, option)}
+                >
+                    {images.map(
+                        img => (
+                            <Option key={img._id} value={img.path} >
+                                <img src={img.path} width={30} /> {` ${img.name}`}
+                            </Option>
+                        )
+                    )}
+                </Select>
             </Form.Item>
+
 
             <Form.Item
                 name="videos"
-                label={
-                    <span><FormattedMessage id='video' /></span>
-                }
+                label={<FormattedMessage id="video" />}
             >
-                <Button>
-                    <UploadOutlined /> <FormattedMessage id='click-upload' />
-                </Button>
+                <Select
+                    allowClear
+                    showSearch
+                    mode="multiple"
+                // onChange={(value, option) => onChangeRelationItem(value, option)}
+                >
+                    {videos.map(
+                        vid => (
+                            <Option key={vid._id} value={vid.path} >
+                                {vid.name}
+                            </Option>
+                        )
+                    )}
+                </Select>
             </Form.Item>
 
             <Form.Item shouldUpdate={true} {...tailFormItemLayout}>

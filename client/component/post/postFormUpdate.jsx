@@ -11,11 +11,11 @@ import {
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import CKEditor from 'ckeditor4-react'
-import { UploadOutlined } from '@ant-design/icons'
 import { resetResponse, resetError, resetRequestType } from '../../action'
 import { updatePost } from '../../action/post'
 import { readAllTutorials } from '../../action/tutorial'
 import { readAllProjects } from '../../action/project'
+import { readAllImages } from '../../action/image'
 
 const { Option } = Select
 
@@ -52,8 +52,6 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
 
     const [content, setContent] = useState('')
     const [relation, setRelation] = useState('')
-    const [relationItem, setRelationItem] = useState('')
-    const [relationItems, setRelationItems] = useState([])
 
     const errorStatus = useSelector(state => state.error.status)
     const responseStatus = useSelector(state => state.response.status)
@@ -62,6 +60,7 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
     const posts = useSelector(state => state.posts.posts)
     const tutorials = useSelector(state => state.tutorials.tutorials)
     const projects = useSelector(state => state.projects.projects)
+    const images = useSelector(state => state.images.images)
 
 
     useEffect(() => {
@@ -79,15 +78,12 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
         }
     })
 
-    useEffect(() => {
-        handleRelationItemsChange()
-    }, [relation])
-
 
     // To disable submit button at the beginning.
     useEffect(() => {
         dispatch(readAllTutorials())
         dispatch(readAllProjects())
+        dispatch(readAllImages())
         forceUpdate()
     }, [])
 
@@ -122,9 +118,7 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
         dispatch(updatePost(itemToUpdate, {
             ...values, 
             lang: lang, 
-            content: content,
-            project: relation === 'project' ? relationItem : null,
-            formation: relation === 'tutorial' ? relationItem : null 
+            content: content
         }))
         setContent('')
         form.resetFields()
@@ -140,27 +134,14 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
 
     const handleRelationChange = (e) => {
         setRelation(e.target.value)
-        form.resetFields(['relationItem'])
+        if (relation === 'project') {
+            form.resetFields(['project'])
+        }
+        if (relation === 'tutorial') {
+            form.resetFields(['tutorial'])
+        }
     }
 
-    const handleRelationItemsChange = () => {
-        let items = []       
-        if (relation === 'tutorial') {
-            tutorials.map(
-                tuto => items.push(
-                    <Option key={tuto._id} value={tuto.title} >{tuto.title}</Option>
-                )
-            )
-        }   
-        if (relation === 'project') {
-            projects.map(
-                project => items.push(
-                    <Option key={project._id} value={project.title} >{project.title}</Option>
-                )
-            )
-        }   
-        setRelationItems([items]) 
-    }
 
     const findoutRelatedItem = (item) => {
         let result = {}
@@ -173,10 +154,6 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
             Object.assign(result, newItem)
         }
         return result.title
-    }
-
-    const onChangeRelationItem = (value, option) => {
-        setRelationItem(option.key)
     }
 
     return (
@@ -230,7 +207,6 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
                         whitespace: true
                     }
                 ]}
-                
             >
                 <Radio.Group
                     //defaultValue="blog"
@@ -247,15 +223,49 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
                 </Radio.Group>
             </Form.Item>
 
-            <Form.Item label="Related item" name="relationItem">
-                <Select
-                    allowClear
-                    showSearch
-                    disabled={relation === 'blog' ? true : false}
-                    onChange={(value, option) => onChangeRelationItem(value, option)}
-                >
-                    {[...relationItems]}
-                </Select>
+            <Form.Item
+                noStyle
+                shouldUpdate={(prevValues, currentValues) => prevValues.relation !== currentValues.relation}
+            >
+                {({ getFieldValue }) =>
+                    getFieldValue('relation') === 'tutorial' ? (
+                        <Form.Item label="Tutorial" name="formation">
+                            <Select
+                                allowClear
+                                showSearch
+                            // onChange={(value, option) => onChangeRelationItem(value, option)}
+                            >
+                                {tutorials.map(
+                                    tuto => (
+                                        <Option key={tuto._id} value={tuto._id} >{tuto.title}</Option>
+                                    )
+                                )}
+                            </Select>
+                        </Form.Item>
+                    ) : null
+                }
+            </Form.Item>
+            <Form.Item
+                noStyle
+                shouldUpdate={(prevValues, currentValues) => prevValues.project !== currentValues.project}
+            >
+                {({ getFieldValue }) =>
+                    getFieldValue('relation') === 'project' ? (
+                        <Form.Item label="Project" name="project">
+                            <Select
+                                allowClear
+                                showSearch
+                            // onChange={(value, option) => onChangeRelationItem(value, option)}
+                            >
+                                {projects.map(
+                                    project => (
+                                        <Option key={project._id} value={project._id} >{project.title}</Option>
+                                    )
+                                )}
+                            </Select>
+                        </Form.Item>
+                    ) : null
+                }
             </Form.Item>
 
             <Form.Item
@@ -297,15 +307,21 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
 
             <Form.Item
                 name="image"
-                label={
-                    <span>
-                        <FormattedMessage id="image" />
-                    </span>
-                }
+                label={<FormattedMessage id="image" />}
             >
-                <Button>
-                    <UploadOutlined /> <FormattedMessage id="click-upload" />
-                </Button>
+                <Select
+                    allowClear
+                    showSearch
+                // onChange={(value, option) => onChangeRelationItem(value, option)}
+                >
+                    {images.map(
+                        img => (
+                            <Option key={img._id} value={img._id} >
+                                <img src={img.path} width={30} /> {` ${img.name}`}
+                            </Option>
+                        )
+                    )}
+                </Select>
             </Form.Item>
 
             <Form.Item shouldUpdate={true} {...tailFormItemLayout}>

@@ -211,7 +211,8 @@ const PostForm = () => {
                         </Form.Item>
                     ) : null
                 }
-            </Form.Item>            
+            </Form.Item>     
+                   
             <Form.Item
                 noStyle
                 shouldUpdate={(prevValues, currentValues) => prevValues.project !== currentValues.project}

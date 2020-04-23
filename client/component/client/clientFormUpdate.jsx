@@ -9,10 +9,10 @@ import {
 } from 'antd'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
-import { UploadOutlined } from '@ant-design/icons'
 import { resetResponse, resetError } from '../../action'
 import { useValuesToSend } from '../../helper/utils'
 import { updateClient } from '../../action/client'
+import { readAllImages } from '../../action/image'
 
 const { Option } = Select
 const { TextArea } = Input
@@ -49,8 +49,8 @@ const ClientFormUpdate = ({ itemToUpdate }) => {
 
     const errorStatus = useSelector(state => state.error.status)
     const responseStatus = useSelector(state => state.response.status)
-    const lang = useSelector(state => state.locale.lang)
     const clients = useSelector(state => state.clients.clients)
+    const images = useSelector(state => state.images.images)
 
     useEffect(() => {
         if (itemToUpdate === '') {
@@ -64,6 +64,7 @@ const ClientFormUpdate = ({ itemToUpdate }) => {
 
     // To disable submit button at the beginning.
     useEffect(() => {
+        dispatch(readAllImages())
         forceUpdate({})
     }, [])
 
@@ -88,9 +89,7 @@ const ClientFormUpdate = ({ itemToUpdate }) => {
 
     const onFinish = values => {
         const valuesToSend = useValuesToSend(values)
-        console.log('valuesToSend', valuesToSend)
         dispatch(updateClient({
-            description: { [lang]: valuesToSend.description },
             ...valuesToSend
         }))
         form.resetFields()
@@ -160,14 +159,21 @@ const ClientFormUpdate = ({ itemToUpdate }) => {
 
             <Form.Item
                 name="image"
-                label={
-                    <span><FormattedMessage id='image' /></span>
-                }
+                label={<FormattedMessage id="image" />}
             >
-                <Button>
-                    <UploadOutlined /> <FormattedMessage id='click-upload' />
-                </Button>
-
+                <Select
+                    allowClear
+                    showSearch
+                // onChange={(value, option) => onChangeRelationItem(value, option)}
+                >
+                    {images.map(
+                        img => (
+                            <Option key={img._id} value={img._id} >
+                                <img src={img.path} width={30} /> {` ${img.name}`}
+                            </Option>
+                        )
+                    )}
+                </Select>
             </Form.Item>
 
             <Form.Item shouldUpdate={true} {...tailFormItemLayout}>

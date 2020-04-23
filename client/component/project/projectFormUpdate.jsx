@@ -13,10 +13,10 @@ import {
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
-import { UploadOutlined } from '@ant-design/icons'
 import { resetResponse, resetError, resetRequestType } from '../../action'
 import { updateProject } from '../../action/project'
 import { readAllClients } from '../../action/client'
+import { readAllImages } from '../../action/image'
 
 const { Option } = Select
 
@@ -59,6 +59,7 @@ const ProjectFormUpdate = ({ itemToUpdate }) => {
     const requestType = useSelector(state => state.requestType.status)
     const projects = useSelector(state => state.projects.projects)
     const clients = useSelector(state => state.clients.clients)
+    const images = useSelector(state => state.images.images)
 
 
 
@@ -82,6 +83,7 @@ const ProjectFormUpdate = ({ itemToUpdate }) => {
     // To disable submit button at the beginning.
     useEffect(() => {
         dispatch(readAllClients())
+        dispatch(readAllImages())
         forceUpdate({})
     }, [])
 
@@ -132,7 +134,7 @@ const ProjectFormUpdate = ({ itemToUpdate }) => {
             updateProject(itemToUpdate, {
                 ...values,
                 startDate: startDate.toDate(),
-                endDate: endDate.toDate() 
+                endDate: endDate === null ? null : endDate.toDate() 
             })
         )
         form.resetFields()
@@ -240,7 +242,7 @@ const ProjectFormUpdate = ({ itemToUpdate }) => {
             <Form.Item label="Period" style={{ marginBottom: 0 }}>
                 <Form.Item
                     // label="Start Date"
-                    name="startdate"
+                    name="startDate"
                     style={{ display: 'inline-block', width: 'calc(30% - 12px)' }}
                     rules={[
                         {
@@ -261,7 +263,7 @@ const ProjectFormUpdate = ({ itemToUpdate }) => {
                 </span>
                 <Form.Item
                     // label="End Date"
-                    name="enddate"
+                    name="endDate"
                     style={{ display: 'inline-block', width: 'calc(30% - 12px)' }}
                 >
                     <DatePicker
@@ -300,12 +302,11 @@ const ProjectFormUpdate = ({ itemToUpdate }) => {
                     buttonStyle="solid"
                     //onChange={e => setRelation(e.target.value)}
                 >
-                    <Radio.Button value="pending">Pending</Radio.Button>
-                    <Radio.Button value="rejected">
-                        Rejected
-                    </Radio.Button>
                     <Radio.Button value="waiting">
                         Waiting
+                    </Radio.Button>
+                    <Radio.Button value="rejected">
+                        Rejected
                     </Radio.Button>
                     <Radio.Button value="inprogress">
                         In Progress
@@ -318,15 +319,21 @@ const ProjectFormUpdate = ({ itemToUpdate }) => {
 
             <Form.Item
                 name="image"
-                label={
-                    <span>
-                        <FormattedMessage id="image" />
-                    </span>
-                }
+                label={<FormattedMessage id="image" />}
             >
-                <Button>
-                    <UploadOutlined /> <FormattedMessage id="click-upload" />
-                </Button>
+                <Select
+                    allowClear
+                    showSearch
+                // onChange={(value, option) => onChangeRelationItem(value, option)}
+                >
+                    {images.map(
+                        img => (
+                            <Option key={img._id} value={img._id} >
+                                <img src={img.path} width={30} /> {` ${img.name}`}
+                            </Option>
+                        )
+                    )}
+                </Select>
             </Form.Item>
 
             <Form.Item shouldUpdate={true} {...tailFormItemLayout}>
