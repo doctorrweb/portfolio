@@ -11,7 +11,6 @@ import {
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment'
-import { UploadOutlined } from '@ant-design/icons'
 import { resetResponse, resetError, resetRequestType } from '../../action'
 import { createProject } from '../../action/project'
 import { readAllClients } from '../../action/client'
@@ -115,16 +114,16 @@ const ProjectForm = () => {
         
     } 
 
-    const onFinish = ({ title, client, category, Link }) => {
+    const onFinish = (values) => {
 
+        // const { title, client, category, Link, image } = values
+        console.log('values', values)
+        
         dispatch(
             createProject({
-                title,
-                client,
-                category,
-                Link,
+                ...values,
                 startDate: startDate.toDate(),
-                endDate: endDate.toDate() 
+                endDate: endDate === null ? null : endDate.toDate() 
             })
         )
         form.resetFields()
@@ -234,7 +233,7 @@ const ProjectForm = () => {
             <Form.Item label="Period" style={{ marginBottom: 0 }}>
                 <Form.Item
                     // label="Start Date"
-                    name="startdate"
+                    name="startDate"
                     width={200}
                     style={{ display: 'inline-block', width: 'calc(30% - 12px)' }}
                     rules={[
@@ -256,7 +255,7 @@ const ProjectForm = () => {
                 </span>
                 <Form.Item
                     // label="End Date"
-                    name="enddate"
+                    name="endDate"
                     style={{ display: 'inline-block', width: 'calc(30% - 12px)' }}
                 >
                     <DatePicker 
@@ -298,7 +297,7 @@ const ProjectForm = () => {
                 >
                     {images.map(
                         img => (
-                            <Option key={img._id} value={img.path} >
+                            <Option key={img._id} value={img._id} >
                                 <img src={img.path} width={30} /> {` ${img.name}`}
                             </Option>
                         )

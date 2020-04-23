@@ -28,6 +28,7 @@ const DashboardTutorial = () => {
     const [itemToUpdate, setItemToUpdate] = useState('')
     const [initialValues, setInitialValues] = useState({})
 
+
     useEffect(() => {
         dispatch(readAllTutorials())
     }, [])
@@ -47,6 +48,16 @@ const DashboardTutorial = () => {
         requestNotification()
     }, [errorStatus, responseStatus, requestType])
 
+    useEffect(() => {
+        if (requestType === 'create-tutorial') {
+            setModalVisibilityCreate(false)
+            //dispatch(readAllPosts())
+        }
+        if (requestType === 'update-tutorial') {
+            setModalVisibilityUpdate(false)
+        }
+    }, [requestType])
+
     const requestNotification = () => {
         if (errorStatus !== null && requestType === 'delete-tutorial') {
             notification['error']({
@@ -63,8 +74,10 @@ const DashboardTutorial = () => {
             })
             dispatch(resetResponse())
             dispatch(resetRequestType())
+            
         }
     }
+
 
     const title = <Title level={4}>{` ${intl.formatMessage({ id: 'tutorial' })} Form`}</Title>
     const componentCreate = <FormationForm />

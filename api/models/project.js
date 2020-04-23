@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
-const Post = require('../models/post')
+const Post = require('./post')
 
 const ProjectSchema = new Schema({
     title: {
@@ -47,7 +47,7 @@ const ProjectSchema = new Schema({
             'rejected'
         ],
         required: true,
-        default: 'pending'
+        default: 'waiting'
     },
     link: {
         type: String
@@ -63,11 +63,10 @@ const ProjectSchema = new Schema({
             type: String
         }
     ],
-    image: [
-        {
-            type: String
-        }
-    ],
+    image: {
+        type: Schema.Types.ObjectId,
+        ref: 'image'
+    }
 })
 
 ProjectSchema.pre('findOneAndDelete', next => {

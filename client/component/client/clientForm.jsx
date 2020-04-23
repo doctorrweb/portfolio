@@ -192,7 +192,7 @@ const ClientForm = () => {
                     >
                         {images.map(
                             img => (
-                                <Option key={img._id} value={img.path} >
+                                <Option key={img._id} value={img._id} >
                                     <img src={img.path} width={30} /> {` ${img.name}`}
                                 </Option>
                             )
@@ -200,7 +200,6 @@ const ClientForm = () => {
                     </Select>
                 </Form.Item>
             
-
                 <Form.Item shouldUpdate={true} {...tailFormItemLayout}>
                     {() => (
                         <Button

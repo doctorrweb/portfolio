@@ -5,18 +5,24 @@ const Comment = require('../models/comment')
 
 const projectController = {
     create: async (req, res) => {
+        console.log('projectController req.body', req.body)
         try {
             const project = new Project(req.body)
             await project.save()
-
+            
+            console.log('projectController project created')
+            
             // Link the post to the related client
             const client = await Client.findById(project.client)
             await client.projects.push(project._id)
             await client.save()
-
+            
+            console.log('projectController project client added')
+            
             res.status(201).json(project)
         } catch (error) {
             res.status(400).json({ message: 'Bad Request' })
+            console.log('projectController project error', error)
         }
     },
     readAll: async (req, res) => {

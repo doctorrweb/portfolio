@@ -69,29 +69,17 @@ const ImageForm = () => {
         }
     }
 
-    /*
 
     const onFinish = values => {
-        console.log('values: ', values.images.file)
-        let imageFormData = new FormData()
-        const image = values.images.file
-        imageFormData.append('images', image.originFileObj)
-        dispatch(addImage(imageFormData))
-        console.log('Received values of form: ', imageFormData)
-    }
-    */
-
-    const onFinish = values => {
-        console.log('values: ', values.images)
-        console.log('CustomFileList: ', CustomFileList)
+        console.log('onFinish values: ', values.images)
+        console.log('onFinish CustomFileList: ', CustomFileList)
         let imageFormData = new FormData()
         const images = values.images.fileList
         images.map(image => {
             imageFormData.append('images', image.originFileObj)
         })
         dispatch(addImage(imageFormData))
-        console.log('Received values of form: ', imageFormData)
-        form.resetFields()
+        setCustomFileList([])
     }
 
     const onFinishFailed = errorInfo => {
@@ -103,15 +91,14 @@ const ImageForm = () => {
     }
 
     const beforeUpload = (file, fileList) => {
-        console.log('file', file)
-        console.log('fileList', fileList)
+        console.log('beforeUpload file', file)
+        console.log('beforeUpload fileList', fileList)
         setCustomFileList([...CustomFileList, ...fileList])
         return false
     }
 
     const onRemove = file => {
-        const newCustomFileList = CustomFileList.filter(item => item !== file )
-        setCustomFileList(newCustomFileList)
+        setCustomFileList(CustomFileList.filter(item => item !== file))
     } 
 
     const onChange = (info) => {
@@ -148,6 +135,7 @@ const ImageForm = () => {
                     accept='.jpg, .jpeg, .png, .gif'
                     onChange={e => onChange(e)}
                     beforeUpload={(file, fileList) => beforeUpload(file, fileList)}
+                    // beforeUpload={() => false}
                     showUploadList
                 >
                     <p className="ant-upload-drag-icon">

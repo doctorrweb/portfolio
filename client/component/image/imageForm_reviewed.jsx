@@ -37,10 +37,14 @@ const tailFormItemLayout = {
 }
 
 const ImageForm = () => {
-    const [form] = Form.useForm()
-    const [uploading, setUploading] = useState(false)
+
     const intl = useIntl()
     const dispatch = useDispatch()
+
+    const [form] = Form.useForm()
+    const [uploading, setUploading] = useState(false)
+    const [CustomFileList, setCustomFileList] = useState([])
+    
 
     const errorStatus = useSelector(state => state.error.status)
     const responseStatus = useSelector(state => state.response.status)
@@ -88,6 +92,13 @@ const ImageForm = () => {
         form.resetFields()
     }
 
+    const beforeUpload = (file, fileList) => {
+        console.log('file', file)
+        console.log('fileList', fileList)
+        setCustomFileList([...CustomFileList, ...fileList])
+        return false
+    }
+
     const onChange = (info) => {
         console.log('info', info)
         //setCustomFileList([...CustomFileList, ...info.fileList])
@@ -116,10 +127,13 @@ const ImageForm = () => {
                 label={<FormattedMessage id='image' />}
             >
                 <Dragger
+                    fileList={CustomFileList}
                     multiple
                     accept='.jpg, .jpeg, .png, .gif'
                     showUploadList
                     onChange={e => onChange(e)}
+                    beforeUpload={(file, fileList) => beforeUpload(file, fileList)}
+                    listType='picture-card'
                 >
                     <p className="ant-upload-drag-icon">
                         <InboxOutlined />
