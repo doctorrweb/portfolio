@@ -69,9 +69,6 @@ const ProjectSchema = new Schema({
     }
 })
 
-ProjectSchema.pre('findOneAndDelete', next => {
-    Post.deleteMany({ project: this._id }, err => err ? err : next())
-})
 
 const Project = mongoose.model('project', ProjectSchema)
 

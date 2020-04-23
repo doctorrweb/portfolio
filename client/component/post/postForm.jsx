@@ -97,7 +97,7 @@ const PostForm = () => {
     }
 
     const onFinish = (values) => {
-        dispatch(resetResponse())
+        // dispatch(resetResponse())
         dispatch(createPost({ 
             ...values, 
             lang: lang, 
@@ -196,7 +196,7 @@ const PostForm = () => {
             >
                 {({ getFieldValue }) =>
                     getFieldValue('relation') === 'tutorial' ? (
-                        <Form.Item label="Tutorial" name="tutorial">
+                        <Form.Item label="Tutorial" name="formation">
                             <Select
                                 allowClear
                                 showSearch
@@ -204,7 +204,7 @@ const PostForm = () => {
                             >
                                 {tutorials.map(
                                     tuto => (
-                                        <Option key={tuto._id} value={tuto.title} >{tuto.title}</Option>
+                                        <Option key={tuto._id} value={tuto._id} >{tuto.title}</Option>
                                     )
                                 )}
                             </Select>
@@ -226,7 +226,7 @@ const PostForm = () => {
                             >
                                 {projects.map(
                                     project => (
-                                        <Option key={project._id} value={project.title} >{project.title}</Option>
+                                        <Option key={project._id} value={project._id} >{project.title}</Option>
                                     )
                                 )}
                             </Select>
@@ -267,7 +267,7 @@ const PostForm = () => {
                 >
                     {images.map(
                         img => (
-                            <Option key={img._id} value={img.path} >
+                            <Option key={img._id} value={img._id} >
                                 <img src={img.path} width={30} /> {` ${img.name}`}
                             </Option>
                         )

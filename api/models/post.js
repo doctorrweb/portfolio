@@ -69,12 +69,10 @@ const PostSchema = new Schema({
             ref: 'comment'
         }
     ],
-    images: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'image'
-        }
-    ],
+    image: {
+        type: Schema.Types.ObjectId,
+        ref: 'image'
+    },
     videos: [
         {
             type: Schema.Types.ObjectId,

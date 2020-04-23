@@ -6,8 +6,11 @@ const Formation = require('../models/formation')
 const postController = {
     create: async (req, res) => {
         try {
+            console.log('postController req.body', req.body)
             const post = new Post(req.body)
             await post.save()
+
+            console.log('postController post created')
 
             //Link the post to the related project
             if (post.project) {
@@ -16,15 +19,22 @@ const postController = {
                 await project.save()
             }
 
+            console.log('postController project post added')
+
             //Link the post to the related formation
             if (post.formation) {
                 const formation = await Formation.findById(post.formation)
                 await formation.posts.push(post._id)
                 await formation.save()
             }
+
+            console.log('postController formation post added')
+
             res.status(201).json(post)
         } catch (error) {
             res.status(400).json({ message: 'Bad Request' })
+            
+            console.log('postController post error', error)
         }
     },
     readAll: async (req, res) => {
@@ -148,43 +158,6 @@ const postController = {
                 }
 
             }
-
-            /**
-             if (req.body.project !== undefined && (req.body.project !== post.project)) {
-                const oldProject = await Project.findById(post.project)
-                const projectPosts = await oldProject.posts.filter(post => post != id)
-
-                //Delete the post in the old project
-                oldProject.posts = projectPosts
-                await oldProject.save()
-                Object.assign(response, {oldPost: true})
-
-                //Add the post in the new project
-                const newPost = await Post.findById(id) //redo this query to get the updated post
-                const newProject = await Project.findById(newPost.project)
-                await newProject.posts.push(newPost._id)
-                await newProject.save()
-                Object.assign(response, { newPost: true })
-            }
-
-            // Handle the formation update //
-            if (req.body.formation !== undefined && (req.body.formation !== post.formation)) {
-                const oldFormation = await Formation.findById(post.formation)
-                const formationPosts = await oldFormation.posts.filter(formation => formation != id)
-
-                //Delete the post in the old project
-                oldFormation.posts = formationPosts
-                await oldFormation.save()
-                Object.assign(response, { oldPost: true })
-
-                //Add the post in the new project
-                const newPost = await Post.findById(id) //redo this query to get the updated post
-                const newFormation = await Formation.findById(newPost.formation)
-                await newFormation.posts.push(newPost._id)
-                await newFormation.save()
-                Object.assign(response, { newPost: true })
-            }
-             */
 
             res.status(200).json(response)
 
