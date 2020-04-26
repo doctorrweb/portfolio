@@ -13,12 +13,10 @@ import Contact from './contact'
 import Dashboard from './dashboard'
 import CustomFooter from './customFooter'
 import MainMenu from '../component/mainMenu'
-import IntroMessage from '../component/introMessage'
-//import Home from './home'
+import Home from './home'
 import messages from '../translation/'
 
 const { Header } = Layout
-//const bgImgUri = 'img/background-code.png'
 
 const App = () => {
     
@@ -49,7 +47,7 @@ const App = () => {
                 <Router history={history}>
                     <Switch>
                         <Route exact path="/">
-                            <IntroMessage />
+                            <Home />
                         </Route>
                         <Route path="/about">
                             <About />

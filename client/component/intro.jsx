@@ -24,23 +24,19 @@ const message = `<pre class='typewriter'>
 
 const Intro = () => {
     return (
-        <Row
-            className="content"
-            justify="center"
+        <Row 
+            className='content' 
+            justify='center' 
             style={{
                 minHeight: '100%',
                 backgroundImage: `url(${bgImgUri})`,
-                overflow: 'hidden',
-            }}
-        >
+                overflow: 'hidden'
+            }}>
             <Col
-                // className='subcontent'
-                lg={24}
-                md={24}
-                sm={24}
-                xs={24}
+                // className='subcontent' 
+                lg={24} md={24} sm={24} xs={24}
                 style={{
-                    marginTop: '12em',
+                    marginTop: '12em'
                 }}
             >
                 <Typewriter
@@ -49,10 +45,11 @@ const Intro = () => {
                         autoStart: true,
                         loop: true,
                         delay: 35,
-                        deleteSpeed: 40,
+                        deleteSpeed: 40
                     }}
                 />
             </Col>
+            
         </Row>
     )
 }

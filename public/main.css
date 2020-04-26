@@ -1,3 +1,11 @@
+blockquote {
+  border-left: #FF9900 solid 7px;
+  color: #FF9900;
+  padding: 10px;
+  font-size: 1.2em;
+  font-style: italic;
+}
+
 .ant-layout {
   background: none;
 }
@@ -19,15 +27,12 @@
 /* Add some content at the bottom of the video/page */
 .content {
   position: absolute;
-  top: 0;
+  /* top: 0; */
   color:#f1f1f1;
   background-color: rgba(0, 0, 0, 0.3);
   width: 100%;
   height: 100%;
   padding: 0;
-}
-.subcontent {
-  margin-top: 16em;
 }
 .const-highlight{
 	color: #4444FF;
@@ -49,6 +54,8 @@
 	animation: blink 500ms linear infinite alternate;
 }
 
+
+
 @-webkit-keyframes blink{
 	0%{opacity: 0;}
 	100%{opacity: 1;}
@@ -62,4 +69,20 @@
 @keyframes blink{
 	0%{opacity: 0;}
 	100%{opacity: 1;}
+}
+
+@media screen and (max-width: 768px) {
+  .content {
+  position: absolute;
+  /* top: 0; */
+  color:#f1f1f1;
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  height: 100%;
+}
+
+  pre.typewriter {
+	font-size: 1.3em;
+  /* right: 200; */
+  }
 }
