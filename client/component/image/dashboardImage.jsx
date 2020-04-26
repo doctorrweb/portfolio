@@ -5,6 +5,7 @@ import {
     Button, 
     Radio,
     Typography,
+    notification
 } from 'antd'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useSelector, useDispatch } from 'react-redux'
@@ -15,6 +16,7 @@ import ImageForm from './imageForm'
 import ImageGallery from './imageGallery'
 import ImageTable from './imageTable'
 import ModalDisplay from './modalDisplay'
+import { resetRequestType, resetError, resetResponse } from '../../action'
 import { ModalImageFormProvider } from '../../helper/modalFormProvider'
 
 const { Title } = Typography
@@ -27,6 +29,8 @@ const DashboardImage = () => {
 
     const responseStatus = useSelector(state => state.response.status)
     const images = useSelector(state => state.images.images)
+    const requestType = useSelector((state) => state.requestType.status)
+    const errorStatus = useSelector((state) => state.error.status)
     
     const [displayType, setDisplayType] = useState('table')
     const [modalDisplayVisibility, setModalDisplayVisibility] = useState(false)
@@ -44,10 +48,41 @@ const DashboardImage = () => {
     }, [modalVisibility])
 
     useEffect(() => {
+        requestNotification()
+    }, [errorStatus, responseStatus, requestType])
+
+    useEffect(() => {
         if (responseStatus >= 200) {
             setModalVisibility(false)
         }
     }, [responseStatus])
+
+    useEffect(() => {
+        if (requestType === 'add-image') {
+            setModalVisibility(false)
+            //dispatch(readAllPosts())
+        }
+    }, [requestType])
+
+    const requestNotification = () => {
+        if (errorStatus !== null && requestType === 'delete-image') {
+            notification['error']({
+                message: 'An error occured',
+                description: 'We couldn\'t delete this image'
+            })
+            dispatch(resetError())
+            dispatch(resetRequestType())
+        }
+        if (responseStatus >= 200 && requestType === 'delete-image') {
+            notification['success']({
+                message: 'Image deleted Successfully',
+                description: 'Click on \'details\' to see the updated image'
+            })
+            dispatch(resetResponse())
+            dispatch(resetRequestType())
+
+        }
+    }
 
     const title = <Title level={4}>Image Form</Title>
     const component = <ImageForm />
@@ -58,12 +93,14 @@ const DashboardImage = () => {
 
     const renderDisplay = () => {
         if (displayType === 'gallery') {
-            return <ImageGallery 
-                images={images} 
-                setImageToDisplay={setImageToDisplay} 
-                setModalDisplayVisibility={setModalDisplayVisibility}
-                modalDisplayVisibility={modalDisplayVisibility}
-            />
+            return (
+                <ImageGallery
+                    images={images}
+                    setImageToDisplay={setImageToDisplay}
+                    setModalDisplayVisibility={setModalDisplayVisibility}
+                    modalDisplayVisibility={modalDisplayVisibility}
+                />
+            )
         } 
 
         if (displayType === 'table') {

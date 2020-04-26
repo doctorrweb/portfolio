@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Dropdown, Button, Menu, Modal, Typography, Tag } from 'antd'
+import { Dropdown, Button, Menu, Modal, Typography } from 'antd'
 import { DownOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import { useDispatch } from 'react-redux'
 import moment from 'moment'
@@ -9,7 +9,6 @@ import { ModalImageFormProvider } from '../../helper/modalFormProvider'
 
 const { confirm } = Modal
 const { Paragraph } = Typography
-
 
 const renderAction = (text, record) => {
     const intl = useIntl()
@@ -60,23 +59,6 @@ const renderAction = (text, record) => {
     )
 }
 
-const renderStatus = (text) => {
-    switch (text) {
-    case 'trash':
-        return (
-            <Tag color="red">{text}</Tag>
-        )
-    case 'active':
-        return (
-            <Tag color="green">{text}</Tag>
-        )
-    default:
-        return (
-            <Tag color="orange">{text}</Tag>
-        )
-    }
-}
-
 const columns = [
     {
         title: <FormattedMessage id='name' />,
@@ -92,14 +74,14 @@ const columns = [
         key: 'path',
         render(text, record) {
             return (
-                <Paragraph copyable>{record.path}</Paragraph>
+                <Paragraph copyable>{`${window.location.host}${record.path}`}</Paragraph>
             )
         }
     },
     {
         title: 'Preview',
         width: 35,
-        dataIndex: 'path',
+        dataIndex: 'preview',
         key: 'preview',
         render(text, record) {
             return (
@@ -109,7 +91,7 @@ const columns = [
     },
     {
         title: <FormattedMessage id='creationdate' />,
-        width: 100,
+        width: 60,
         dataIndex: 'creationDate',
         key: 'creationDate',
         sorter: (a, b) => new Date(a.creationDate) - new Date(b.creationDate),
@@ -118,27 +100,12 @@ const columns = [
         render: (text, record) => moment(record.creationDate).format('LLL')
     },
     {
-        title: <FormattedMessage id='status' />,
-        width: 50,
-        dataIndex: 'status',
-        key: 'status',
-        filters: [
-            { text: 'inactive', value: 'inactive' },
-            { text: 'active', value: 'active' },
-            { text: 'trash', value: 'trash' }
-        ],
-        onFilter: (value, record) => record.status.includes(value),
-        render: (text) => renderStatus(text)
-    },
-    {
         title: <FormattedMessage id='action' />,
         key: 'operation',
         fixed: 'right',
-        width: 60,
+        width: 50,
         render: (text, record) => renderAction(text, record)
-    },
+    }
 ]
-
-
 
 export default columns

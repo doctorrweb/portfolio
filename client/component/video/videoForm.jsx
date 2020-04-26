@@ -3,12 +3,14 @@ import {
     Form,
     Button,
     Upload,
+    Input,
+    Radio,
     notification
 } from 'antd'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { InboxOutlined } from '@ant-design/icons'
-import { resetResponse, resetError } from '../../action'
+import { resetResponse, resetError, resetRequestType } from '../../action'
 import { addVideo } from '../../action/video'
 
 
@@ -38,12 +40,17 @@ const tailFormItemLayout = {
 }
 
 const VideoForm = () => {
-    const [form] = Form.useForm()
-    const [CustomFileList, setCustomFileList] = useState([])
-    const [uploading, setUploading] = useState(false)
     const intl = useIntl()
     const dispatch = useDispatch()
+    
+    const [form] = Form.useForm()
 
+    const [CustomFileList, setCustomFileList] = useState([])
+    const [uploading, setUploading] = useState(false)
+    const [provider, setProvider] = useState('local')
+   
+
+    const requestType = useSelector(state => state.requestType.status)
     const errorStatus = useSelector(state => state.error.status)
     const responseStatus = useSelector(state => state.response.status)
 
@@ -56,30 +63,42 @@ const VideoForm = () => {
 
 
     const requestNotification = () => {
-        if (errorStatus === 400) {
+        if (errorStatus !== null && requestType === 'add-video') {
             notification['error']({
-                message: `${intl.formatMessage({ id: 'login-fail' })}`
+                message: 'An error occured',
+                description: 'We couldn\'t create this video'
             })
             dispatch(resetError())
+            dispatch(resetRequestType())
         }
-        if (responseStatus === 201) {
+        if (responseStatus >= 200 && requestType === 'add-video') {
             notification['success']({
-                message: `${intl.formatMessage({ id: 'login-success' })}`
+                message: 'Video created Successfully',
+                description: 'Click on \'details\' to see the new video'
             })
             dispatch(resetResponse())
+            dispatch(resetRequestType())
         }
     }
 
     const onFinish = values => {
-        console.log('values: ', values.videos.fileList)
-        let videoFormData = new FormData()
-        const videos = values.videos.fileList
-        videos.map(video => {
-            videoFormData.append('videos', video.originFileObj)
-        })
-        dispatch(addVideo(videoFormData))
-        console.log('Received values of form: ', videoFormData)
-        form.resetFields()
+
+        console.log('values', values)
+
+        if (provider === 'local') {
+            let videoFormData = new FormData()
+            const videos = values.videos.fileList
+            videos.map(video => {
+                videoFormData.append('videos', video.originFileObj)
+            })
+            dispatch(addVideo(videoFormData))
+        }
+
+        if (provider === 'youtube') {
+            dispatch(addVideo({...values}))
+            form.resetFields(['name', 'path'])
+        }
+
     }
 
     const onFinishFailed = errorInfo => {
@@ -91,16 +110,12 @@ const VideoForm = () => {
     }
 
     const beforeUpload = (file, fileList) => {
-        console.log('file', file)
-        console.log('fileList', fileList)
         setCustomFileList([...CustomFileList, ...fileList])
         return false
     }
 
     const onRemove = file => {
         const newCustomFileList = CustomFileList.filter(item => item !== file)
-        //console.log('CustomFileList', CustomFileList)
-        //console.log('newCustomFileList', newCustomFileList)
         setCustomFileList(newCustomFileList)
     }
 
@@ -118,6 +133,10 @@ const VideoForm = () => {
         }
     }
 
+    const handleProviderChange = (e) => {
+        setProvider(e.target.value)
+    }
+
     return (
         <Form
             {...formItemLayout}
@@ -127,27 +146,80 @@ const VideoForm = () => {
             onFinishFailed={onFinishFailed}
         >
             <Form.Item
-                name="videos"
-                label='Video'
+                label="Provider"
+                name="provider"
+                rules={[
+                    {
+                        required: true
+                    }
+                ]}
             >
-                <Dragger
-                    fileList={CustomFileList}
-                    multiple
-                    onRemove={file => onRemove(file)}
-                    accept='.mp4'
-                    onChange={e => onChange(e)}
-                    beforeUpload={(file, fileList) => beforeUpload(file, fileList)}
-                    showUploadList
+                <Radio.Group
+                    defaultValue='local'
+                    buttonStyle="solid"
+                    onChange={e => handleProviderChange(e)}
                 >
-                    <p className="ant-upload-drag-icon">
-                        <InboxOutlined />
-                    </p>
-                    <p className="ant-upload-text">Click or drag file to this area to upload</p>
-                    <p className="ant-upload-hint">
-                        Support for a single or bulk upload. Strictly prohibit from uploading company data or other
-                        band files
-                    </p>
-                </Dragger>
+                    <Radio.Button value="local">Local</Radio.Button>
+                    <Radio.Button value="youtube">
+                        Youtube
+                    </Radio.Button>
+                </Radio.Group>
+            </Form.Item>
+
+
+            <Form.Item
+                noStyle
+                shouldUpdate={(prevValues, currentValues) => prevValues.provider !== currentValues.provider}
+            >
+                {({ getFieldValue }) =>
+                    getFieldValue('provider') === 'youtube' ? (
+                        <Form.Item
+                            name="name"
+                            label='Name'
+                        >
+                            <Input />
+                        </Form.Item>
+                    ) : null
+                }
+            </Form.Item>
+
+            <Form.Item
+                noStyle
+                shouldUpdate={(prevValues, currentValues) => prevValues.relation !== currentValues.relation}
+            >
+                {({ getFieldValue }) =>
+                    getFieldValue('provider') === 'youtube' ? (
+                        <Form.Item
+                            name="path"
+                            label='Link'
+                        >
+                            <Input />
+                        </Form.Item>
+                    ) : 
+                        <Form.Item
+                            name="videos"
+                            label='Video'
+                        >
+                            <Dragger
+                                fileList={CustomFileList}
+                                multiple
+                                onRemove={file => onRemove(file)}
+                                accept='.mp4'
+                                onChange={e => onChange(e)}
+                                beforeUpload={(file, fileList) => beforeUpload(file, fileList)}
+                                showUploadList
+                            >
+                                <p className="ant-upload-drag-icon">
+                                    <InboxOutlined />
+                                </p>
+                                <p className="ant-upload-text">Click or drag file to this area to upload</p>
+                                <p className="ant-upload-hint">
+                                    Support for a single or bulk upload. Strictly prohibit from uploading company data or other
+                                    band files
+                                </p>
+                            </Dragger>
+                        </Form.Item>
+                }
             </Form.Item>
 
             <Form.Item {...tailFormItemLayout}>
@@ -156,7 +228,7 @@ const VideoForm = () => {
                     type="primary"
                     loading={uploading}
                     htmlType="submit"
-                    disabled={CustomFileList.length === 0}
+                    // disabled={CustomFileList.length === 0 }
                     onClick={() => setUploading(true)}
                 >
                     <FormattedMessage id='add' />

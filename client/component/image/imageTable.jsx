@@ -34,7 +34,6 @@ const ImageTable = ({images}) => {
                 name: img.name,
                 path: img.path,
                 creationDate: img.creationDate,
-                status: img.status,
                 key: img._id
             }))
         }
@@ -47,8 +46,9 @@ const ImageTable = ({images}) => {
         columns={columns}
         dataSource={data}
         loading={loading}
-        scroll={{ x: 1300 }}
+        scroll={{ x: 1300, y: 500 }}
         size='small'
+        // rowKey={record => record.uid}
         pagination={{
             showSizeChanger: true,
             showTotal: (total, range) => `${range[0]}-${range[1]} ${intl.formatMessage({ id: 'of' })} ${total} ${intl.formatMessage({ id: 'items' })}`,
@@ -62,5 +62,6 @@ const ImageTable = ({images}) => {
 ImageTable.propTypes = {
     images: PropTypes.array
 }
+
 
 export default ImageTable

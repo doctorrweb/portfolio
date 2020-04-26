@@ -5,21 +5,28 @@ const videoController = {
         try {
             let videos = []
 
-            await req.files.map(file => {
-                const { path } = file
-                const newPath = path.slice(6, path.length)
+            if (req.files) {
+                await req.files.map(file => {
+                    const { path } = file
+                    const newPath = path.slice(6, path.length)
+    
+                    const newFile = {
+                        name: file.originalname,
+                        path: newPath,
+                        extension: file.mimetype,
+                        creationDate: Date.now(),
+                        status: 'inactive'
+                    }
+                    const video = new Video(newFile)
+                    videos.push(newFile)
+                    video.save()
+                })
+            }
 
-                const newFile = {
-                    name: file.originalname,
-                    path: newPath,
-                    extension: file.mimetype,
-                    creationDate: Date.now(),
-                    status: 'inactive'
-                }
-                const video = new Video(newFile)
-                videos.push(newFile)
-                video.save()
-            })
+            if (!req.files) {
+                const client = new Video(req.body)
+                await client.save()
+            }
 
             res.status(200).json(videos)
 

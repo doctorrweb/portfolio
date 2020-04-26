@@ -25,16 +25,14 @@ const VideoSchema = new Schema({
             type: Date
         }
     ],
-    status: {
+    provider: {
         type: String,
         lowercase: true,
         enum: [
-            'inactive',
-            'active',
-            'trash'
+            'youtube',
+            'local'
         ],
-        required: true,
-        default: 'inactive'
+        required: true
     }
 })
 

@@ -15,6 +15,9 @@ const BASE_URL = 'http://localhost:3000/api'
 
 
 export function addVideo(videos) {
+
+    console.log('addVideo videos', videos)
+
     return function (dispatch) {
         dispatch(resetResponse())
         dispatch(parseRequestType('add-video'))
@@ -33,7 +36,7 @@ export function addVideo(videos) {
                 dispatch(parseResponse(response.status))
             })
             .catch((error) => {
-                console.log(error)
+                console.log('error', error)
                 dispatch(parseError(error.response))
             })
     }

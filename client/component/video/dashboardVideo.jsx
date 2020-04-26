@@ -4,7 +4,8 @@ import {
     Col, 
     Button, 
     Typography,
-    Radio
+    Radio,
+    notification
 } from 'antd'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useSelector, useDispatch } from 'react-redux'
@@ -15,6 +16,7 @@ import VideoForm from './videoForm'
 import VideoGallery from './videoGallery'
 import VideoTable from './videoTable'
 import ModalDisplay from './modalDisplay'
+import { resetRequestType, resetError, resetResponse } from '../../action'
 import { ModalVideoFormProvider } from '../../helper/modalFormProvider'
 
 const { Title } = Typography
@@ -26,6 +28,8 @@ const DashboardVideo = () => {
 
     const responseStatus = useSelector(state => state.response.status)
     const videos = useSelector(state => state.videos.videos)
+    const requestType = useSelector(state => state.requestType.status)
+    const errorStatus = useSelector(state => state.error.status)
 
     const [displayType, setDisplayType] = useState('table')
     const [modalVisibility, setModalVisibility] = useState(false)
@@ -41,10 +45,41 @@ const DashboardVideo = () => {
     }, [modalVisibility])
 
     useEffect(() => {
+        requestNotification()
+    }, [errorStatus, responseStatus, requestType])
+
+    useEffect(() => {
         if (responseStatus >= 200) {
-            setModalVisibility(false)
+            dispatch(readAllVideos())
         }
     }, [responseStatus])
+
+    useEffect(() => {
+        if (requestType === 'add-video') {
+            setModalVisibility(false)
+            //dispatch(readAllPosts())
+        }
+    }, [requestType])
+
+    const requestNotification = () => {
+        if (errorStatus !== null && requestType === 'delete-video') {
+            notification['error']({
+                message: 'An error occured',
+                description: 'We couldn\'t delete this video'
+            })
+            dispatch(resetError())
+            dispatch(resetRequestType())
+        }
+        if (responseStatus >= 200 && requestType === 'delete-video') {
+            notification['success']({
+                message: 'Video deleted Successfully',
+                description: 'Click on \'details\' to see the updated video'
+            })
+            dispatch(resetResponse())
+            dispatch(resetRequestType())
+
+        }
+    }
 
     const title = <Title level={4}>Video Form</Title>
     const component = <VideoForm />
@@ -99,7 +134,7 @@ const DashboardVideo = () => {
                             icon={<PlusOutlined />}
                             size="middle"
                         >
-                            {` ${intl.formatMessage({ id: 'addimage' })}`}
+                            {` ${intl.formatMessage({ id: 'addvideo' })}`}
                         </Button>
                     </Col>
                     <Col>

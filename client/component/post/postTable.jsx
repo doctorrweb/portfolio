@@ -50,7 +50,7 @@ const PostTable = () => {
         columns={columns.postTable}
         dataSource={data}
         loading={loading}
-        scroll={{ x: 1300 }}
+        scroll={{ x: 1300, y: 500 }}
         size='small'
         pagination={{
             showSizeChanger: true,

@@ -91,7 +91,7 @@ const ImageGallery = ({ images, setImageToDisplay, modalDisplayVisibility, setMo
                             pageSize: 30,
                         }}
                         renderItem={img => (
-                            <List.Item>
+                            <List.Item key={img._id}>
                                 <Card
                                     hoverable
                                     cover={<img src={img.path} width={100} height={150} style={{ objectFit: 'cover' }} />}

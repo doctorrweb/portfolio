@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Dropdown, Button, Menu, Modal, Typography, Tag } from 'antd'
+import { Dropdown, Button, Menu, Modal, Typography } from 'antd'
 import { DownOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import { useDispatch } from 'react-redux'
 import moment from 'moment'
@@ -60,34 +60,17 @@ const renderAction = (text, record) => {
     )
 }
 
-const renderStatus = (text) => {
-    switch (text) {
-    case 'trash':
-        return (
-            <Tag color="red">{text}</Tag>
-        )
-    case 'active':
-        return (
-            <Tag color="green">{text}</Tag>
-        )
-    default:
-        return (
-            <Tag color="orange">{text}</Tag>
-        )
-    }
-}
-
 const columns = [
     {
         title: <FormattedMessage id='name' />,
-        width: 100,
+        width: 150,
         dataIndex: 'name',
         key: 'name',
         fixed: 'left'
     },
     {
         title: <FormattedMessage id='path' />,
-        width: 200,
+        width: 150,
         dataIndex: 'path',
         key: 'path',
         render(text, record) {
@@ -98,7 +81,7 @@ const columns = [
     },
     {
         title: <FormattedMessage id='creationdate' />,
-        width: 100,
+        width: 60,
         dataIndex: 'creationDate',
         key: 'creationDate',
         sorter: (a, b) => new Date(a.creationDate) - new Date(b.creationDate),
@@ -107,23 +90,21 @@ const columns = [
         render: (text, record) => moment(record.creationDate).format('LLL')
     },
     {
-        title: <FormattedMessage id='status' />,
+        title: 'Provider',
         width: 50,
-        dataIndex: 'status',
-        key: 'status',
+        dataIndex: 'provider',
+        key: 'provider',
         filters: [
-            { text: 'inactive', value: 'inactive' },
-            { text: 'active', value: 'active' },
-            { text: 'trash', value: 'trash' }
+            { text: 'local', value: 'local' },
+            { text: 'youtube', value: 'youtube' }
         ],
-        onFilter: (value, record) => record.status.includes(value),
-        render: (text) => renderStatus(text)
+        onFilter: (value, record) => record.provider.includes(value),
     },
     {
         title: <FormattedMessage id='action' />,
         key: 'operation',
         fixed: 'right',
-        width: 60,
+        width: 50,
         render: (text, record) => renderAction(text, record)
     },
 ]

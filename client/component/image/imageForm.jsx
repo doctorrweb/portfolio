@@ -8,7 +8,7 @@ import {
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { InboxOutlined } from '@ant-design/icons'
-import { resetResponse, resetError } from '../../action'
+import { resetResponse, resetError, resetRequestType } from '../../action'
 import { addImage } from '../../action/image'
 
 const { Dragger } = Upload
@@ -37,12 +37,16 @@ const tailFormItemLayout = {
 }
 
 const ImageForm = () => {
-    const [form] = Form.useForm()
-    const [CustomFileList, setCustomFileList] = useState([])
-    const [uploading, setUploading] = useState(false)
     const intl = useIntl()
     const dispatch = useDispatch()
 
+    const [form] = Form.useForm()
+
+    const [CustomFileList, setCustomFileList] = useState([])
+    const [uploading, setUploading] = useState(false)
+    
+
+    const requestType = useSelector((state) => state.requestType.status)
     const errorStatus = useSelector(state => state.error.status)
     const responseStatus = useSelector(state => state.response.status)
 
@@ -55,20 +59,23 @@ const ImageForm = () => {
 
 
     const requestNotification = () => {
-        if (errorStatus === 400) {
+        if (errorStatus !== null && requestType === 'add-image') {
             notification['error']({
-                message: `${intl.formatMessage({ id: 'login-fail' })}`
+                message: 'An error occured',
+                description: 'We couldn\'t create this image'
             })
             dispatch(resetError())
+            dispatch(resetRequestType())
         }
-        if (responseStatus === 201) {
+        if (responseStatus >= 200 && requestType === 'add-image') {
             notification['success']({
-                message: `${intl.formatMessage({ id: 'login-success' })}`
+                message: 'Image created Successfully',
+                description: 'Click on \'details\' to see the new image'
             })
             dispatch(resetResponse())
+            dispatch(resetRequestType())
         }
     }
-
 
     const onFinish = values => {
         console.log('onFinish values: ', values.images)
@@ -79,7 +86,6 @@ const ImageForm = () => {
             imageFormData.append('images', image.originFileObj)
         })
         dispatch(addImage(imageFormData))
-        setCustomFileList([])
     }
 
     const onFinishFailed = errorInfo => {
@@ -87,6 +93,7 @@ const ImageForm = () => {
             message: `${intl.formatMessage({ id: 'login-fail' })}`,
             description: errorInfo
         })
+        setCustomFileList([])
         form.resetFields()
     }
 
@@ -98,7 +105,8 @@ const ImageForm = () => {
     }
 
     const onRemove = file => {
-        setCustomFileList(CustomFileList.filter(item => item !== file))
+        const newCustomFileList = CustomFileList.filter((item) => item !== file)
+        setCustomFileList(newCustomFileList)
     } 
 
     const onChange = (info) => {
@@ -166,5 +174,3 @@ const ImageForm = () => {
 }
 
 export default ImageForm
-
-
