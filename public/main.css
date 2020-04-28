@@ -4,6 +4,7 @@ blockquote {
   padding: 10px;
   font-size: 1.2em;
   font-style: italic;
+  text-align: justify;
 }
 
 .ant-layout {

@@ -34,7 +34,6 @@ const Intro = () => {
             }}
         >
             <Col
-                // className='subcontent'
                 lg={24}
                 md={24}
                 sm={24}

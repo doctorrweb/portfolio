@@ -39,8 +39,14 @@ const postController = {
     },
     readAll: async (req, res) => {
         try {
+
             const posts = await Post.find({})
+                .populate({ path: 'image', select: 'path' })
+                .populate({ path: 'formation', select: 'title' })
+                .populate({ path: 'project', select: 'title' })
+
             res.status(200).json(posts)
+            
         } catch (error) {
             res.status(400).json({ message: 'Bad Request' })
         }

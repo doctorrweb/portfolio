@@ -22,8 +22,13 @@ const projectController = {
     },
     readAll: async (req, res) => {
         try {
+
             const projects = await Project.find({})
+                .populate({path: 'image', select: 'path'})
+                .populate({path: 'client', select: 'name'})
+
             res.status(200).json(projects)
+            
         } catch (error) {
             res.status(400).json({ message: 'Bad Request' })
         }

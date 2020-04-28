@@ -5,9 +5,9 @@ import { Layout } from 'antd'
 import { Switch, Route, Router, useHistory } from 'react-router-dom'
 import NavBar from './navBar'
 import About from './about'
-import Work from './work'
-import Blog from './blog'
-import Tutorial from './tutorial'
+import Work from '../component/work/work'
+import Blog from '../component/blog/blog'
+import Tutorial from '../component/tutos_front/tutorial'
 import Project from './project'
 import Contact from './contact'
 import Dashboard from './dashboard'
@@ -21,7 +21,6 @@ const { Header } = Layout
 const App = () => {
     
     const history = useHistory()
-
     const lang = useSelector(state => state.locale.lang)
 
     return (
@@ -29,7 +28,7 @@ const App = () => {
             <Layout
                 style={{
                     minHeight: 0,
-                    backgroundColor: 'transparent'
+                    // backgroundColor: 'transparent'
                 }}
             >
                 <Header
@@ -39,7 +38,7 @@ const App = () => {
                         minHeight: '100px',
                         padding: '18px 50px',
                         width: '100%',
-                        background: 'none'
+                        background: '#000000',
                     }}
                 >
                     <NavBar />
