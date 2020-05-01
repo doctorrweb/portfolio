@@ -87,6 +87,7 @@ const PostForm = () => {
                 message: 'Post created Successfully',
                 description: 'Click on \'details\' to see the new post'
             })
+            form.resetFields()
             dispatch(resetResponse())
             dispatch(resetRequestType())
         }
@@ -98,14 +99,13 @@ const PostForm = () => {
 
     const onFinish = (values) => {
         // dispatch(resetResponse())
+        setContent('')
         dispatch(createPost({ 
             ...values, 
             lang: lang, 
             content: content,
             relation: relation,
         }))
-        setContent('')
-        form.resetFields()
     }
 
     const onFinishFailed = errorInfo => {
@@ -244,6 +244,30 @@ const PostForm = () => {
                 }
             </Form.Item>
 
+            <Form.Item
+                noStyle
+                shouldUpdate={(prevValues, currentValues) =>
+                    prevValues.project !== currentValues.project
+                }
+            >
+                {({ getFieldValue }) =>
+                    getFieldValue('relation') === 'project' ? (
+                        <Form.Item label="Project Step" name="projectStep">
+                            <Select
+                                allowClear
+                                showSearch
+                                // onChange={(value, option) => onChangeRelationItem(value, option)}
+                            >
+                                <Option key="1" value="concept">Concept</Option>
+                                <Option key="2" value="development">Development</Option>
+                                <Option key="3" value="deployment">Deployment</Option>
+                                <Option key="4" value="review">Review</Option>
+                                <Option key="5" value="bug">Bug</Option>
+                            </Select>
+                        </Form.Item>
+                    ) : null
+                }
+            </Form.Item>
             <Form.Item
                 name="category"
                 label={

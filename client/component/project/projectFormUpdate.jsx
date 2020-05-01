@@ -19,6 +19,7 @@ import { readAllClients } from '../../action/client'
 import { readAllImages } from '../../action/image'
 
 const { Option } = Select
+const { TextArea } = Input
 
 const formItemLayout = {
     labelCol: {
@@ -62,21 +63,23 @@ const ProjectFormUpdate = ({ itemToUpdate }) => {
     const images = useSelector(state => state.images.images)
 
 
-
     useEffect(() => {
+
         if (itemToUpdate === '') {
             form.resetFields()
         }
+
         if (itemToUpdate !== '') {
-            let initialData = projects.filter(project => project._id === itemToUpdate)
+            let initialData = projects.find(project => project._id === itemToUpdate)
 
             form.setFieldsValue({ 
-                ...initialData[0],
-                client: initialData[0].client,
-                startdate: moment(initialData[0].startDate),
-                enddate: initialData[0].endDate === null ? null : moment(initialData[0].endDate),
+                ...initialData,
+                client: initialData.client._id,
+                image: initialData.image._id,
+                startDate: moment(initialData.startDate),
+                endDate: initialData.endDate === null ? null : moment(initialData.endDate)
             })
-            setChekStatus(initialData[0].endDate === null)
+            setChekStatus(initialData.endDate === null)
         }
     }, [itemToUpdate])
 
@@ -140,7 +143,6 @@ const ProjectFormUpdate = ({ itemToUpdate }) => {
         form.resetFields()
     }
 
-
     const onFinishFailed = errorInfo => {
         notification['error']({
             message: `${intl.formatMessage({ id: 'login-fail' })}`,
@@ -159,20 +161,23 @@ const ProjectFormUpdate = ({ itemToUpdate }) => {
         >
             <Form.Item
                 name="title"
-                label={
-                    <span>
-                        <FormattedMessage id="title" />
-                    </span>
-                }
+                label={<FormattedMessage id="title" />}
                 rules={[
                     {
                         required: true,
                         message: 'Please input your surname!',
-                        whitespace: true
-                    }
+                        whitespace: true,
+                    },
                 ]}
             >
                 <Input />
+            </Form.Item>
+
+            <Form.Item
+                name="description"
+                label={<FormattedMessage id="description" />}
+            >
+                <TextArea />
             </Form.Item>
 
             <Form.Item
@@ -187,55 +192,33 @@ const ProjectFormUpdate = ({ itemToUpdate }) => {
                     //placeholder="Select a option and change input text above"
                     allowClear
                 >
-                    <Option value="graphic">
-                        Graphic
-                    </Option>
-                    <Option value="edition">
-                        Edition
-                    </Option>
-                    <Option value="web">
-                        Web
-                    </Option>
-                    <Option value="mobile">
-                        Mobile
-                    </Option>
-                    <Option value="desktop">
-                        Desktop
-                    </Option>
+                    <Option value="graphic">Graphic</Option>
+                    <Option value="edition">Edition</Option>
+                    <Option value="web">Web</Option>
+                    <Option value="mobile">Mobile</Option>
+                    <Option value="desktop">Desktop</Option>
                 </Select>
             </Form.Item>
 
             <Form.Item
                 name="client"
-                label={
-                    <span>
-                        <FormattedMessage id="client" />
-                    </span>
-                }
+                label={<FormattedMessage id="client" />}
                 rules={[
                     {
-                        required: true
-                    }
+                        required: true,
+                    },
                 ]}
             >
-                <Select
-                    allowClear
-                    showSearch
-                >
-                    {
-                        clients.map(
-                            client => <Option key={client._id} value={client._id}>
-                                {client.name}
-                            </Option>
-                        )
-                    }
+                <Select allowClear showSearch>
+                    {clients.map((client) => (
+                        <Option key={client._id} value={client._id}>
+                            {client.name}
+                        </Option>
+                    ))}
                 </Select>
             </Form.Item>
 
-            <Form.Item
-                name="link"
-                label='Project Link'
-            >
+            <Form.Item name="link" label="Project Link">
                 <Input allowClear />
             </Form.Item>
 
@@ -243,46 +226,73 @@ const ProjectFormUpdate = ({ itemToUpdate }) => {
                 <Form.Item
                     // label="Start Date"
                     name="startDate"
-                    style={{ display: 'inline-block', width: 'calc(30% - 12px)' }}
+                    style={{
+                        display: 'inline-block',
+                        width: 'calc(30% - 12px)',
+                    }}
                     rules={[
                         {
-                            required: true
-                        }
+                            required: true,
+                        },
                     ]}
                 >
                     <DatePicker
-                        format='DD-MM-YYYY'
-                        placeholder={`${intl.formatMessage({ id: 'startdate' })}`}
-                        onChange={(date, dateString) => startDateHandler(date, dateString)}
+                        format="DD-MM-YYYY"
+                        placeholder={`${intl.formatMessage({
+                            id: 'startdate',
+                        })}`}
+                        onChange={(date, dateString) =>
+                            startDateHandler(date, dateString)
+                        }
                     />
                 </Form.Item>
                 <span
-                    style={{ display: 'inline-block', width: '24px', lineHeight: '32px', textAlign: 'center' }}
+                    style={{
+                        display: 'inline-block',
+                        width: '24px',
+                        lineHeight: '32px',
+                        textAlign: 'center',
+                    }}
                 >
                     -
                 </span>
                 <Form.Item
                     // label="End Date"
                     name="endDate"
-                    style={{ display: 'inline-block', width: 'calc(30% - 12px)' }}
+                    style={{
+                        display: 'inline-block',
+                        width: 'calc(30% - 12px)',
+                    }}
                 >
                     <DatePicker
-                        format='DD-MM-YYYY'
+                        format="DD-MM-YYYY"
                         disabled={checkStatus}
                         placeholder={`${intl.formatMessage({ id: 'enddate' })}`}
-                        onChange={(date, dateString) => endDateHandler(date, dateString)}
+                        onChange={(date, dateString) =>
+                            endDateHandler(date, dateString)
+                        }
                     />
                 </Form.Item>
                 <span
-                    style={{ display: 'inline-block', width: '24px', lineHeight: '32px', textAlign: 'center' }}
+                    style={{
+                        display: 'inline-block',
+                        width: '24px',
+                        lineHeight: '32px',
+                        textAlign: 'center',
+                    }}
                 >
                     -
                 </span>
                 <Form.Item
-                    style={{ display: 'inline-block', width: 'calc(30% - 12px)' }}
+                    style={{
+                        display: 'inline-block',
+                        width: 'calc(30% - 12px)',
+                    }}
                 >
                     <Form.Item
-                        label={` ${intl.formatMessage({ id: 'still-in-progress' })}`}
+                        label={` ${intl.formatMessage({
+                            id: 'still-in-progress',
+                        })}`}
                         name="pendingCheck"
                     >
                         <Switch
@@ -293,46 +303,31 @@ const ProjectFormUpdate = ({ itemToUpdate }) => {
                     </Form.Item>
                 </Form.Item>
             </Form.Item>
-            
-            <Form.Item
-                label="Status"
-                name="status"
-            >
+
+
+            <Form.Item label="Status" name="status">
                 <Radio.Group
                     buttonStyle="solid"
                     //onChange={e => setRelation(e.target.value)}
                 >
-                    <Radio.Button value="waiting">
-                        Waiting
-                    </Radio.Button>
-                    <Radio.Button value="rejected">
-                        Rejected
-                    </Radio.Button>
-                    <Radio.Button value="inprogress">
-                        In Progress
-                    </Radio.Button>
-                    <Radio.Button value="completed">
-                        Completed
-                    </Radio.Button>
+                    <Radio.Button value="waiting">Waiting</Radio.Button>
+                    <Radio.Button value="rejected">Rejected</Radio.Button>
+                    <Radio.Button value="inprogress">In Progress</Radio.Button>
+                    <Radio.Button value="completed">Completed</Radio.Button>
                 </Radio.Group>
             </Form.Item>
 
-            <Form.Item
-                name="image"
-                label={<FormattedMessage id="image" />}
-            >
+            <Form.Item name="image" label={<FormattedMessage id="image" />}>
                 <Select
                     allowClear
                     showSearch
-                // onChange={(value, option) => onChangeRelationItem(value, option)}
+                    // onChange={(value, option) => onChangeRelationItem(value, option)}
                 >
-                    {images.map(
-                        img => (
-                            <Option key={img._id} value={img._id} >
-                                <img src={img.path} width={30} /> {` ${img.name}`}
-                            </Option>
-                        )
-                    )}
+                    {images.map((img) => (
+                        <Option key={img._id} value={img._id}>
+                            <img src={img.path} width={30} /> {` ${img.name}`}
+                        </Option>
+                    ))}
                 </Select>
             </Form.Item>
 
@@ -347,10 +342,11 @@ const ProjectFormUpdate = ({ itemToUpdate }) => {
                                 'title',
                                 'subtitle',
                                 'category',
-                                'client'
+                                'client',
                             ]) ||
-                            form.getFieldsError().filter(({ errors }) => errors.length)
-                                .length
+                            form
+                                .getFieldsError()
+                                .filter(({ errors }) => errors.length).length
                         }
                     >
                         <FormattedMessage id="update" />

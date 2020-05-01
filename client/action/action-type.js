@@ -22,6 +22,7 @@ export const DELETE_USER = 'DELETE_USER'
 // Settings Post Types
 export const CREATE_POST = 'CREATE_POST'
 export const READALL_POST = 'READALL_POST'
+export const READ_POST = 'READ_POST'
 export const UPDATE_POST = 'UPDATE_POST'
 export const DELETE_POST = 'DELETE_POST'
 

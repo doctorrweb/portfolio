@@ -36,8 +36,8 @@ const DashboardProject = () => {
     
     useEffect(() => {
         if (itemToUpdate !== '') {
-            let initialData = projects.filter(project => project._id === itemToUpdate)
-            setInitialValues({ ...initialData[0] })
+            let initialData = projects.find(project => project._id === itemToUpdate)
+            setInitialValues({ ...initialData })
         }
     }, [itemToUpdate])
 

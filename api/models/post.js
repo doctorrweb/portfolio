@@ -55,6 +55,19 @@ const PostSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'project'
     },
+    projectStep: {
+        type: String,
+        lowercase: true,
+        enum: [
+            'concept',
+            'development',
+            'deployment',
+            'review',
+            'bug',
+            'undefined'
+        ],
+        default: 'undefined'
+    },
     author: {
         type: Schema.Types.ObjectId,
         ref: 'user'

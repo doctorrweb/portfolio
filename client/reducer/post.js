@@ -1,6 +1,7 @@
 import { 
     CREATE_POST,
     READALL_POST,
+    READ_POST,
     UPDATE_POST,
     DELETE_POST
 } from '../action/action-type'
@@ -18,6 +19,10 @@ export default function (state = initialState, action) {
     case READALL_POST:
         return {
             posts: [...action.payload]
+        }
+    case READ_POST:
+        return {
+            posts: [action.payload]
         }
     case UPDATE_POST:
         return {

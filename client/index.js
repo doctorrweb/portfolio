@@ -4,7 +4,7 @@ import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
 import jwt from 'jsonwebtoken'
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 import App from './container/app'
 import setAuthorizationToken from './helper/authToken'
 import registerServiceWorker from './registerServiceWorker'
@@ -33,11 +33,11 @@ if (token) {
 setAuthorizationToken(token)
 
 render(
-    <BrowserRouter>
+    <HashRouter hashType='noslash'>
         <Provider store={store}>
             <App />
         </Provider>
-    </BrowserRouter>,
+    </HashRouter>,
     document.querySelector('#root')
 )
 

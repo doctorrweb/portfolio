@@ -1,12 +1,17 @@
 import React, { useContext } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Dropdown, Button, Menu, Modal } from 'antd'
+import { Dropdown, Button, Menu, Modal, Typography } from 'antd'
 import { DownOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import { useDispatch } from 'react-redux'
 import { deleteClient } from '../../action/client'
 import { ModalClientFormProvider } from '../../helper/modalFormProvider'
 
 const { confirm } = Modal
+const { Paragraph } = Typography
+
+const renderDesc = (text, record) => {
+    return <Paragraph ellipsis={{ rows: 2 }}>{record.description}</Paragraph>
+}
 
 const renderAction = (text, record) => {
 
@@ -32,6 +37,8 @@ const renderAction = (text, record) => {
         modalForm.setVisibility(true)
         modalForm.setItemToUpdate(record.key)
     }
+
+    
 
     /*
    
@@ -70,20 +77,21 @@ const renderAction = (text, record) => {
 const columns = {
     clientTable: [
         {
-            title: <FormattedMessage id='name' />,
+            title: <FormattedMessage id="name" />,
             width: 100,
             dataIndex: 'name',
             key: 'name',
-            fixed: 'left'
+            fixed: 'left',
         },
         {
-            title: <FormattedMessage id='description' />,
+            title: <FormattedMessage id="description" />,
             width: 350,
             dataIndex: 'description',
-            key: 'description'
+            key: 'description',
+            render: (text, record) => renderDesc(text, record)
         },
         {
-            title: <FormattedMessage id='category' />,
+            title: <FormattedMessage id="category" />,
             width: 75,
             dataIndex: 'category',
             key: 'category',
@@ -94,18 +102,18 @@ const columns = {
                 { text: 'organisation', value: 'organisation' },
                 { text: 'government', value: 'government' },
                 { text: 'ngo', value: 'ngo' },
-                { text: 'other', value: 'other' }
+                { text: 'other', value: 'other' },
             ],
-            onFilter: (value, record) => record.category.includes(value)
+            onFilter: (value, record) => record.category.includes(value),
         },
         {
-            title: <FormattedMessage id='action' />,
+            title: <FormattedMessage id="action" />,
             key: 'operation',
             fixed: 'right',
             width: 50,
             render: (text, record) => renderAction(text, record),
         },
-    ]
+    ],
 }
 
 export default columns

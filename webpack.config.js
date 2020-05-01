@@ -8,6 +8,7 @@ module.exports = {
     output: {
         path: __dirname + '/public',
         filename: 'main.js',
+        publicPath: '/'
     },
     module: {
         rules: [

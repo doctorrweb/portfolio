@@ -1,6 +1,7 @@
 import {
     CREATE_POST,
     READALL_POST,
+    READ_POST,
     UPDATE_POST,
     DELETE_POST
 } from './action-type'
@@ -47,6 +48,25 @@ export function readAllPosts() {
             .then((response) => {
                 dispatch({
                     type: READALL_POST,
+                    payload: response.data
+                })
+            })
+
+            .catch((error) => {
+                dispatch(parseError(error.response))
+            })
+    }
+}
+
+export function readPost(postId) {
+    return function (dispatch) {
+        axios({
+            method: 'get',
+            url: `${BASE_URL}/posts/${postId}`
+        })
+            .then((response) => {
+                dispatch({
+                    type: READ_POST,
                     payload: response.data
                 })
             })

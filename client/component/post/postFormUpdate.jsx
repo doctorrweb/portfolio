@@ -69,15 +69,17 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
             form.resetFields()
         }
         if (itemToUpdate !== '') {
-            let initialData = posts.filter(post => post._id === itemToUpdate)
-            setContent(initialData[0].content)
+            let initialData = posts.find(post => post._id === itemToUpdate)
+            setContent(initialData.content)
             form.setFieldsValue({ 
-                ...initialData[0],
-                relationItem: findoutRelatedItem(initialData[0])
+                ...initialData,
+                image: initialData.image._id,
+                project: initialData.project ? initialData.project._id : null,
+                formation: initialData.formation ? initialData.formation._id : null,
+                relationItem: findoutRelatedItem(initialData)
             })
         }
     })
-
 
     // To disable submit button at the beginning.
     useEffect(() => {
@@ -175,8 +177,8 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
                     {
                         required: true,
                         message: 'Please input the title!',
-                        whitespace: true
-                    }
+                        whitespace: true,
+                    },
                 ]}
             >
                 <Input />
@@ -191,27 +193,29 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
                 name="content"
             >
                 <CKEditor
-                    onBeforeLoad={(CKEDITOR) => (CKEDITOR.disableAutoInline = true)}
-                    onChange={e => ckeditor4Handler(e.editor.getData())}
+                    onBeforeLoad={(CKEDITOR) =>
+                        (CKEDITOR.disableAutoInline = true)
+                    }
+                    onChange={(e) => ckeditor4Handler(e.editor.getData())}
                     data={itemToUpdate === '' ? '' : initialValues.content}
                 />
             </Form.Item>
 
-            <Form.Item 
-                label="Related to" 
+            <Form.Item
+                label="Related to"
                 name="relation"
                 rules={[
                     {
                         required: true,
                         message: 'Please input the title!',
-                        whitespace: true
-                    }
+                        whitespace: true,
+                    },
                 ]}
             >
                 <Radio.Group
                     //defaultValue="blog"
                     buttonStyle="solid"
-                    onChange={e => handleRelationChange(e)}
+                    onChange={(e) => handleRelationChange(e)}
                 >
                     <Radio.Button value="blog">Blog</Radio.Button>
                     <Radio.Button value="tutorial">
@@ -225,7 +229,9 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
 
             <Form.Item
                 noStyle
-                shouldUpdate={(prevValues, currentValues) => prevValues.relation !== currentValues.relation}
+                shouldUpdate={(prevValues, currentValues) =>
+                    prevValues.relation !== currentValues.relation
+                }
             >
                 {({ getFieldValue }) =>
                     getFieldValue('relation') === 'tutorial' ? (
@@ -233,13 +239,13 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
                             <Select
                                 allowClear
                                 showSearch
-                            // onChange={(value, option) => onChangeRelationItem(value, option)}
+                                // onChange={(value, option) => onChangeRelationItem(value, option)}
                             >
-                                {tutorials.map(
-                                    tuto => (
-                                        <Option key={tuto._id} value={tuto._id} >{tuto.title}</Option>
-                                    )
-                                )}
+                                {tutorials.map((tuto) => (
+                                    <Option key={tuto._id} value={tuto._id}>
+                                        {tuto.title}
+                                    </Option>
+                                ))}
                             </Select>
                         </Form.Item>
                     ) : null
@@ -247,7 +253,9 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
             </Form.Item>
             <Form.Item
                 noStyle
-                shouldUpdate={(prevValues, currentValues) => prevValues.project !== currentValues.project}
+                shouldUpdate={(prevValues, currentValues) =>
+                    prevValues.project !== currentValues.project
+                }
             >
                 {({ getFieldValue }) =>
                     getFieldValue('relation') === 'project' ? (
@@ -255,13 +263,41 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
                             <Select
                                 allowClear
                                 showSearch
-                            // onChange={(value, option) => onChangeRelationItem(value, option)}
+                                // onChange={(value, option) => onChangeRelationItem(value, option)}
                             >
-                                {projects.map(
-                                    project => (
-                                        <Option key={project._id} value={project._id} >{project.title}</Option>
-                                    )
-                                )}
+                                {projects.map((project) => (
+                                    <Option
+                                        key={project._id}
+                                        value={project._id}
+                                    >
+                                        {project.title}
+                                    </Option>
+                                ))}
+                            </Select>
+                        </Form.Item>
+                    ) : null
+                }
+            </Form.Item>
+
+            <Form.Item
+                noStyle
+                shouldUpdate={(prevValues, currentValues) =>
+                    prevValues.project !== currentValues.project
+                }
+            >
+                {({ getFieldValue }) =>
+                    getFieldValue('relation') === 'project' ? (
+                        <Form.Item label="Project Step" name="projectStep">
+                            <Select
+                                allowClear
+                                showSearch
+                                // onChange={(value, option) => onChangeRelationItem(value, option)}
+                            >
+                                <Option key="1" value="concept">Concept</Option>
+                                <Option key="2" value="development">Development</Option>
+                                <Option key="3" value="deployment">Deployment</Option>
+                                <Option key="4" value="review">Review</Option>
+                                <Option key="5" value="bug">Bug</Option>
                             </Select>
                         </Form.Item>
                     ) : null
@@ -276,9 +312,7 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
                     </span>
                 }
             >
-                <Select
-                    allowClear
-                >
+                <Select allowClear>
                     <Option value="professional">
                         <FormattedMessage id="professional" />
                     </Option>
@@ -288,39 +322,25 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
                 </Select>
             </Form.Item>
 
-            <Form.Item 
-                label="Status" 
-                name="status"
-            >
-                <Radio.Group
-                    buttonStyle="solid"
-                >
+            <Form.Item label="Status" name="status">
+                <Radio.Group buttonStyle="solid">
                     <Radio.Button value="pending">Pending</Radio.Button>
-                    <Radio.Button value="active">
-                        Active
-                    </Radio.Button>
-                    <Radio.Button value="trash">
-                        Trash
-                    </Radio.Button>
+                    <Radio.Button value="active">Active</Radio.Button>
+                    <Radio.Button value="trash">Trash</Radio.Button>
                 </Radio.Group>
             </Form.Item>
 
-            <Form.Item
-                name="image"
-                label={<FormattedMessage id="image" />}
-            >
+            <Form.Item name="image" label={<FormattedMessage id="image" />}>
                 <Select
                     allowClear
                     showSearch
-                // onChange={(value, option) => onChangeRelationItem(value, option)}
+                    // onChange={(value, option) => onChangeRelationItem(value, option)}
                 >
-                    {images.map(
-                        img => (
-                            <Option key={img._id} value={img._id} >
-                                <img src={img.path} width={30} /> {` ${img.name}`}
-                            </Option>
-                        )
-                    )}
+                    {images.map((img) => (
+                        <Option key={img._id} value={img._id}>
+                            <img src={img.path} width={30} /> {` ${img.name}`}
+                        </Option>
+                    ))}
                 </Select>
             </Form.Item>
 
@@ -331,9 +351,14 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
                         type="primary"
                         htmlType="submit"
                         disabled={
-                            !form.isFieldsTouched(['title', 'subtitle', 'category']) ||
-                            form.getFieldsError().filter(({ errors }) => errors.length)
-                                .length
+                            !form.isFieldsTouched([
+                                'title',
+                                'subtitle',
+                                'category',
+                            ]) ||
+                            form
+                                .getFieldsError()
+                                .filter(({ errors }) => errors.length).length
                         }
                     >
                         <FormattedMessage id="update" />

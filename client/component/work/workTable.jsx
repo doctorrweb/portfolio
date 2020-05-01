@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
+import { useHistory } from 'react-router-dom'
 import {
     List,
     Card
@@ -9,6 +9,8 @@ import moment from 'moment'
 
 
 const WorkTable = ({ data }) => {
+
+    const history = useHistory()
 
     return (
         <List
@@ -26,6 +28,7 @@ const WorkTable = ({ data }) => {
                     <Card
                         hoverable
                         cover={<img src={item.image.path} width={100} height={150} style={{ objectFit: 'cover' }} />}
+                        onClick={() => history.push(`/work/${item._id}`)}
                     >
                         <h3 style={{ color: '#FF9900' }}>{item.title}</h3>
                         <div><b>Client:</b> {item.client.name}</div>
