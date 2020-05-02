@@ -11,7 +11,7 @@ const Work = () => {
     return (
         <Layout
             style={{
-                margin: '10em 15em 5em',
+                margin: '10%',
             }}
         >
             <Switch>

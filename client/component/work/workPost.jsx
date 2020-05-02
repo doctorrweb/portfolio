@@ -58,7 +58,8 @@ const WorkPost = () => {
 
     return (
         <Content>
-            <Row justify="space-between" style={{ margin: '10px 16px 0' }}>
+            {/* <Row justify="space-between" style={{ margin: '10px 16px 0' }}> */}
+            <Row justify="space-between" style={{ margin: '1em 1.5em 0' }}>
                 <Col lg={6} md={6} sm={24} xs={24}>
                     <Title style={{ color: '#707070' }}>WORK</Title>
                 </Col>
@@ -126,11 +127,11 @@ const WorkPost = () => {
                     <Divider>Action</Divider>
                     <Title level={1}>
                         {posts[0] && posts[0].title}{' '}
-                        <Tag color="orange">
-                            {posts[0] &&
-                                moment(posts[0].creationDate).format('LL')}
-                        </Tag>
                     </Title>
+                    <Tag color="orange">
+                        {posts[0] &&
+                                moment(posts[0].creationDate).format('LL')}
+                    </Tag>
                     <img
                         src={
                             posts[0] && posts[0].image
@@ -139,7 +140,7 @@ const WorkPost = () => {
                         }
                         width={800}
                         height={250}
-                        style={{ objectFit: 'cover', marginTop: 10 }}
+                        style={{ objectFit: 'cover', marginTop: 30 }}
                     />
                     <Paragraph
                         style={{
