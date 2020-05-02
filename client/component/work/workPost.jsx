@@ -59,7 +59,7 @@ const WorkPost = () => {
     return (
         <Content>
             {/* <Row justify="space-between" style={{ margin: '10px 16px 0' }}> */}
-            <Row justify="space-between" style={{ margin: '1em 1.5em 0' }}>
+            <Row justify="space-between" style={{ margin: '2% 1.5em 0' }}>
                 <Col lg={6} md={6} sm={24} xs={24}>
                     <Title style={{ color: '#707070' }}>WORK</Title>
                 </Col>
@@ -138,7 +138,7 @@ const WorkPost = () => {
                                 ? posts[0].image.path
                                 : null
                         }
-                        width={800}
+                        width='90%'
                         height={250}
                         style={{ objectFit: 'cover', marginTop: 30 }}
                     />

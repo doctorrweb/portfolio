@@ -36,8 +36,7 @@ const WorkItem = () => {
 
     return (
         <Content>
-            {/* <Row justify="space-between" style={{ margin: '10px 16px 0' }}> */}
-            <Row justify="space-between" style={{ margin: '1em 1.5em 0' }}>
+            <Row justify="space-between" style={{ margin: '2% 1.5em 0' }}>
                 <Col lg={14} md={14} sm={24} xs={24}>
                     <Title style={{ color: '#707070' }}>WORK</Title>
                 </Col>
@@ -56,11 +55,11 @@ const WorkItem = () => {
                 </Col>
             </Row>
             <Row>
-                <Col lg={16} md={16} sm={24} xs={24}>
+                <Col lg={16} md={24} sm={24} xs={24}>
                     <Title>{project.title}</Title>
                     <img
                         src={project.image ? project.image.path : null}
-                        width={800}
+                        width='90%'
                         height={250}
                         style={{ objectFit: 'cover', marginTop: 10 }}
                     />
@@ -106,7 +105,7 @@ const WorkItem = () => {
                         {project ? project.description : null}
                     </Paragraph>
                 </Col>
-                <Col lg={8} md={8} sm={24} xs={24}>
+                <Col lg={8} md={24} sm={24} xs={24}>
                     <Title level={4} style={{ textAlign: 'center' }}>
                         Project Timeline
                     </Title>

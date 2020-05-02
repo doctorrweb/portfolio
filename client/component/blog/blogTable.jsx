@@ -10,7 +10,13 @@ const BlogTable = ({ data }) => {
 
     return (
         <List
-            grid={{ gutter: 16, column: 4 }}
+            grid={{
+                gutter: 16,
+                lg: 4,
+                md: 3,
+                sm: 2,
+                xs: 1,
+            }}
             dataSource={data}
             size="small"
             pagination={{

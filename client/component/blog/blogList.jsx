@@ -51,7 +51,7 @@ const BlogList = () => {
 
     return (
         <Content>
-            <Row justify="space-between" style={{ margin: '10px 16px 0' }}>
+            <Row justify="space-between">
                 <Col lg={14} md={14} sm={24} xs={24}>
                     <Title style={{ color: '#707070' }}>BLOG</Title>
                 </Col>

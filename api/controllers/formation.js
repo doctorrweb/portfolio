@@ -16,6 +16,7 @@ const formationController = {
     readAll: async (req, res) => {
         try {
             const formation = await Formation.find({})
+                .populate({ path: 'posts', select: ['title, creationdate, content']})
             res.status(200).json(formation)
         } catch (error) {
             res.status(400).json({ message: 'Bad Request' })

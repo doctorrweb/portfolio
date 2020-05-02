@@ -61,7 +61,6 @@ const WorkList = () => {
 
     return (
         <Content >
-            {/* <Row justify="space-between" style={{ margin: '10px 16px 0' }}> */}
             <Row 
                 justify="space-between" 
             >

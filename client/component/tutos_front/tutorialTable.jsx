@@ -1,13 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
+import { useHistory } from 'react-router-dom'
 import { List, Card } from 'antd'
 import moment from 'moment'
 
 const TutorialTable = ({ data }) => {
+
+    const history = useHistory()
+
     return (
         <List
-            grid={{ gutter: 16, column: 4 }}
+            grid={{
+                gutter: 16,
+                lg: 4,
+                md: 3,
+                sm: 2,
+                xs: 1,
+            }}
             dataSource={data}
             size="small"
             pagination={{
@@ -20,6 +29,7 @@ const TutorialTable = ({ data }) => {
                 <List.Item>
                     <Card
                         hoverable
+                        onClick={() => history.push(`/tutorial/${item._id}`)}
                     >
                         <h3 style={{ color: '#FF9900' }}>{item.title}</h3>
                         <div>
