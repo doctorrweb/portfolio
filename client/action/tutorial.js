@@ -1,6 +1,7 @@
 import {
     CREATE_TUTORIAL, 
     READALL_TUTORIAL,
+    READ_TUTORIAL,
     UPDATE_TUTORIAL,
     DELETE_TUTORIAL,
 } from './action-type'
@@ -57,6 +58,28 @@ export function readAllTutorials() {
             })
     }
 }
+
+
+export function readOneTutorial(tutoId) {
+    return function (dispatch) {
+        axios({
+            method: 'get',
+            url: `${BASE_URL}/formations/${tutoId}`
+        })
+            .then((response) => {
+                dispatch({
+                    type: READ_TUTORIAL,
+                    payload: response.data
+                })
+            })
+
+            .catch((error) => {
+                dispatch(parseError(error.response))
+            })
+    }
+}
+
+
 
 export function updateTutorial(tutoId, updatedContent) {
     return function (dispatch) {

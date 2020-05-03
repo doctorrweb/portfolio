@@ -26,6 +26,8 @@ const formationController = {
         try {
             const { id } = req.params
             const formation = await Formation.findById(id)
+                .populate({ path: 'posts', select: ['title', 'creationDate'] })
+                .populate({ path: 'videos', select: ['name', 'path'] })
             res.status(200).json(formation)
 
         } catch (error) {

@@ -29,6 +29,7 @@ export const DELETE_POST = 'DELETE_POST'
 // Settings Project Types
 export const CREATE_PROJECT = 'CREATE_PROJECT'
 export const READALL_PROJECT = 'READALL_PROJECT'
+export const READ_PROJECT = 'READ_PROJECT'
 export const UPDATE_PROJECT = 'UPDATE_PROJECT'
 export const DELETE_PROJECT = 'DELETE_PROJECT'
 
@@ -41,6 +42,7 @@ export const DELETE_CLIENT = 'DELETE_CLIENT'
 // Settings Tutorial Types
 export const CREATE_TUTORIAL = 'CREATE_TUTORIAL'
 export const READALL_TUTORIAL = 'READALL_TUTORIAL'
+export const READ_TUTORIAL = 'READ_TUTORIAL'
 export const UPDATE_TUTORIAL = 'UPDATE_TUTORIAL'
 export const DELETE_TUTORIAL = 'DELETE_TUTORIAL'
 

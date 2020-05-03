@@ -206,7 +206,7 @@ const FormationForm = () => {
                 >
                     {videos.map(
                         vid => (
-                            <Option key={vid._id} value={vid.path} >
+                            <Option key={vid._id} value={vid._id} >
                                 {vid.name}
                             </Option>
                         )

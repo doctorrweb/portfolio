@@ -33,7 +33,7 @@ if (token) {
 setAuthorizationToken(token)
 
 render(
-    <HashRouter hashType='noslash'>
+    <HashRouter basename='/'>
         <Provider store={store}>
             <App />
         </Provider>

@@ -1,6 +1,7 @@
 import {
     CREATE_PROJECT,
     READALL_PROJECT,
+    READ_PROJECT,
     UPDATE_PROJECT,
     DELETE_PROJECT
 } from './action-type'
@@ -49,6 +50,26 @@ export function readAllProjects() {
             .then((response) => {
                 dispatch({
                     type: READALL_PROJECT,
+                    payload: response.data
+                })
+            })
+
+            .catch((error) => {
+                dispatch(parseError(error.response))
+            })
+    }
+
+}
+
+export function readOneProject(projectId) {
+    return function (dispatch) {
+        axios({
+            method: 'get',
+            url: `${BASE_URL}/projects/${projectId}`
+        })
+            .then((response) => {
+                dispatch({
+                    type: READ_PROJECT,
                     payload: response.data
                 })
             })

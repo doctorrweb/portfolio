@@ -38,6 +38,10 @@ const projectController = {
         try {
             const { id } = req.params
             const project = await Project.findById(id)
+                .populate({path: 'image', select: 'path'})
+                .populate({path: 'client', select: ['name', 'description']})
+                .populate({path: 'posts', select: ['title', 'projectStep', 'creationDate']})
+
             res.status(200).json(project)
         } catch (error) {
             res.status(400).json({ message: 'Bad Request' })

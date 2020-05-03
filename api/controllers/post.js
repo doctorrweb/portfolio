@@ -56,6 +56,8 @@ const postController = {
             const { id } = req.params
             const post = await Post.findById(id)
                 .populate({ path: 'image', select: 'path' })
+                .populate({ path: 'project', 
+                    select: [ 'title', 'category', 'link', 'client', 'startDate', 'endDate' ] })
             res.status(200).json(post)
         } catch (error) {
             res.status(400).json({ message: 'Bad Request' })

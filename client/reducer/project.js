@@ -1,6 +1,7 @@
 import {
     CREATE_PROJECT,
     READALL_PROJECT,
+    READ_PROJECT,
     UPDATE_PROJECT,
     DELETE_PROJECT
 } from '../action/action-type'
@@ -18,6 +19,10 @@ export default function (state = initialState, action) {
     case READALL_PROJECT:
         return {
             projects: [...action.payload]
+        }
+    case READ_PROJECT:
+        return {
+            projects: [action.payload]
         }
     case UPDATE_PROJECT:
         return {

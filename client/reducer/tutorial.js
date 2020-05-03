@@ -1,6 +1,7 @@
 import {
     CREATE_TUTORIAL, 
     READALL_TUTORIAL, 
+    READ_TUTORIAL,
     UPDATE_TUTORIAL, 
     DELETE_TUTORIAL
 } from '../action/action-type'
@@ -18,6 +19,10 @@ export default function (state = initialState, action) {
     case READALL_TUTORIAL:
         return {
             tutorials: [...action.payload]
+        }
+    case READ_TUTORIAL:
+        return {
+            tutorials: [action.payload]
         }
     case UPDATE_TUTORIAL:
         return {
