@@ -1,6 +1,7 @@
 import React, { useEffect, Fragment } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { useIntl, FormattedMessage } from 'react-intl'
 import {
     LinkOutlined,
     ClockCircleOutlined,
@@ -15,6 +16,7 @@ const { Title, Paragraph, Text } = Typography
 
 const WorkItem = () => {
 
+    const intl = useIntl()
     const dispatch = useDispatch()
     const { id } = useParams()
 
@@ -22,7 +24,6 @@ const WorkItem = () => {
     
     useEffect(() => {
         dispatch(readOneProject(id))
-        console.log('project', project)
     }, [])
     
 
@@ -41,15 +42,15 @@ const WorkItem = () => {
             <Fragment>
                 <Row justify="space-between" style={{ margin: '2% 1.5em 0' }}>
                     <Col lg={14} md={14} sm={24} xs={24}>
-                        <Title style={{ color: '#707070' }}>WORK</Title>
+                        <Title style={{ color: '#707070' }}>{intl.formatMessage({ id: 'work' }).toUpperCase()}</Title>
                     </Col>
                     <Col lg={6} md={6} sm={24} xs={24}>
                         <Breadcrumb>
                             <Breadcrumb.Item>
-                                <Link to="/">Home</Link>
+                                <Link to="/">{intl.formatMessage({id: 'home'})}</Link>
                             </Breadcrumb.Item>
                             <Breadcrumb.Item>
-                                <Link to="/work">Work</Link>
+                                <Link to="/work">{intl.formatMessage({id: 'work'})}</Link>
                             </Breadcrumb.Item>
                             <Breadcrumb.Item>{project.title}</Breadcrumb.Item>
                         </Breadcrumb>
@@ -66,29 +67,32 @@ const WorkItem = () => {
                         />
                         <Divider type="horizontal" />
                         <div>
-                            <Text>Client</Text>:{' '}
-                            <Text strong>{project.client.name}</Text>
+                            <Text><FormattedMessage id='client' /></Text>:
+                            <Text strong>{` ${project.client.name}`}</Text>
                         </div>
                         <div>
                             <Text>
-                                <ClockCircleOutlined /> Start Date
+                                <ClockCircleOutlined /> <FormattedMessage id='startdate' />
                             </Text>
                             : {renderDate(project.startDate)}
-                            <Text>End Date</Text>: {renderDate(project.endDate)}
-                        </div>
-                        <div>
-                            <Text>Category</Text>:{' '}
-                            <Text strong>{project.category}</Text>
+                            <Text>
+                                <FormattedMessage id='enddate' />
+                            </Text>: {renderDate(project.endDate)}
                         </div>
                         <div>
                             <Text>
-                                <LinkOutlined /> Link
+                                <FormattedMessage id='category' />
+                            </Text>:
+                            <Text strong>{` ${project.category}`}</Text>
+                        </div>
+                        <div>
+                            <Text>
+                                <LinkOutlined /> <FormattedMessage id='link' />
                             </Text>
                             :
                             <Text code>
-                                {' '}
                                 <a target="blank" href={project.link}>
-                                    {project.link}
+                                    {` ${project.link}`}
                                 </a>
                             </Text>
                         </div>
@@ -104,7 +108,7 @@ const WorkItem = () => {
                     </Col>
                     <Col lg={8} md={24} sm={24} xs={24}>
                         <Title level={4} style={{ textAlign: 'center' }}>
-                            Project Timeline
+                            <FormattedMessage id='project-timeline' />
                         </Title>
                         <Divider type="horizontal" />
                         <Timeline mode="left">

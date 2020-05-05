@@ -10,7 +10,6 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { resetResponse, resetError, resetRequestType } from '../../action'
 import CKEditor from 'ckeditor4-react'
-import { useValuesToSend } from '../../helper/utils'
 import { createTutorial } from '../../action/tutorial'
 import { readAllImages } from '../../action/image'
 import { readAllVideos } from '../../action/video'
@@ -90,12 +89,22 @@ const FormationForm = () => {
         setContent(value)
     }
 
+    // const onFinish = values => {
+    //     const valuesToSend = useValuesToSend(values)
+    //     dispatch(createTutorial({
+    //         title: valuesToSend.title,
+    //         content: content,
+    //         category: valuesToSend.category
+    //     }))
+    //     setContent('')
+    //     form.resetFields()
+    // }
+
     const onFinish = values => {
-        const valuesToSend = useValuesToSend(values)
+        console.log('values', values)
         dispatch(createTutorial({
-            title: valuesToSend.title,
-            content: content,
-            category: valuesToSend.category
+            ...values,
+            content: content
         }))
         setContent('')
         form.resetFields()
@@ -121,14 +130,16 @@ const FormationForm = () => {
             <Form.Item
                 name="title"
                 label={
-                    <span><FormattedMessage id='title' /></span>
+                    <span>
+                        <FormattedMessage id="title" />
+                    </span>
                 }
                 rules={[
                     {
                         required: true,
                         message: 'Please input your surname!',
-                        whitespace: true
-                    }
+                        whitespace: true,
+                    },
                 ]}
             >
                 <Input />
@@ -137,11 +148,16 @@ const FormationForm = () => {
             <Form.Item
                 name="content"
                 label={
-                    <span><FormattedMessage id='content' /></span>
+                    <span>
+                        <FormattedMessage id="content" />
+                    </span>
                 }
             >
                 <CKEditor
-                    onChange={e => ckeditor4Handler(e.editor.getData())}
+                    onBeforeLoad={(CKEDITOR) =>
+                        (CKEDITOR.disableAutoInline = true)
+                    }
+                    onChange={(e) => ckeditor4Handler(e.editor.getData())}
                     data={content}
                 />
             </Form.Item>
@@ -149,68 +165,49 @@ const FormationForm = () => {
             <Form.Item
                 name="category"
                 label={
-                    <span><FormattedMessage id='category' /></span>
+                    <span>
+                        <FormattedMessage id="category" />
+                    </span>
                 }
             >
                 <Select
                     //placeholder="Select a option and change input text above"
                     allowClear
                 >
-                    <Option value="graphic">
-                        graphic
-                    </Option>
-                    <Option value="edition">
-                        edition
-                    </Option>
-                    <Option value="web">
-                        web
-                    </Option>
-                    <Option value="mobile">
-                        mobile
-                    </Option>
-                    <Option value="desktop">
-                        desktop
-                    </Option>
+                    <Option value="graphic">graphic</Option>
+                    <Option value="edition">edition</Option>
+                    <Option value="web">web</Option>
+                    <Option value="mobile">mobile</Option>
+                    <Option value="desktop">desktop</Option>
                 </Select>
             </Form.Item>
 
-            <Form.Item
-                name="image"
-                label={<FormattedMessage id="image" />}
-            >
+            <Form.Item name="image" label={<FormattedMessage id="image" />}>
                 <Select
                     allowClear
                     showSearch
-                // onChange={(value, option) => onChangeRelationItem(value, option)}
+                    // onChange={(value, option) => onChangeRelationItem(value, option)}
                 >
-                    {images.map(
-                        img => (
-                            <Option key={img._id} value={img.path} >
-                                <img src={img.path} width={30} /> {` ${img.name}`}
-                            </Option>
-                        )
-                    )}
+                    {images.map((img) => (
+                        <Option key={img._id} value={img._id}>
+                            <img src={img.path} width={30} /> {` ${img.name}`}
+                        </Option>
+                    ))}
                 </Select>
             </Form.Item>
 
-
-            <Form.Item
-                name="videos"
-                label={<FormattedMessage id="video" />}
-            >
+            <Form.Item name="videos" label={<FormattedMessage id="video" />}>
                 <Select
                     allowClear
                     showSearch
                     mode="multiple"
-                // onChange={(value, option) => onChangeRelationItem(value, option)}
+                    // onChange={(value, option) => onChangeRelationItem(value, option)}
                 >
-                    {videos.map(
-                        vid => (
-                            <Option key={vid._id} value={vid._id} >
-                                {vid.name}
-                            </Option>
-                        )
-                    )}
+                    {videos.map((vid) => (
+                        <Option key={vid._id} value={vid._id}>
+                            {vid.name}
+                        </Option>
+                    ))}
                 </Select>
             </Form.Item>
 
@@ -222,10 +219,12 @@ const FormationForm = () => {
                         htmlType="submit"
                         disabled={
                             !form.isFieldTouched('title') ||
-                            form.getFieldsError().filter(({ errors }) => errors.length).length
+                            form
+                                .getFieldsError()
+                                .filter(({ errors }) => errors.length).length
                         }
                     >
-                        <FormattedMessage id='create' />
+                        <FormattedMessage id="create" />
                     </Button>
                 )}
             </Form.Item>

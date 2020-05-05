@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { FormattedMessage, useIntl } from 'react-intl'
 import {
     Layout,
     Col,
@@ -42,6 +43,8 @@ const activeMenuLinkStyle = {
 }
 
 const TutoList = () => {
+
+    const intl = useIntl()
     const dispatch = useDispatch()
     const tutorials = useSelector((state) => state.tutorials.tutorials)
 
@@ -63,14 +66,16 @@ const TutoList = () => {
         <Content>
             <Row justify="space-between">
                 <Col lg={14} md={14} sm={24} xs={24}>
-                    <Title style={{ color: '#707070' }}>TUTORIALS</Title>
+                    <Title style={{ color: '#707070' }}>
+                        {intl.formatMessage({id: 'tutorial'}).toUpperCase()}
+                    </Title>
                 </Col>
                 <Col lg={6} md={6} sm={24} xs={24}>
                     <Breadcrumb>
                         <Breadcrumb.Item>
-                            <Link to="/">Home</Link>
+                            <Link to="/"><FormattedMessage id='home' /></Link>
                         </Breadcrumb.Item>
-                        <Breadcrumb.Item>Tuto</Breadcrumb.Item>
+                        <Breadcrumb.Item><FormattedMessage id='tutorial' /></Breadcrumb.Item>
                     </Breadcrumb>
                 </Col>
             </Row>
@@ -87,7 +92,7 @@ const TutoList = () => {
                         icon={<TableOutlined />}
                         onClick={() => setActiveTab('all')}
                     >
-                        All
+                        {` ${intl.formatMessage({id: 'all'})}`}
                     </Button>
                 </Col>
                 <Col>

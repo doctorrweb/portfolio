@@ -9,11 +9,11 @@ const jwtAuthentication = passport.authenticate('jwt', { session: false })
 const projectRouter = express.Router()
 
 projectRouter.route('/projects')
-    .get(jwtAuthentication, projectController.readAll)
+    .get(projectController.readAll)
     .post(jwtAuthentication, projectController.create)
 
 projectRouter.route('/projects/:id')
-    .get(jwtAuthentication, projectController.readOne)
+    .get(projectController.readOne)
     .put(jwtAuthentication, projectController.update)
     .delete(jwtAuthentication, projectController.delete)
 

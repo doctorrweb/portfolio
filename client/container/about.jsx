@@ -1,11 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Layout, Col, Row, Typography, Breadcrumb } from 'antd'
+import { useIntl } from 'react-intl'
 
 const { Content } = Layout
 const { Title } = Typography
 
 const About = () => {
+
+    const intl = useIntl()
+
     return (
         <Layout
             style={{
@@ -19,7 +23,9 @@ const About = () => {
                     align="middle"
                 >
                     <Col lg={14} md={14} sm={24} xs={24}>
-                        <Title style={{ color: '#707070' }}>ABOUT ME</Title>
+                        <Title style={{ color: '#707070' }}>
+                            {intl.formatMessage({ id: 'about-me' }).toUpperCase()}
+                        </Title>
                         <p style={{ textAlign: 'justify' }}>
                             Sed ut perspiciatis unde omnis iste natus error sit
                             voluptatem accusantium doloremque laudantium, totam
@@ -32,9 +38,9 @@ const About = () => {
                     <Col lg={6} md={6} sm={24} xs={24}>
                         <Breadcrumb>
                             <Breadcrumb.Item>
-                                <Link to='/'>Home</Link>
+                                <Link to='/'>{intl.formatMessage({id: 'home'})}</Link>
                             </Breadcrumb.Item>
-                            <Breadcrumb.Item>About me</Breadcrumb.Item>
+                            <Breadcrumb.Item>{intl.formatMessage({id: 'about-me'})}</Breadcrumb.Item>
                         </Breadcrumb>
                     </Col>
                 </Row>

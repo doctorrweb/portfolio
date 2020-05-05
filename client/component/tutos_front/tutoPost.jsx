@@ -1,8 +1,13 @@
-import React, { Fragment, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { useParams, Link, useHistory } from 'react-router-dom'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { useSelector, useDispatch } from 'react-redux'
-import { useIntl, FormattedMessage } from 'react-intl'
-import { FileTextOutlined, YoutubeFilled, YoutubeOutlined } from '@ant-design/icons'
+import {
+    FileTextOutlined,
+    YoutubeFilled,
+    YoutubeOutlined,
+    StepBackwardOutlined
+} from '@ant-design/icons'
 import {
     Breadcrumb,
     Layout,
@@ -10,32 +15,51 @@ import {
     Col,
     Divider,
     List,
-    Card,
-    Tabs,
     Typography,
+    Tag,
+    Button,
+    Tabs,
+    Card
 } from 'antd'
 import moment from 'moment'
 import ReactPlayer from 'react-player'
+import { readPost } from '../../action/post'
 import { readOneTutorial } from '../../action/tutorial'
 
 const { Content } = Layout
 const { TabPane } = Tabs
 const { Title, Paragraph, Text } = Typography
 
-const TutoItem = () => {
+const TutoPost = () => {
 
     const intl = useIntl()
     const dispatch = useDispatch()
     const history = useHistory()
-    const { id } = useParams()
+    const { id, postId } = useParams()
 
+    // const projects = useSelector((state) => state.projects.projects)
+
+    const post = useSelector((state) => state.posts.posts[0])
     const tutorial = useSelector((state) => state.tutorials.tutorials[0])
 
+    const [newPostId, setNewPostId] = useState(postId)
 
     useEffect(() => {
+        dispatch(readPost(postId))
         dispatch(readOneTutorial(id))
+
+        console.log('tutorial', tutorial)
+        console.log('postId', postId)
     }, [])
 
+    useEffect(() => {
+        console.log('project', tutorial)
+    }, [])
+
+    useEffect(() => {
+        dispatch(readPost(newPostId))
+        dispatch(readOneTutorial(id))
+    }, [newPostId])
 
     const renderContent = () => {
         return (
@@ -43,10 +67,10 @@ const TutoItem = () => {
                 <Row justify="space-between" style={{ margin: '2% 1.5em 0' }}>
                     <Col lg={6} md={6} sm={24} xs={24}>
                         <Title style={{ color: '#707070' }}>
-                            {intl.formatMessage({id: 'tutorial'}).toUpperCase()}
+                            {`${intl.formatMessage({id: 'tutorial'}).toUpperCase()}`}
                         </Title>
                     </Col>
-                    <Col lg={12} md={12} sm={24} xs={24}>
+                    <Col lg={18} md={18} sm={24} xs={24}>
                         <Breadcrumb>
                             <Breadcrumb.Item>
                                 <Link to="/"><FormattedMessage id='home' /></Link>
@@ -54,24 +78,46 @@ const TutoItem = () => {
                             <Breadcrumb.Item>
                                 <Link to="/tutorial"><FormattedMessage id='tutorial' /></Link>
                             </Breadcrumb.Item>
-                            <Breadcrumb.Item>{tutorial.title}</Breadcrumb.Item>
+                            <Breadcrumb.Item>
+                                <Link to={`/tutorial/${id}`}>
+                                    {post.formation.title}
+                                </Link>
+                            </Breadcrumb.Item>
+                            <Breadcrumb.Item>{post.title}</Breadcrumb.Item>
                         </Breadcrumb>
                     </Col>
                 </Row>
                 <Row>
-                    <Col lg={14} md={24} sm={24} xs={24}>
-                        <Title style={{ color: '#FF9900' }}>{tutorial.title}</Title>
+                    <Col lg={16} md={16} sm={24} xs={24}>
+                        <Title level={2} style={{ color: '#707070' }}>
+                            {` ${intl.formatMessage({id: 'project'})}: ${post.formation.title}`}
+                        </Title>
+                        <div>
+                            <Text><FormattedMessage id='category' /></Text>:{' '}
+                            <Text strong>{post.formation.category}</Text>
+                        </div>
+
+                        <Divider orientation="right">
+                            <Button
+                                size="small"
+                                type="primary"
+                                icon={<StepBackwardOutlined />}
+                                onClick={() => history.goBack()}
+                            >
+                                <FormattedMessage id='back-to-tutorial' />
+                            </Button>
+                        </Divider>
+                        <Divider><FormattedMessage id='post' /></Divider>
+                        <Title level={1}>{post.title} </Title>
+                        <Tag color="orange">
+                            {moment(post.creationDate).format('LL')}
+                        </Tag>
                         <img
-                            src={tutorial.image ? tutorial.image.path : null}
+                            src={post.image.path}
                             width="90%"
                             height={250}
-                            style={{ objectFit: 'cover', marginTop: 10 }}
+                            style={{ objectFit: 'cover', marginTop: 30 }}
                         />
-                        <div>
-                            <Text>{`${intl.formatMessage({id: 'category'})} `}</Text>:
-                            <Text strong>{tutorial.category}</Text>
-                        </div>
-                        <Divider type="horizontal" />
                         <Paragraph
                             style={{
                                 paddingTop: 10,
@@ -81,17 +127,17 @@ const TutoItem = () => {
                         >
                             <div
                                 dangerouslySetInnerHTML={{
-                                    __html: tutorial ? tutorial.content : null,
+                                    __html: post.content,
                                 }}
                             />
                         </Paragraph>
                     </Col>
-                    <Col lg={10} md={24} sm={24} xs={24}>
-                        <Title level={4} style={{ textAlign: 'center' }}>
+                    <Col lg={8} md={8} sm={24} xs={24}>
+                        <Title level={3} style={{ textAlign: 'center' }}>
                             <FormattedMessage id='tutorial-list' />
                         </Title>
                         <Divider type="horizontal" />
-                        <Tabs defaultActiveKey="1" tabPosition="left">
+                        <Tabs defaultActiveKey="2" tabPosition="left">
                             <TabPane
                                 tab={
                                     <span>
@@ -106,7 +152,7 @@ const TutoItem = () => {
                                         gutter: 16,
                                         column: 1,
                                     }}
-                                    dataSource={tutorial.videos}
+                                    dataSource={tutorial && tutorial.videos}
                                     size="small"
                                     pagination={{
                                         onChange: (page) => {
@@ -144,7 +190,7 @@ const TutoItem = () => {
                                         gutter: 16,
                                         column: 1,
                                     }}
-                                    dataSource={tutorial.posts}
+                                    dataSource={tutorial && tutorial.posts}
                                     size="small"
                                     pagination={{
                                         onChange: (page) => {
@@ -160,9 +206,7 @@ const TutoItem = () => {
                                                 bordered={true}
                                                 size="small"
                                                 onClick={() =>
-                                                    history.push(
-                                                        `/tutorial/${id}/${item._id}`
-                                                    )
+                                                    setNewPostId(item._id)
                                                 }
                                             >
                                                 <h3
@@ -188,11 +232,7 @@ const TutoItem = () => {
         )
     }
 
-    return (
-        <Content>
-            { tutorial && renderContent() }
-        </Content>
-    )
+    return <Content>{post && renderContent()}</Content>
 }
 
-export default TutoItem
+export default TutoPost

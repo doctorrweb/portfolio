@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { useIntl } from 'react-intl'
 import {
     Layout,
     Col,
@@ -42,6 +43,8 @@ const activeMenuLinkStyle = {
 }
 
 const WorkList = () => {
+
+    const intl = useIntl()
     const dispatch = useDispatch()
     const projects = useSelector((state) => state.projects.projects)
 
@@ -65,14 +68,14 @@ const WorkList = () => {
                 justify="space-between" 
             >
                 <Col lg={14} md={14} sm={24} xs={24}>
-                    <Title style={{ color: '#707070' }}>WORK</Title>
+                    <Title style={{ color: '#707070' }}>{intl.formatMessage({id: 'work'})}</Title>
                 </Col>
                 <Col lg={6} md={6} sm={24} xs={24}>
                     <Breadcrumb>
                         <Breadcrumb.Item>
-                            <Link to="/">Home</Link>
+                            <Link to="/">{intl.formatMessage({id: 'home'})}</Link>
                         </Breadcrumb.Item>
-                        <Breadcrumb.Item>Work</Breadcrumb.Item>
+                        <Breadcrumb.Item>{intl.formatMessage({id: 'work'})}</Breadcrumb.Item>
                     </Breadcrumb>
                 </Col>
             </Row>
@@ -90,7 +93,7 @@ const WorkList = () => {
                         icon={<TableOutlined />}
                         onClick={() => setActiveTab('all')}
                     >
-                        All
+                        {intl.formatMessage({id: 'all'})}
                     </Button>
                 </Col>
                 <Col>

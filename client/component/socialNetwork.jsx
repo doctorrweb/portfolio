@@ -1,32 +1,49 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Button } from 'antd'
-import { GithubOutlined, TwitterOutlined, LinkedinOutlined } from '@ant-design/icons'
+import {
+    GithubOutlined,
+    TwitterOutlined,
+    LinkedinOutlined,
+    InstagramOutlined
+} from '@ant-design/icons'
 
 
 const SocialNetwork = () => {
     return (
-        <div style={{
-            marginTop: '2em'
-        }}>
-            <a href='https://github.com/doctorrweb' target='_blank' rel="noopener noreferrer">
-                <Button type='link' ghost icon={<GithubOutlined />} size='small'>
+        <Fragment>
+            <div style={{
+                marginTop: '2em'
+            }}>
+                <a href='https://github.com/doctorrweb' target='_blank' rel="noopener noreferrer">
+                    <Button type='link' ghost icon={<GithubOutlined />} size='small'>
                     doctorrweb
-                </Button>
-            </a>
+                    </Button>
+                </a>
 
-            <a href='https://www.linkedin.com/in/herbain-bognon/' target='_blank' rel="noopener noreferrer">
-                <Button type='link' ghost icon={<LinkedinOutlined />} size='small'>
+                <a href='https://www.linkedin.com/in/herbain-bognon/' target='_blank' rel="noopener noreferrer">
+                    <Button type='link' ghost icon={<LinkedinOutlined />} size='small'>
                     doctorrWeb
-                </Button>
-            </a>
+                    </Button>
+                </a>
 
-            <a href='https://twitter.com/herbain_bognon'>
-                <Button type='link' ghost icon={<TwitterOutlined />} size='small' target='_blank' rel="noopener noreferrer">
+            </div>
+            <div style={{
+                marginTop: '1em'
+            }}>
+                <a href='https://www.instagram.com/doctorrweb/' target='_blank' rel="noopener noreferrer">
+                    <Button type='link' ghost icon={<InstagramOutlined />} size='small'>
+                    doctorrweb
+                    </Button>
+                </a>
+
+                <a href='https://twitter.com/herbain_bognon'>
+                    <Button type='link' ghost icon={<TwitterOutlined />} size='small' target='_blank' rel="noopener noreferrer">
                     @herbain_bognon
-                </Button>
-            </a>
+                    </Button>
+                </a>
 
-        </div>
+            </div>
+        </Fragment>
     )
 }
 

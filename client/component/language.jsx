@@ -3,6 +3,7 @@ import { message, Tooltip, Divider, Button, Col } from 'antd'
 import { useIntl } from 'react-intl'
 import { useDispatch } from 'react-redux'
 import { setLocale } from '../action'
+import moment from 'moment'
 
 message.config({
     top: 120
@@ -16,24 +17,24 @@ const Language = () => {
     const ChangeLanguage = lang => {
         switch (lang) {
         case 'en':
+            moment.locale('en')
             return (
-                message.loading('Translation in progress..', 0.5)
+                message.success('Your Current Language is English', 2.5)
                     .then(dispatch(setLocale('en')))
-                    .then(() => message.info('Your Current Language is English', 1.3))
             )
-
+                
         case 'fr':
+            moment.locale('fr')
             return (
-                message.loading('Chargement de la langue..', 0.5)
+                message.success('Votre Langue actuelle est le Français', 2.5)
                     .then(dispatch(setLocale('fr')))
-                    .then(() => message.info('Votre Langue actuelle est le Français', 1.3))
             )
 
         case 'de':
+            moment.locale('de')
             return (
-                message.loading('Übersetzung läuft..', 0.5)
+                message.success('Ihre aktuelle Sprache ist Deutsch', 2.5)
                     .then(dispatch(setLocale('de')))
-                    .then(() => message.info('Ihre aktuelle Sprache ist Deutsch', 1.3))
             )
 
         default:

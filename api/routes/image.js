@@ -10,11 +10,11 @@ const jwtAuthentication = passport.authenticate('jwt', { session: false })
 const imageRouter = express.Router()
 
 imageRouter.route('/images')
-    .post(jwtAuthentication, upload.array('images', 10), imageController.create)
+    .post(upload.array('images', 10), imageController.create)
     .get(jwtAuthentication, imageController.readAll)
 
 imageRouter.route('/images/:id')
-    .get(jwtAuthentication, imageController.readOne)
+    .get(imageController.readOne)
     .put(jwtAuthentication, imageController.update)
     .delete(jwtAuthentication, imageController.delete)
 

@@ -29,6 +29,14 @@ const TutorialTable = ({ data }) => {
                 <List.Item>
                     <Card
                         hoverable
+                        cover={
+                            <img
+                                src={item.image && item.image.path}
+                                width={100}
+                                height={150}
+                                style={{ objectFit: 'cover' }}
+                            />
+                        }
                         onClick={() => history.push(`/tutorial/${item._id}`)}
                     >
                         <h3 style={{ color: '#FF9900' }}>{item.title}</h3>

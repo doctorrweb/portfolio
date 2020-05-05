@@ -8,11 +8,11 @@ const jwtAuthentication = passport.authenticate('jwt', { session: false })
 const formationRouter = express.Router()
 
 formationRouter.route('/formations')
+    .get(formationController.readAll)
     .post(jwtAuthentication, formationController.create)
-    .get(jwtAuthentication, formationController.readAll)
 
 formationRouter.route('/formations/:id')
-    .get(jwtAuthentication, formationController.readOne)
+    .get(formationController.readOne)
     .put(jwtAuthentication, formationController.update)
     .delete(jwtAuthentication, formationController.delete)
     

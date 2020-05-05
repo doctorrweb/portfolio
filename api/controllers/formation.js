@@ -17,6 +17,8 @@ const formationController = {
         try {
             const formation = await Formation.find({})
                 .populate({ path: 'posts', select: ['title, creationdate, content']})
+                .populate({ path: 'image', select: 'path' })
+                
             res.status(200).json(formation)
         } catch (error) {
             res.status(400).json({ message: 'Bad Request' })
@@ -28,6 +30,8 @@ const formationController = {
             const formation = await Formation.findById(id)
                 .populate({ path: 'posts', select: ['title', 'creationDate'] })
                 .populate({ path: 'videos', select: ['name', 'path'] })
+                .populate({ path: 'image', select: 'path' })
+                
             res.status(200).json(formation)
 
         } catch (error) {

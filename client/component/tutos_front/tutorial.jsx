@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom'
 import { Layout } from 'antd'
 import TutoList from './tutoList'
 import TutoItem from './tutoItem'
+import TutoPost from './tutoPost'
 
 const Tutorial = () => {
     return (
@@ -12,6 +13,9 @@ const Tutorial = () => {
             }}
         >
             <Switch>
+                <Route path="/tutorial/:id/:postId">
+                    <TutoPost />
+                </Route>
                 <Route path="/tutorial/:id">
                     <TutoItem />
                 </Route>

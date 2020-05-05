@@ -14,7 +14,7 @@ postRouter.route('/posts')
     .post(jwtAuthentication, authorize('manager', 'administrator'), postController.create)
 
 postRouter.route('/posts/:id')
-    .get(jwtAuthentication, postController.readOne)
+    .get(postController.readOne)
     .put(jwtAuthentication, authorize('manager', 'administrator'), postController.update)
     .delete(jwtAuthentication, authorize('manager', 'administrator'), postController.delete)    
 

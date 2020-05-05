@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { FormattedMessage } from 'react-intl'
 import {
     Layout,
     Col,
@@ -58,7 +59,7 @@ const BlogList = () => {
                 <Col lg={6} md={6} sm={24} xs={24}>
                     <Breadcrumb>
                         <Breadcrumb.Item>
-                            <Link to="/">Home</Link>
+                            <Link to="/"><FormattedMessage id='home' /></Link>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>Blog</Breadcrumb.Item>
                     </Breadcrumb>
@@ -76,7 +77,7 @@ const BlogList = () => {
                         ghost
                         onClick={() => setActiveTab('all')}
                     >
-                        All
+                        <FormattedMessage id='all' />
                     </Button>
                 </Col>
                 <Col>
@@ -90,7 +91,7 @@ const BlogList = () => {
                         ghost
                         onClick={() => setActiveTab('professional')}
                     >
-                        Professional
+                        <FormattedMessage id='professional' />
                     </Button>
                 </Col>
                 <Col>
@@ -104,7 +105,7 @@ const BlogList = () => {
                         ghost
                         onClick={() => setActiveTab('personal')}
                     >
-                        Personal
+                        <FormattedMessage id='personal' />
                     </Button>
                 </Col>
             </Row>

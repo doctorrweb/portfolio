@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { Row, Col, Button, Typography, notification, Modal } from 'antd'
 import { Link } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { CaretRightFilled, PoweroffOutlined } from '@ant-design/icons'
+import {
+    // CaretRightFilled,
+    // MailOutlined,
+    PoweroffOutlined,
+} from '@ant-design/icons'
 import { useSelector, useDispatch } from 'react-redux'
 import { useCustomModal } from '../helper/utils'
 import LoginForm from './loginForm'
@@ -149,7 +153,7 @@ const MenuContent = () => {
                 marginTop: '2em'
             }}>
                 
-                <Button 
+                {/* <Button 
                     size='large' 
                     style={btnStyle} 
                     icon={<CaretRightFilled />}
@@ -167,15 +171,16 @@ const MenuContent = () => {
                         <FormattedMessage id='submit-project' />
                     </Button>
                 </Link>
-                <br />
-                <Link to='/contact'>
+                <br /> */}
+                <a href={'mailto: doctorrweb@gmail.com'}>
                     <Button size='large'
                         style={btnStyle}
-                        onClick={() => dispatch(showMainMenu(!menuVisibility))}
+                        // icon={<MailOutlined />}
+                        // onClick={() => dispatch(showMainMenu(!menuVisibility))}
                     >
                         <FormattedMessage id='keep-in-touch' />
                     </Button>
-                </Link>
+                </a>
                 <br />
                 {
                     isLoggedIn === false ? null 

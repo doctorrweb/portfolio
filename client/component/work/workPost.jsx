@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { useParams, Link, useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { LinkOutlined, ClockCircleOutlined, StepBackwardOutlined } from '@ant-design/icons'
 import {
     Breadcrumb,
@@ -23,6 +24,7 @@ const { Title, Paragraph, Text } = Typography
 
 const WorkPost = () => {
 
+    const intl = useIntl()
     const dispatch = useDispatch()
     const history = useHistory()
     const { id, postId } = useParams()
@@ -66,18 +68,20 @@ const WorkPost = () => {
             <Fragment>
                 <Row justify="space-between" style={{ margin: '2% 1.5em 0' }}>
                     <Col lg={6} md={6} sm={24} xs={24}>
-                        <Title style={{ color: '#707070' }}>WORK</Title>
+                        <Title style={{ color: '#707070' }}>
+                            {intl.formatMessage({id: 'work'}).toUpperCase()}
+                        </Title>
                     </Col>
                     <Col lg={18} md={18} sm={24} xs={24}>
                         <Breadcrumb>
                             <Breadcrumb.Item>
-                                <Link to="/">Home</Link>
+                                <Link to="/"><FormattedMessage id='home' /></Link>
                             </Breadcrumb.Item>
                             <Breadcrumb.Item>
-                                <Link to="/work">Work</Link>
+                                <Link to="/work"><FormattedMessage id='work' /></Link>
                             </Breadcrumb.Item>
                             <Breadcrumb.Item>
-                                <Link to={`/work/${id}`}>{post.project.title}</Link>
+                                <Link to={`/work/${id}`}>{post.project && post.project.title}</Link>
                             </Breadcrumb.Item>
                             <Breadcrumb.Item>
                                 {post.title}
@@ -88,29 +92,27 @@ const WorkPost = () => {
                 <Row>
                     <Col lg={16} md={16} sm={24} xs={24}>
                         <Title level={2} style={{ color: '#707070' }}>
-                            {' '}
-                            Project: {post.project.title}
+                            {` Project: ${post.project.title}`}
                         </Title>
                         <div>
                             <Text>
-                                <ClockCircleOutlined /> Start Date
+                                <ClockCircleOutlined /> <FormattedMessage id='startdate' />
                             </Text>
                             : {renderDate(post.project.startDate)}
-                            <Text>End Date</Text>: {renderDate(post.project.endDate)}
+                            <Text><FormattedMessage id='enddate' /></Text>: {renderDate(post.project.endDate)}
                         </div>
                         <div>
-                            <Text>Category</Text>:{' '}
-                            <Text strong>{post.project.category}</Text>
+                            <Text><FormattedMessage id='project' /></Text>:
+                            <Text strong>{` ${post.project.category}`}</Text>
                         </div>
                         <div>
                             <Text>
-                                <LinkOutlined /> Link
+                                <LinkOutlined /> <FormattedMessage id='link' />
                             </Text>
                                 :
                             <Text code>
-                                {' '}
                                 <a target="blank" href={post.project.link}>
-                                    {post.project.link}
+                                    {` ${post.project.link}`}
                                 </a>
                             </Text>
                         </div>
@@ -121,10 +123,10 @@ const WorkPost = () => {
                                 icon={<StepBackwardOutlined />}
                                 onClick={() => history.goBack()}
                             >
-                                Back to project
+                                <FormattedMessage id='back-to-project' />
                             </Button>
                         </Divider>
-                        <Divider>Action</Divider>
+                        <Divider><FormattedMessage id='current-step' /></Divider>
                         <Title level={1}>{post.title} </Title>
                         <Tag color="orange">
                             {moment(post.creationDate).format('LL')}
@@ -151,7 +153,7 @@ const WorkPost = () => {
                     </Col>
                     <Col lg={8} md={8} sm={24} xs={24}>
                         <Title level={3} style={{ textAlign: 'center' }}>
-                            Project Timeline
+                            <FormattedMessage id='project-timeline' />
                         </Title>
                         <Divider type="horizontal" />
                         <Timeline mode="left">

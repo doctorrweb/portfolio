@@ -109,7 +109,7 @@ const FormationFormUpdate = ({ itemToUpdate, initialValues }) => {
         const valuesToSend = useValuesToSend(values)
         dispatch(updateTutorial(itemToUpdate, {
             ...valuesToSend,
-            content: content,
+            content: content
         }))
 
         console.log('values to send of form: ', valuesToSend)
@@ -218,7 +218,7 @@ const FormationFormUpdate = ({ itemToUpdate, initialValues }) => {
                 >
                     {images.map(
                         img => (
-                            <Option key={img._id} value={img.path} >
+                            <Option key={img._id} value={img._id} >
                                 <img src={img.path} width={30} /> {` ${img.name}`}
                             </Option>
                         )

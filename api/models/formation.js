@@ -50,7 +50,7 @@ const FormationSchema = new Schema({
         required: true,
         default: 'pending'
     },
-    images: {
+    image: {
         type: Schema.Types.ObjectId,
         ref: 'image'
     },

@@ -1,6 +1,7 @@
 import React, { useEffect, Fragment } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { FormattedMessage } from 'react-intl'
 // import { LinkOutlined, ClockCircleOutlined } from '@ant-design/icons'
 import {
     Breadcrumb,
@@ -36,7 +37,7 @@ const BlogItem = () => {
                     <Col lg={12} md={12} sm={24} xs={24}>
                         <Breadcrumb>
                             <Breadcrumb.Item>
-                                <Link to="/">Home</Link>
+                                <Link to="/"><FormattedMessage id='home' /></Link>
                             </Breadcrumb.Item>
                             <Breadcrumb.Item>
                                 <Link to="/blog">Blog</Link>
@@ -57,7 +58,7 @@ const BlogItem = () => {
                         <Divider type="horizontal" />
                        
                         <div>
-                            <Text>Category</Text>:{' '}
+                            <Text><FormattedMessage id='category' /></Text>:{' '}
                             <Text strong>{post.category}</Text>
                         </div>
                         <Paragraph
