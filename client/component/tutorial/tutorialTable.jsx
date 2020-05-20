@@ -23,12 +23,13 @@ const PostTable = () => {
     }, [])
 
     useEffect(() => {
-        moment.locale(lang)
+        
     }, [lang])
 
     useEffect(() => {
         renderData(tutorials)
-    }, [tutorials])
+        moment.locale(lang)
+    }, [tutorials, lang])
 
     const renderData = (fetchedData) => {
         let tmpData = []
@@ -38,6 +39,8 @@ const PostTable = () => {
                 category: tutorial.category,
                 status: tutorial.status,
                 creationDate: tutorial.creationDate,
+                fr: tutorial.translations && tutorial.translations.fr,
+                de: tutorial.translations && tutorial.translations.de,
                 key: tutorial._id
             }))
         }

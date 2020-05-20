@@ -6,11 +6,9 @@ const Formation = require('../models/formation')
 const postController = {
     create: async (req, res) => {
         try {
-            console.log('postController req.body', req.body)
             const post = new Post(req.body)
             await post.save()
 
-            console.log('postController post created')
 
             //Link the post to the related project
             if (post.project) {
@@ -19,8 +17,6 @@ const postController = {
                 await project.save()
             }
 
-            console.log('postController project post added')
-
             //Link the post to the related formation
             if (post.formation) {
                 const formation = await Formation.findById(post.formation)
@@ -28,13 +24,9 @@ const postController = {
                 await formation.save()
             }
 
-            console.log('postController formation post added')
-
             res.status(201).json(post)
         } catch (error) {
             res.status(400).json({ message: 'Bad Request' })
-            
-            console.log('postController post error', error)
         }
     },
     readAll: async (req, res) => {
@@ -44,6 +36,26 @@ const postController = {
                 .populate({ path: 'image', select: 'path' })
                 .populate({ path: 'formation', select: 'title' })
                 .populate({ path: 'project', select: 'title' })
+                .populate({path: 'translations.fr', select: ['titre', 'content']})
+                .populate({path: 'translations.de', select: ['titre', 'content']})
+
+            res.status(200).json(posts)
+            
+        } catch (error) {
+            res.status(400).json({ message: 'Bad Request' })
+        }
+    },
+    readTranslated: async (req, res) => {
+        try {
+
+            const { lang } = req.body
+
+            const posts = await Post.find({ lang })
+                .populate({ path: 'image', select: 'path' })
+                .populate({ path: 'formation', select: 'title' })
+                .populate({ path: 'project', select: 'title' })
+                .populate({path: 'translations.fr', select: ['titre', 'content']})
+                .populate({path: 'translations.de', select: ['titre', 'content']})
 
             res.status(200).json(posts)
             

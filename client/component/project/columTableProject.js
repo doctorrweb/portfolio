@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Dropdown, Button, Menu, Modal, Tag } from 'antd'
+import { Dropdown, Button, Menu, Modal, Tag, Divider } from 'antd'
 import { DownOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import { useDispatch } from 'react-redux'
 import moment from 'moment'
@@ -57,7 +57,7 @@ const renderAction = (text, record) => {
             </Menu>
         } trigger={['click']}>
             <Button type="primary" ghost >
-                Actions <DownOutlined />
+                <FormattedMessage id="action" /> <DownOutlined />
             </Button>
 
         </Dropdown>
@@ -68,33 +68,46 @@ const renderStatus = (text) => {
     switch (text) {
     case 'trash':
         return (
-            <Tag color="red">{text}</Tag>
+            <Tag color="red"><FormattedMessage id={text} /></Tag>
         )
     case 'active':
         return (
-            <Tag color="green">{text}</Tag>
+            <Tag color="green"><FormattedMessage id={text} /></Tag>
         )
     case 'waiting':
         return (
-            <Tag color="blue">{text}</Tag>
+            <Tag color="blue"><FormattedMessage id={text} /></Tag>
         )
     case 'inprogress':
         return (
-            <Tag color="cyan">{text}</Tag>
+            <Tag color="cyan"><FormattedMessage id={text} /></Tag>
         )
     case 'completed':
         return (
-            <Tag color="green">{text}</Tag>
+            <Tag color="green"><FormattedMessage id={text} /></Tag>
         )
     case 'rejected':
         return (
-            <Tag color="red">{text}</Tag>
+            <Tag color="red"><FormattedMessage id={text} /></Tag>
         )            
     default:
         return (
-            <Tag color="orange">{text}</Tag>
+            <Tag color="orange"><FormattedMessage id={text} /></Tag>
         )
     }
+}
+
+const renderlang = (record) => {
+    return (
+        <div>
+            {(record.de || record.fr) && <img src="/img/lang-en.png" width="20" />}
+            {(record.de || record.fr) && <Divider type="vertical" />}
+            {record.fr && <img src="/img/lang-fr.png" width="20" />}
+            {(record.de && record.fr) && <Divider type="vertical" />}
+            {record.de && <img src="/img/lang-de.png" width="20" />}
+            {!record.de && !record.fr && <Tag color="orange"><FormattedMessage id="not-translated" /></Tag>}
+        </div>
+    )
 }
 
 const renderDate = (value) => {
@@ -110,83 +123,65 @@ const renderDate = (value) => {
 const columns = {
     projectTable: [
         {
-            title: <FormattedMessage id='title' />,
+            title: <FormattedMessage id="title" />,
             width: 150,
             dataIndex: 'title',
             key: 'title',
-            fixed: 'left'
+            fixed: 'left',
         },
         {
-            title: <FormattedMessage id='category' />,
-            width: 75,
-            dataIndex: 'category',
-            key: 'category',
-            filters: [
-                { text: 'graphic', value: 'graphic' },
-                { text: 'edition', value: 'edition' },
-                { text: 'web', value: 'web' },
-                { text: 'mobile', value: 'mobile' },
-                { text: 'desktop', value: 'desktop' },
-                { text: 'undefined', value: 'undefined' }
-            ],
-            onFilter: (value, record) => record.category.includes(value)
-        },
-        {
-            title: <FormattedMessage id='client' />,
-            width: 125,
+            title: <FormattedMessage id="client" />,
+            width: 100,
             dataIndex: 'client',
-            key: 'client'
+            key: 'client',
         },
         {
-            title: <FormattedMessage id='status' />,
-            width: 75,
+            title: <FormattedMessage id="status" />,
+            width: 40,
             dataIndex: 'status',
             key: 'status',
             filters: [
                 { text: 'waiting', value: 'waiting' },
                 { text: 'in progress', value: 'inprogress' },
                 { text: 'completed', value: 'completed' },
-                { text: 'rejected', value: 'rejected' }
+                { text: 'rejected', value: 'rejected' },
             ],
             onFilter: (value, record) => record.status.includes(value),
-            render: (text) => renderStatus(text)
+            render: (text) => renderStatus(text),
         },
         {
-            title: <FormattedMessage id='startdate' />,
-            width: 75,
+            title: <FormattedMessage id="startdate" />,
+            width: 50,
             dataIndex: 'startDate',
             sortDirections: ['ascend', 'descend'],
             sorter: (a, b) => new Date(a.startDate) - new Date(b.startDate),
             key: 'startDate',
-            render: (text, record) => renderDate(record.startDate)
+            render: (text, record) => renderDate(record.startDate),
         },
         {
-            title: <FormattedMessage id='enddate' />,
-            width: 75,
+            title: <FormattedMessage id="enddate" />,
+            width: 50,
             dataIndex: 'endDate',
             sortDirections: ['ascend', 'descend'],
             sorter: (a, b) => new Date(a.endDate) - new Date(b.endDate),
             key: 'endDate',
-            render: (text, record) => renderDate(record.endDate)
+            render: (text, record) => renderDate(record.endDate),
         },
         {
-            title: <FormattedMessage id='creationdate' />,
-            width: 75,
-            dataIndex: 'creationDate',
-            key: 'creationDate',
-            sorter: (a, b) => new Date(a.creationDate) - new Date(b.creationDate),
-            sortDirections: ['ascend', 'descend'],
-            defaultSortOrder: 'descend',
-            render: (text, record) => moment(record.creationDate).format('LLL')
+            title: <FormattedMessage id="lang" />,
+            width: 50,
+            dataIndex: ['fr', 'de'],
+            key: 'lang',
+            render: (text, record) => renderlang(record),
         },
         {
-            title: <FormattedMessage id='action' />,
+            title: <FormattedMessage id="action" />,
             key: 'operation',
             fixed: 'right',
-            width: 75,
-            render: (text, record) => renderAction(text, record)
+            width: 60,
+            render: (text, record) => renderAction(text, record),
         },
-    ]
+    ],
 }
 
 export default columns

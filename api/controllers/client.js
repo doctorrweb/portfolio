@@ -16,6 +16,9 @@ const clientController = {
     readAll: async (req, res) => {
         try {
             const clients = await Client.find({})
+                .populate({path: 'translations.fr', select: ['name', 'description']})
+                .populate({path: 'translations.de', select: ['name', 'description']})
+
             res.status(200).json(clients)
         } catch (error) {
             res.status(400).json({ message: 'Bad Request' })
@@ -25,6 +28,9 @@ const clientController = {
         try {
             const { id } = req.params
             const client = await Client.findById(id)
+                .populate({path: 'translations.fr', select: ['name', 'description']})
+                .populate({path: 'translations.de', select: ['name', 'description']})
+                
             res.status(200).json(client)
         } catch (error) {
             res.status(400).json({ message: 'Bad Request' })

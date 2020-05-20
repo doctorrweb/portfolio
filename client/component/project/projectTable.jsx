@@ -15,13 +15,9 @@ const ProjectTable = () => {
     const projects = useSelector(state => state.projects.projects)
 
     useEffect(() => {
-        moment.locale(lang)
-    }, [lang])
-
-    useEffect(() => {
         renderData(projects)
-    }, [projects])
-
+        moment.locale(lang)
+    }, [projects, lang])
 
     const renderData = (fetchedData) => {
         let tmpData = []
@@ -34,6 +30,8 @@ const ProjectTable = () => {
                     status: project.status,
                     startDate: project.startDate,
                     endDate: project.endDate,
+                    fr: project.translations && project.translations.fr,
+                    de: project.translations && project.translations.de,
                     key: project._id,
                 })
             )

@@ -78,8 +78,6 @@ const ImageForm = () => {
     }
 
     const onFinish = values => {
-        console.log('onFinish values: ', values.images)
-        console.log('onFinish CustomFileList: ', CustomFileList)
         let imageFormData = new FormData()
         const images = values.images.fileList
         images.map(image => {
@@ -98,8 +96,6 @@ const ImageForm = () => {
     }
 
     const beforeUpload = (file, fileList) => {
-        console.log('beforeUpload file', file)
-        console.log('beforeUpload fileList', fileList)
         setCustomFileList([...CustomFileList, ...fileList])
         return false
     }
@@ -110,16 +106,14 @@ const ImageForm = () => {
     } 
 
     const onChange = (info) => {
-        console.log('info', info)
-        //setCustomFileList([...CustomFileList, ...info.fileList])
         const { status } = info.file
         if (status !== 'uploading') {
-            console.log(info.file, info.fileList)
+            //
         }
         if (status === 'done') {
-            console.log(`${info.file.name} file uploaded successfully.`)
+            //
         } else if (status === 'error') {
-            console.log(`${info.file.name} file upload failed.`)
+            //
         }
     }
 

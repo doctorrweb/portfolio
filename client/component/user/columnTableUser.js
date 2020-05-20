@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Dropdown, Button, Menu, Modal } from 'antd'
 import { DownOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { deleteUser } from '../../action/user'
 import { ModalUserFormProvider } from '../../helper/modalFormProvider'
 
@@ -14,6 +14,7 @@ const renderAction = (text, record) => {
     const dispatch = useDispatch()
 
     const modalForm = useContext(ModalUserFormProvider)
+    const me = useSelector(state => state.currentUser.user)
 
     const showConfirm = () => {
         confirm({
@@ -54,13 +55,14 @@ const renderAction = (text, record) => {
                 <Menu.Item
                     key="3"
                     onClick={() => showConfirm(record.key)}
+                    disabled={record.key == me.sub}
                 >
                     <FormattedMessage id='delete' />
                 </Menu.Item>
             </Menu>
         } trigger={['click']}>
             <Button type="primary" ghost >
-                Actions <DownOutlined />
+                <FormattedMessage id="action" /> <DownOutlined />
             </Button>
 
         </Dropdown>

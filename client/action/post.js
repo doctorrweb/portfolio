@@ -1,6 +1,7 @@
 import {
     CREATE_POST,
     READALL_POST,
+    READTRANSLATED_POSTS,
     READ_POST,
     UPDATE_POST,
     DELETE_POST
@@ -26,6 +27,7 @@ export function createPost(post) {
             data: post,
         })
             .then(response => {
+
                 dispatch({
                     type: CREATE_POST,
                     payload: response.data
@@ -33,7 +35,6 @@ export function createPost(post) {
                 dispatch(parseResponse(response.status))
             })
             .catch((error) => {
-                console.log(error)
                 dispatch(parseError(error.response))
             })
     }
@@ -52,6 +53,25 @@ export function readAllPosts() {
                 })
             })
 
+            .catch((error) => {
+                dispatch(parseError(error.response))
+            })
+    }
+}
+
+export function readTranslatedPosts(lang) {
+    return function (dispatch) {
+        axios({
+            method: 'get',
+            url: `${BASE_URL}/posts`,
+            data: lang
+        })
+            .then((response) => {
+                dispatch({
+                    type: READTRANSLATED_POSTS,
+                    payload: response.data.filter((post) => post.lang === lang)
+                })
+            })
             .catch((error) => {
                 dispatch(parseError(error.response))
             })
@@ -78,7 +98,6 @@ export function readPost(postId) {
 }
 
 export function updatePost(postId, updatedContent) {
-    console.log('updatedContent', updatedContent)
     return function (dispatch) {
         dispatch(resetResponse())
         dispatch(parseRequestType('update-post'))
@@ -88,7 +107,6 @@ export function updatePost(postId, updatedContent) {
             data: updatedContent,
         })
             .then((response) => {
-                console.log('response', response.data)
                 dispatch({
                     type: UPDATE_POST,
                     payload: postId
@@ -97,7 +115,6 @@ export function updatePost(postId, updatedContent) {
                 dispatch(parseResponse(response.status))
             })
             .catch((error) => {
-                console.log('error', error)
                 dispatch(parseError(error.response))
             })
     }
@@ -114,7 +131,6 @@ export function deletePost(postId) {
             url: `${BASE_URL}/posts/${postId}`
         })
             .then((response) => {
-                console.log('response.data', response.data)
                 dispatch({
                     type: DELETE_POST,
                     payload: postId
@@ -127,61 +143,3 @@ export function deletePost(postId) {
     }
 
 }
-/*
-export function creatEntryFormOffer(entry, history) {
-    return function (dispatch) {
-        console.log('entry', entry)
-        axios.all([
-            axios.post(`${BASE_URL}/newEntry`, entry),
-            axios.put(`${BASE_URL}/workflows/${entry.workflow}`, { status: 'hrAdministration' })
-        ])
-            .then(axios.spread((entryResponse, workflowResponse) => {
-                console.log('workflowResponse', workflowResponse)
-                console.log('entreyResponse', entryResponse)
-                dispatch({
-                    type: CREATE_ENTRY,
-                    payload: entryResponse.data
-                })
-                dispatch({
-                    type: UPDATE_WORKFLOW,
-                    payload: entry.workflow
-                })
-                dispatch(parseResponse(entryResponse.status))
-                history.push('/dashboard/offers')
-            }))
-            .catch((error) => {
-                console.log(error)
-                dispatch(parseError(error.response))
-                history.push('/')
-            })
-    }
-
-}
-
-
-
-
-
-export function getEntry(id) {
-    return function (dispatch) {
-        axios({
-            method: 'get',
-            url: `${BASE_URL}/entries/${id}`
-        })
-            .then((response) => {
-                dispatch({
-                    type: GET_ENTRY,
-                    payload: response.data
-                })
-                dispatch(parseResponse(response.status))
-            })
-            .catch((error) => {
-                dispatch(parseError(error.response))
-            })
-    }
-
-}
-
-
-*/
-

@@ -26,7 +26,9 @@ const projectController = {
             const projects = await Project.find({})
                 .populate({path: 'image', select: 'path'})
                 .populate({path: 'client', select: ['name', 'description']})
-                .populate({path: 'posts', select: ['title', 'projectStep', 'creationDate']})
+                .populate({path: 'posts', select: ['title', 'projectStep', 'creationDate', 'translations.fr', 'translations.de']})
+                .populate({path: 'translations.fr', select: ['title', 'description']})
+                .populate({path: 'translations.de', select: ['title', 'description']})
 
             res.status(200).json(projects)
             
@@ -41,6 +43,8 @@ const projectController = {
                 .populate({path: 'image', select: 'path'})
                 .populate({path: 'client', select: ['name', 'description']})
                 .populate({path: 'posts', select: ['title', 'projectStep', 'creationDate']})
+                .populate({path: 'translations.fr', select: ['title', 'description']})
+                .populate({path: 'translations.de', select: ['title', 'description']})
 
             res.status(200).json(project)
         } catch (error) {
@@ -113,7 +117,6 @@ const projectController = {
                     
                 // Delete Posts related to the project 
                 await Post.deleteMany({ project: { $in: id } }, (err, data) => {
-                    console.log('Post.deleteMany in project data', data)
                     err ? res.status(500).send(err) : Object.assign(response, { posts: data.n })
                 })
                     

@@ -33,7 +33,6 @@ export function createClient(client) {
                 dispatch(parseResponse(response.status))
             })
             .catch((error) => {
-                console.log(error)
                 dispatch(parseError(error.response))
             })
     }
@@ -46,7 +45,6 @@ export function readAllClients() {
             url: `${BASE_URL}/clients`
         })
             .then((response) => {
-                //console.log(response.data)
                 dispatch({
                     type: READALL_CLIENT,
                     payload: response.data

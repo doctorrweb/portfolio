@@ -26,7 +26,7 @@ const DashboardUser = () => {
     const [modalVisibilityUpdate, setModalVisibilityUpdate] = useState(false)
     const [modalVisibilityCreate, setModalVisibilityCreate] = useState(false)
     const [itemToUpdate, setItemToUpdate] = useState('')
-
+    
     useEffect(() => {
         dispatch(readAllUsers())
     }, [])
@@ -34,6 +34,17 @@ const DashboardUser = () => {
     useEffect(() => {
         renderModalUpdate()
     }, [modalVisibilityUpdate])
+
+    useEffect(() => {
+        if (requestType === 'create-user') {
+            setModalVisibilityCreate(false)
+            //dispatch(readAllPosts())
+        }
+        if (requestType === 'update-user') {
+            setModalVisibilityUpdate(false)
+        }
+        dispatch(readAllUsers())
+    }, [requestType])
 
     useEffect(() => {
         requestNotification()

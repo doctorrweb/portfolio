@@ -1,37 +1,20 @@
 import {
-    CREATE_USER,
     READALL_USER,
     UPDATE_USER,
-    DELETE_USER
+    DELETE_USER,
 } from './action-type'
 import axios from 'axios'
-import { parseResponse, parseError } from './index'
+import {
+    parseResponse,
+    parseError,
+    parseRequestType,
+    resetResponse,
+} from './index'
 
 const BASE_URL = 'http://localhost:3000/api'
 
 
-export function createUser(user) {
-    return function (dispatch) {
-
-        axios({
-            method: 'post',
-            url: `${BASE_URL}/users`,
-            data: user,
-            //config: { headers: { 'Content-Type': 'multipart/form-data' } }
-        })
-            .then(response => {
-                dispatch({
-                    type: CREATE_USER,
-                    payload: response.data
-                })
-                dispatch(parseResponse(response.status))
-            })
-            .catch((error) => {
-                console.log(error)
-                dispatch(parseError(error.response))
-            })
-    }
-}
+// use the logonUser function to create a new user
 
 export function readAllUsers() {
     return function (dispatch) {
@@ -40,7 +23,6 @@ export function readAllUsers() {
             url: `${BASE_URL}/users`
         })
             .then((response) => {
-                //console.log(response.data)
                 dispatch({
                     type: READALL_USER,
                     payload: response.data
@@ -57,6 +39,8 @@ export function readAllUsers() {
 
 export function updateUser(userId, updatedContent) {
     return function (dispatch) {
+        dispatch(resetResponse())
+        dispatch(parseRequestType('update-user'))
         axios({
             method: 'put',
             url: `${BASE_URL}/users/${userId}`,

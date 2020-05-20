@@ -39,14 +39,8 @@ const WorkPost = () => {
     useEffect(() => {
         dispatch(readPost(postId))
         dispatch(readOneProject(id))
-
-        console.log('project', project)
-        console.log('postId', postId)
     }, [])
 
-    useEffect(() => {
-        console.log('project', project)
-    }, [])
     
     useEffect(() => {
         dispatch(readPost(newPostId))

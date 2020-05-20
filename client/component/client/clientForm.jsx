@@ -88,7 +88,6 @@ const ClientForm = () => {
     // handle ModalMediaBox Visibility
 
     const hideModalImageBox = () => {
-        console.log('visibleMediaBox', visibleMediaBox)
         setVisibleMediaBox(false)
     }
     // handle ModalMediaBox Visibility

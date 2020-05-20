@@ -8,7 +8,6 @@ import {
 } from 'antd'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
-import { UploadOutlined } from '@ant-design/icons'
 import { logonUser, resetError, resetResponse, resetRequestType } from '../../action'
 
 const { Option } = Select
@@ -193,17 +192,6 @@ const UserForm = () => {
                 </Select>
             </Form.Item>
 
-            <Form.Item
-                name="image"
-                label={
-                    <span><FormattedMessage id='image' /></span>
-                }
-            >
-                <Button>
-                    <UploadOutlined /> <FormattedMessage id='click-upload' />
-                </Button>
-            </Form.Item>
-
             <Form.Item shouldUpdate={true} {...tailFormItemLayout}>
                 {() => (
                     <Button
@@ -211,7 +199,11 @@ const UserForm = () => {
                         type="primary"
                         htmlType="submit"
                         disabled={
-                            !form.isFieldsTouched(true) ||
+                            !form.isFieldsTouched([
+                                'email',
+                                'password',
+                                'confirm'
+                            ]) ||
                             form.getFieldsError().filter(({ errors }) => errors.length).length
                         }
                     >

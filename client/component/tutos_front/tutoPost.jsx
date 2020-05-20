@@ -48,13 +48,8 @@ const TutoPost = () => {
         dispatch(readPost(postId))
         dispatch(readOneTutorial(id))
 
-        console.log('tutorial', tutorial)
-        console.log('postId', postId)
     }, [])
 
-    useEffect(() => {
-        console.log('project', tutorial)
-    }, [])
 
     useEffect(() => {
         dispatch(readPost(newPostId))

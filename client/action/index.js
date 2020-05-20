@@ -100,12 +100,10 @@ export function resetRequestType() {
 }
 
 export function loginUser(user) {
-    console.log('user', user)
     return function(dispatch) {
         axios
             .post(`${BASE_URL}/signin`, user)
             .then(response => {
-                console.log('response', response)
                 const { token } = response.data
                 localStorage.setItem('token', token)
                 setAuthorizationToken(token)
@@ -114,15 +112,15 @@ export function loginUser(user) {
                 dispatch(parseResponse(response.status))
             })
             .catch(error => {
-                console.log('error.response', error.response)
                 dispatch(parseError(error.response.status))
             })
     }
 }
 
 export function logonUser(user) {
-    console.log('logonUser user', user)
     return function(dispatch) {
+        dispatch(resetResponse())
+        dispatch(parseRequestType('create-user'))
         axios
             .post(`${BASE_URL}/signup`, user)
             .then(response => {

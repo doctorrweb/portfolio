@@ -22,6 +22,7 @@ export const DELETE_USER = 'DELETE_USER'
 // Settings Post Types
 export const CREATE_POST = 'CREATE_POST'
 export const READALL_POST = 'READALL_POST'
+export const READTRANSLATED_POSTS = 'READTRANSLATED_POSTS'
 export const READ_POST = 'READ_POST'
 export const UPDATE_POST = 'UPDATE_POST'
 export const DELETE_POST = 'DELETE_POST'
@@ -46,12 +47,19 @@ export const READ_TUTORIAL = 'READ_TUTORIAL'
 export const UPDATE_TUTORIAL = 'UPDATE_TUTORIAL'
 export const DELETE_TUTORIAL = 'DELETE_TUTORIAL'
 
-// Settings Tutorial Types
+// Settings Translation Types
+export const CREATE_TRANSLATION = 'CREATE_TRANSLATION'
+export const READALL_TRANSLATION = 'READALL_TRANSLATION'
+export const READ_TRANSLATION = 'READ_TRANSLATION'
+export const UPDATE_TRANSLATION = 'UPDATE_TRANSLATION'
+export const DELETE_TRANSLATION = 'DELETE_TRANSLATION'
+
+// Settings Image Types
 export const ADD_IMAGE = 'ADD_IMAGE'
 export const READALL_IMAGE = 'READALL_IMAGE'
 export const DELETE_IMAGE = 'DELETE_IMAGE'
 
-// Settings Tutorial Types
+// Settings Video Types
 export const ADD_VIDEO = 'ADD_VIDEO'
 export const READALL_VIDEO  = 'READALL_VIDEO'
 export const DELETE_VIDEO = 'DELETE_VIDEO'

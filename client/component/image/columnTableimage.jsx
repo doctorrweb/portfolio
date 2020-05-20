@@ -52,7 +52,7 @@ const renderAction = (text, record) => {
             </Menu>
         } trigger={['click']}>
             <Button type="primary" ghost >
-                Actions <DownOutlined />
+                <FormattedMessage id="action" /> <DownOutlined />
             </Button>
 
         </Dropdown>
@@ -79,8 +79,8 @@ const columns = [
         }
     },
     {
-        title: 'Preview',
-        width: 35,
+        title: <FormattedMessage id="preview" />,
+        width: 25,
         dataIndex: 'preview',
         key: 'preview',
         render(text, record) {
@@ -91,19 +91,19 @@ const columns = [
     },
     {
         title: <FormattedMessage id='creationdate' />,
-        width: 60,
+        width: 50,
         dataIndex: 'creationDate',
         key: 'creationDate',
         sorter: (a, b) => new Date(a.creationDate) - new Date(b.creationDate),
         sortDirections: ['ascend', 'descend'],
         defaultSortOrder: 'descend',
-        render: (text, record) => moment(record.creationDate).format('LLL')
+        render: (text, record) => moment(record.creationDate).format('LL')
     },
     {
         title: <FormattedMessage id='action' />,
         key: 'operation',
         fixed: 'right',
-        width: 50,
+        width: 40,
         render: (text, record) => renderAction(text, record)
     }
 ]

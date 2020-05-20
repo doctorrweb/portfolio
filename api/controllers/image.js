@@ -4,7 +4,6 @@ const Image = require('../models/image')
 const imageController = {
     create: async (req, res) => {
         try {
-            console.log('req.files', req.files)
             let images = []
 
             await req.files.map(file => {

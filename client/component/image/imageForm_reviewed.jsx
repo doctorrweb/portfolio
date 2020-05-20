@@ -73,14 +73,12 @@ const ImageForm = () => {
     }
 
     const onFinish = values => {
-        console.log('values: ', values)
         let imageFormData = new FormData()
         const images = values.images.fileList
         images.map(image => {
             imageFormData.append('images', image.originFileObj)
         })
         dispatch(addImage(imageFormData))
-        console.log('Received values of form: ', imageFormData)
         form.resetFields()
     }
 
@@ -93,23 +91,19 @@ const ImageForm = () => {
     }
 
     const beforeUpload = (file, fileList) => {
-        console.log('file', file)
-        console.log('fileList', fileList)
         setCustomFileList([...CustomFileList, ...fileList])
         return false
     }
 
     const onChange = (info) => {
-        console.log('info', info)
-        //setCustomFileList([...CustomFileList, ...info.fileList])
         const { status } = info.file
         if (status !== 'uploading') {
-            console.log(info.file, info.fileList)
+            //
         }
         if (status === 'done') {
-            console.log(`${info.file.name} file uploaded successfully.`)
+            //
         } else if (status === 'error') {
-            console.log(`${info.file.name} file upload failed.`)
+            //
         }
     }
 

@@ -9,6 +9,7 @@ import {
 import { Breadcrumb, Layout, Row, Col, Divider, Timeline, Typography, Tag } from 'antd'
 import moment from 'moment'
 import { readOneProject } from '../../action/project'
+import { readAllPosts } from '../../action/post'
 
 
 const { Content } = Layout
@@ -21,11 +22,21 @@ const WorkItem = () => {
     const { id } = useParams()
 
     const project = useSelector(state => state.projects.projects[0])
+    const posts = useSelector(state => state.posts.posts)
+    const lang = useSelector(state => state.locale.lang)
     
     useEffect(() => {
+        console.log('project', project)
+    })
+    
+    useEffect(() => {
+        dispatch(readAllPosts())
         dispatch(readOneProject(id))
     }, [])
-    
+
+    useEffect(() => {
+        relatedPostlist(lang)
+    }, [lang])
 
     const renderDate = (value) => {
         if (value !== null) {
@@ -37,14 +48,19 @@ const WorkItem = () => {
         }
     }
 
+    const relatedPostlist = () => {
+        const list = posts.filter(post => post.project === id)
+        return list
+    }
+
     const renderContent = () => {
         return (
             <Fragment>
                 <Row justify="space-between" style={{ margin: '2% 1.5em 0' }}>
-                    <Col lg={14} md={14} sm={24} xs={24}>
+                    <Col lg={6} md={6} sm={24} xs={24}>
                         <Title style={{ color: '#707070' }}>{intl.formatMessage({ id: 'work' }).toUpperCase()}</Title>
                     </Col>
-                    <Col lg={6} md={6} sm={24} xs={24}>
+                    <Col lg={14} md={14} sm={24} xs={24}>
                         <Breadcrumb>
                             <Breadcrumb.Item>
                                 <Link to="/">{intl.formatMessage({id: 'home'})}</Link>
@@ -52,13 +68,17 @@ const WorkItem = () => {
                             <Breadcrumb.Item>
                                 <Link to="/work">{intl.formatMessage({id: 'work'})}</Link>
                             </Breadcrumb.Item>
-                            <Breadcrumb.Item>{project.title}</Breadcrumb.Item>
+                            <Breadcrumb.Item>
+                                {project.translations && project.translations[lang] ? project.translations[lang].title : project.title }
+                            </Breadcrumb.Item>
                         </Breadcrumb>
                     </Col>
                 </Row>
                 <Row>
                     <Col lg={16} md={24} sm={24} xs={24}>
-                        <Title>{project.title}</Title>
+                        <Title>
+                            {project.translations && project.translations[lang] ? project.translations[lang].title : project.title }
+                        </Title>
                         <img
                             src={project.image.path}
                             width="90%"
@@ -103,7 +123,7 @@ const WorkItem = () => {
                                 textAlign: 'justify',
                             }}
                         >
-                            {project.description}
+                            {project.translations && project.translations[lang] ? project.translations[lang].description : project.description }
                         </Paragraph>
                     </Col>
                     <Col lg={8} md={24} sm={24} xs={24}>

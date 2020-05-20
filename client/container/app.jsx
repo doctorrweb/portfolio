@@ -14,7 +14,9 @@ import Dashboard from './dashboard'
 import CustomFooter from './customFooter'
 import MainMenu from '../component/mainMenu'
 import Home from './home'
-import messages from '../translation/'
+import en from '../translation/en.json'
+import fr from '../translation/fr.json'
+import de from '../translation/de.json'
 
 const { Header } = Layout
 
@@ -24,12 +26,12 @@ const App = () => {
     const lang = useSelector(state => state.locale.lang)
 
     return (
-        <IntlProvider locale={lang} messages={messages[lang]}>
+        <IntlProvider locale={lang} messages={
+            lang === 'fr' ? fr
+                : lang === 'de' ? de
+                    : en
+        }>
             <Layout
-                style={{
-                    minHeight: 0,
-                    // backgroundColor: 'transparent'
-                }}
             >
                 <Header
                     style={{

@@ -19,8 +19,6 @@ const tailLayout = {
     },
 }
 
-
-
 const LoginForm = () => {
 
     const [form] = Form.useForm()

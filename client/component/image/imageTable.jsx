@@ -20,12 +20,9 @@ const ImageTable = ({images}) => {
     }, [])
 
     useEffect(() => {
-        moment.locale(lang)
-    }, [lang])
-
-    useEffect(() => {
         renderData(images)
-    }, [images])
+        moment.locale(lang)
+    }, [images, lang])
 
     const renderData = (fetchedData) => {
         let tmpData = []

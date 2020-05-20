@@ -20,12 +20,9 @@ const VideoTable = ({ videos }) => {
     }, [])
 
     useEffect(() => {
-        moment.locale(lang)
-    }, [lang])
-
-    useEffect(() => {
         renderData(videos)
-    }, [videos])
+        moment.locale(lang)
+    }, [videos, lang])
 
     const renderData = (fetchedData) => {
         let tmpData = []

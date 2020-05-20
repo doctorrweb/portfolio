@@ -89,19 +89,7 @@ const FormationForm = () => {
         setContent(value)
     }
 
-    // const onFinish = values => {
-    //     const valuesToSend = useValuesToSend(values)
-    //     dispatch(createTutorial({
-    //         title: valuesToSend.title,
-    //         content: content,
-    //         category: valuesToSend.category
-    //     }))
-    //     setContent('')
-    //     form.resetFields()
-    // }
-
     const onFinish = values => {
-        console.log('values', values)
         dispatch(createTutorial({
             ...values,
             content: content

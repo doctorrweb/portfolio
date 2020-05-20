@@ -16,6 +16,7 @@ import ClientReducer from './client'
 import TutorialReducer from './tutorial'
 import ImageReducer from './image'
 import VideoReducer from './video'
+import TranslationReducer from './translation'
 
 const rootReducer = combineReducers({
     authentication: AuthenticationReducer,
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
     projects: ProjectReducer,
     clients: ClientReducer,
     tutorials: TutorialReducer,
+    translations: TranslationReducer,
     images: ImageReducer,
     videos: VideoReducer
     //form

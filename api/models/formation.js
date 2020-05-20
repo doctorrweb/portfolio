@@ -65,7 +65,23 @@ const FormationSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'post'
         }
-    ]
+    ],
+    lang: {
+        type: String,
+        lowercase: true,
+        default: 'en',
+        required: true
+    },
+    translations: {
+        fr: {
+            type: Schema.Types.ObjectId,
+            ref: 'translation'
+        },
+        de: {
+            type: Schema.Types.ObjectId,
+            ref: 'translation'
+        }
+    }
 })
 
 const Formation = mongoose.model('formation', FormationSchema)

@@ -5,11 +5,11 @@ const Project = require('../models/project')
 const ClientSchema = new Schema({
     name: {
         type: String,
-        required: true
+        required: true,
     },
     image: {
         type: Schema.Types.ObjectId,
-        ref: 'image'
+        ref: 'image',
     },
     description: {
         type: String,
@@ -25,16 +25,26 @@ const ClientSchema = new Schema({
             'organisation',
             'government',
             'ngo',
-            'other'
+            'other',
         ],
-        default: 'other'
+        default: 'other',
     },
     projects: [
         {
             type: Schema.Types.ObjectId,
-            ref: 'project'
-        }
-    ]
+            ref: 'project',
+        },
+    ],
+    translations: {
+        fr: {
+            type: Schema.Types.ObjectId,
+            ref: 'translation',
+        },
+        de: {
+            type: Schema.Types.ObjectId,
+            ref: 'translation',
+        },
+    },
 })
 
 ClientSchema.pre('findOneAndDelete', next => {

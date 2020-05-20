@@ -5,6 +5,7 @@ const ModalProjectFormProvider = React.createContext(false)
 const ModalClientFormProvider = React.createContext(false)
 const ModalTutorialFormProvider = React.createContext(false)
 const ModalUserFormProvider = React.createContext(false)
+const ModalTranslationFormProvider = React.createContext(false)
 const ModalImageFormProvider = React.createContext(false)
 const ModalVideoFormProvider = React.createContext(false)
 
@@ -15,6 +16,7 @@ export {
     ModalProjectFormProvider,
     ModalClientFormProvider,
     ModalTutorialFormProvider,
+    ModalTranslationFormProvider,
     ModalUserFormProvider,
     ModalImageFormProvider,
     ModalVideoFormProvider

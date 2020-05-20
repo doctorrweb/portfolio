@@ -83,8 +83,6 @@ const VideoForm = () => {
 
     const onFinish = values => {
 
-        console.log('values', values)
-
         if (provider === 'local') {
             let videoFormData = new FormData()
             const videos = values.videos.fileList
@@ -120,16 +118,14 @@ const VideoForm = () => {
     }
 
     const onChange = (info) => {
-        console.log('info', info)
-        //setCustomFileList([...CustomFileList, ...info.fileList])
         const { status } = info.file
         if (status !== 'uploading') {
-            console.log(info.file, info.fileList)
+            //
         }
         if (status === 'done') {
-            console.log(`${info.file.name} file uploaded successfully.`)
+            //
         } else if (status === 'error') {
-            console.log(`${info.file.name} file upload failed.`)
+            //
         }
     }
 

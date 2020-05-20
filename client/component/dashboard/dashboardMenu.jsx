@@ -10,8 +10,8 @@ import {
     PictureFilled,
     YoutubeFilled,
     ProfileFilled,
-    SettingFilled,
-    DashboardFilled
+    DashboardFilled,
+    TranslationOutlined
 } from '@ant-design/icons'
 
 const DashboardMenu = () => {
@@ -75,9 +75,9 @@ const DashboardMenu = () => {
                 </Link>
             </Menu.Item>
             <Menu.Item key="9">
-                <Link to='/dashboard/settings'>
-                    <SettingFilled />
-                    <FormattedMessage id='settings' />
+                <Link to='/dashboard/translations'>
+                    <TranslationOutlined />
+                    <FormattedMessage id='translation' />
                 </Link>
             </Menu.Item>
         </Menu>

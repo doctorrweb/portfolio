@@ -95,15 +95,19 @@ const PostSchema = new Schema({
     lang: {
         type: String,
         lowercase: true,
-        enum: ['en', 'fr', 'de'],
+        default: 'en',
         required: true
     },
-    translations: [
-        {
+    translations: {
+        fr: {
             type: Schema.Types.ObjectId,
-            ref: 'post'
+            ref: 'translation'
+        },
+        de: {
+            type: Schema.Types.ObjectId,
+            ref: 'translation'
         }
-    ]
+    }
 })
 
 PostSchema.pre('findOneandDelete', next => {

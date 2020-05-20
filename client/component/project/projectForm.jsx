@@ -104,8 +104,6 @@ const ProjectForm = () => {
     }
 
     const endDateHandler = (value, dateString) => {
-        console.log('Selected Time end Date: ', value)
-        console.log('Formatted Selected Time: ', dateString)
         setEndDate(value)
     }
 
@@ -116,9 +114,6 @@ const ProjectForm = () => {
     } 
 
     const onFinish = (values) => {
-
-        // const { title, client, category, Link, image } = values
-        console.log('values', values)
         
         dispatch(
             createProject({

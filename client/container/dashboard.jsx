@@ -8,7 +8,7 @@ import DashboardClient from '../component/client/dashboardClient'
 import DashboardTutorial from '../component/tutorial/dashboardTutorial'
 import DashboardImage from '../component/image/dashboardImage'
 import DashboardVideo from '../component/video/dashboardVideo'
-import DashboardSettings from '../component/settings/dashboardSettings'
+import DashboardTranslation from '../component/translation/dashboardTranslations'
 import DashboardUser from '../component/user/dashboardUser'
 
 const { Sider, Content } = Layout
@@ -55,8 +55,8 @@ const Dashboard = () => {
                         <Route exact path='/dashboard/users'>
                             <DashboardUser />
                         </Route>
-                        <Route exact path='/dashboard/settings'>
-                            <DashboardSettings />
+                        <Route exact path='/dashboard/translations'>
+                            <DashboardTranslation />
                         </Route>
                     </Switch>
                 </Router>

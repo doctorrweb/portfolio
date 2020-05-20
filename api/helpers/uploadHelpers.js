@@ -1,28 +1,5 @@
 const multer = require('multer')
 
-/*
-
-
-const storage = multer.diskStorage({
-    destination: function (req, file, callback) {
-        console.log('req.files multer destination', req.files)
-        console.log('file multer destination', file)
-        callback(null, 'public/uploads/')
-    },
-    filename: function (req, file, callback) {
-        console.log('req.files multer filename', req.files)
-        console.log('file multer filename', file)
-        callback(null, file.fieldname + '-' + Date.now())
-    }
-})
-
-const upload = multer({ storage })
-
-module.exports = upload
-
-
-*/
-
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         if (file.mimetype.includes('video')) {

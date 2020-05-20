@@ -11,6 +11,7 @@ const postRouter = express.Router()
 
 postRouter.route('/posts')
     .get(postController.readAll)
+    .get(postController.readTranslated)
     .post(jwtAuthentication, authorize('manager', 'administrator'), postController.create)
 
 postRouter.route('/posts/:id')

@@ -68,6 +68,22 @@ const ProjectSchema = new Schema({
     image: {
         type: Schema.Types.ObjectId,
         ref: 'image'
+    },
+    lang: {
+        type: String,
+        lowercase: true,
+        default: 'en',
+        required: true
+    },
+    translations: {
+        fr: {
+            type: Schema.Types.ObjectId,
+            ref: 'translation'
+        },
+        de: {
+            type: Schema.Types.ObjectId,
+            ref: 'translation'
+        }
     }
 })
 

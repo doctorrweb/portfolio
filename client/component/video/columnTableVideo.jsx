@@ -53,7 +53,7 @@ const renderAction = (text, record) => {
             </Menu>
         } trigger={['click']}>
             <Button type="primary" ghost >
-                Actions <DownOutlined />
+                <FormattedMessage id="action" /> <DownOutlined />
             </Button>
 
         </Dropdown>
@@ -87,7 +87,7 @@ const columns = [
         sorter: (a, b) => new Date(a.creationDate) - new Date(b.creationDate),
         sortDirections: ['ascend', 'descend'],
         defaultSortOrder: 'descend',
-        render: (text, record) => moment(record.creationDate).format('LLL')
+        render: (text, record) => moment(record.creationDate).format('LL')
     },
     {
         title: 'Provider',

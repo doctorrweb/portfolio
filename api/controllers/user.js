@@ -13,7 +13,7 @@ const getToken = user => {
     return jwt.encode(
         {
             sub: user.id,
-            name: user.surname,
+            surname: user.surname,
             firstname: user.firstname,
             iat: timeStamp,
             exp: expirationDate,
@@ -71,7 +71,6 @@ const userController = {
         try {
             res.status(200).json({ token: getToken(req.user) })
         } catch (error) {
-            //console.log(error)
             res.status(400).json({ message: 'Bad Request' })
         }
     },

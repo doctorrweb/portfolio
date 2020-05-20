@@ -23,22 +23,27 @@ const ClientTable = () => {
     }, [])
 
     useEffect(() => {
-        moment.locale(lang)
+        
     }, [lang])
 
     useEffect(() => {
         renderData(clients)
-    }, [clients])
+        moment.locale(lang)
+    }, [clients, lang])
 
     const renderData = (fetchedData) => {
         let tmpData = []
         if (fetchedData !== undefined) {
-            fetchedData.map(client => tmpData.push({
-                name: client.name,
-                description: client.description,
-                category: client.category,
-                key: client._id
-            }))
+            fetchedData.map((client) =>
+                tmpData.push({
+                    name: client.name,
+                    description: client.description,
+                    category: client.category,
+                    fr: client.translations && client.translations.fr,
+                    de: client.translations && client.translations.de,
+                    key: client._id,
+                })
+            )
         }
         setData(tmpData)
     }

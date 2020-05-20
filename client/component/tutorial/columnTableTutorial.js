@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Dropdown, Button, Menu, Modal, Tag } from 'antd'
+import { Dropdown, Button, Menu, Modal, Tag, Divider } from 'antd'
 import { DownOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import { useDispatch } from 'react-redux'
 import moment from 'moment'
@@ -61,26 +61,46 @@ const renderAction = (text, record) => {
             </Menu>
         } trigger={['click']}>
             <Button type="primary" ghost >
-                Actions <DownOutlined />
+                <FormattedMessage id="action" /> <DownOutlined />
             </Button>
 
         </Dropdown>
     )
 }
 
+const renderlang = (record) => {
+    return (
+        <div>
+            {(record.de || record.fr) && <img src="/img/lang-en.png" width="20" />}
+            {(record.de || record.fr) && <Divider type="vertical" />}
+            {record.fr && <img src="/img/lang-fr.png" width="20" />}
+            {(record.de && record.fr) && <Divider type="vertical" />}
+            {record.de && <img src="/img/lang-de.png" width="20" />}
+            {!record.de && !record.fr && <Tag color="orange"><FormattedMessage id="not-translated" /></Tag>}
+        </div>
+    )
+}
+
+
 const renderStatus = (text) => {
     switch (text) {
     case 'trash':
         return (
-            <Tag color="red">{text}</Tag>
+            <Tag color="red">
+                <FormattedMessage id={text} />
+            </Tag>
         )
     case 'active':
         return (
-            <Tag color="green">{text}</Tag>
+            <Tag color="green">
+                <FormattedMessage id={text} />
+            </Tag>
         )
     default:
         return (
-            <Tag color="orange">{text}</Tag>
+            <Tag color="orange">
+                <FormattedMessage id={text} />
+            </Tag>
         )
     }
 }
@@ -88,15 +108,15 @@ const renderStatus = (text) => {
 const columns = {
     tutorialTable: [
         {
-            title: <FormattedMessage id='title' />,
-            width: 150,
+            title: <FormattedMessage id="title" />,
+            width: 175,
             dataIndex: 'title',
             key: 'title',
-            fixed: 'left'
+            fixed: 'left',
         },
         {
-            title: <FormattedMessage id='category' />,
-            width: 50,
+            title: <FormattedMessage id="category" />,
+            width: 30,
             dataIndex: 'category',
             key: 'category',
             filters: [
@@ -105,41 +125,49 @@ const columns = {
                 { text: 'web', value: 'web' },
                 { text: 'mobile', value: 'mobile' },
                 { text: 'desktop', value: 'desktop' },
-                { text: 'undefined', value: 'undefined' }
+                { text: 'undefined', value: 'undefined' },
             ],
-            onFilter: (value, record) => record.category.includes(value)
+            onFilter: (value, record) => record.category.includes(value),
         },
         {
-            title: <FormattedMessage id='status' />,
-            width: 50,
+            title: <FormattedMessage id="status" />,
+            width: 30,
             dataIndex: 'status',
             key: 'status',
             filters: [
                 { text: 'pending', value: 'pending' },
                 { text: 'active', value: 'active' },
-                { text: 'trash', value: 'trash' }
+                { text: 'trash', value: 'trash' },
             ],
             onFilter: (value, record) => record.status.includes(value),
-            render: (text) => renderStatus(text)
+            render: (text) => renderStatus(text),
         },
         {
-            title: <FormattedMessage id='creationdate' />,
-            width: 75,
+            title: <FormattedMessage id="lang" />,
+            width: 40,
+            dataIndex: ['fr', 'de'],
+            key: 'lang',
+            render: (text, record) => renderlang(record),
+        },
+        {
+            title: <FormattedMessage id="creationdate" />,
+            width: 50,
             dataIndex: 'creationDate',
             key: 'creationDate',
-            sorter: (a, b) => new Date(a.creationDate) - new Date(b.creationDate),
+            sorter: (a, b) =>
+                new Date(a.creationDate) - new Date(b.creationDate),
             sortDirections: ['ascend', 'descend'],
             defaultSortOrder: 'descend',
-            render: (text, record) => moment(record.creationDate).format('LLL')
+            render: (text, record) => moment(record.creationDate).format('LL'),
         },
         {
-            title: <FormattedMessage id='action' />,
+            title: <FormattedMessage id="action" />,
             key: 'operation',
             fixed: 'right',
-            width: 50,
+            width: 40,
             render: (text, record) => renderAction(text, record),
         },
-    ]
+    ],
 }
 
 export default columns

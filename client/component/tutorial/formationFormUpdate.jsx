@@ -111,9 +111,6 @@ const FormationFormUpdate = ({ itemToUpdate, initialValues }) => {
             ...valuesToSend,
             content: content
         }))
-
-        console.log('values to send of form: ', valuesToSend)
-        console.log('Received values of form: ', values)
     }
 
     const onFinishFailed = errorInfo => {

@@ -15,11 +15,13 @@ const formationController = {
     },
     readAll: async (req, res) => {
         try {
-            const formation = await Formation.find({})
+            const formations = await Formation.find({})
                 .populate({ path: 'posts', select: ['title, creationdate, content']})
                 .populate({ path: 'image', select: 'path' })
+                .populate({path: 'translations.fr', select: ['title', 'content']})
+                .populate({path: 'translations.de', select: ['title', 'content']})
                 
-            res.status(200).json(formation)
+            res.status(200).json(formations)
         } catch (error) {
             res.status(400).json({ message: 'Bad Request' })
         }
@@ -31,6 +33,8 @@ const formationController = {
                 .populate({ path: 'posts', select: ['title', 'creationDate'] })
                 .populate({ path: 'videos', select: ['name', 'path'] })
                 .populate({ path: 'image', select: 'path' })
+                .populate({path: 'translations.fr', select: ['title', 'content']})
+                .populate({path: 'translations.de', select: ['title', 'content']})
                 
             res.status(200).json(formation)
 
