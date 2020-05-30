@@ -53,7 +53,7 @@ const ProjectFormUpdate = ({ itemToUpdate }) => {
 
     const [checkStatus, setChekStatus] = useState(false)
     const [startDate, setStartDate] = useState(moment())
-    const [endDate, setEndDate] = useState(moment())
+    const [endDate, setEndDate] = useState()
 
     const errorStatus = useSelector(state => state.error.status)
     const responseStatus = useSelector(state => state.response.status)
@@ -62,26 +62,9 @@ const ProjectFormUpdate = ({ itemToUpdate }) => {
     const clients = useSelector(state => state.clients.clients)
     const images = useSelector(state => state.images.images)
 
-
     useEffect(() => {
-
-        if (itemToUpdate === '') {
-            form.resetFields()
-        }
-
-        if (itemToUpdate !== '') {
-            let initialData = projects.find(project => project._id === itemToUpdate)
-
-            form.setFieldsValue({ 
-                ...initialData,
-                client: initialData.client._id,
-                image: initialData.image._id,
-                startDate: moment(initialData.startDate),
-                endDate: initialData.endDate === null ? null : moment(initialData.endDate)
-            })
-            setChekStatus(initialData.endDate === null)
-        }
-    }, [itemToUpdate])
+        console.log('endDate', endDate)
+    })
 
     // To disable submit button at the beginning.
     useEffect(() => {
@@ -89,6 +72,10 @@ const ProjectFormUpdate = ({ itemToUpdate }) => {
         dispatch(readAllImages())
         forceUpdate({})
     }, [])
+
+    useEffect(() => {
+        setIntialContent()
+    }, [itemToUpdate])
 
     useEffect(() => {
         if (checkStatus === true) {
@@ -99,6 +86,25 @@ const ProjectFormUpdate = ({ itemToUpdate }) => {
     useEffect(() => {
         requestNotification()
     }, [errorStatus, responseStatus])
+
+    const setIntialContent = () => {
+        if (itemToUpdate === '') {
+            form.resetFields()
+        }
+
+        if (itemToUpdate !== '') {
+            let initialData = projects.find(project => project._id === itemToUpdate)
+
+            form.setFieldsValue({ 
+                ...initialData,
+                client: initialData.client && initialData.client._id,
+                image: initialData.image && initialData.image._id,
+                startDate: moment(initialData.startDate),
+                endDate: initialData.endDate ? moment(initialData.endDate) : null
+            })
+            setChekStatus(initialData.endDate === null)
+        }
+    }
 
     const requestNotification = () => {
         if (errorStatus !== null && requestType === 'update-project') {
@@ -133,14 +139,14 @@ const ProjectFormUpdate = ({ itemToUpdate }) => {
     } 
 
     const onFinish = (values) => {
+        console.log('onFinish values', values)
         dispatch(
             updateProject(itemToUpdate, {
                 ...values,
                 startDate: startDate.toDate(),
-                endDate: endDate === null ? null : endDate.toDate() 
+                endDate: endDate ? endDate.toDate() : null
             })
         )
-        form.resetFields()
     }
 
     const onFinishFailed = errorInfo => {
@@ -148,7 +154,6 @@ const ProjectFormUpdate = ({ itemToUpdate }) => {
             message: `${intl.formatMessage({ id: 'login-fail' })}`,
             description: errorInfo
         })
-        form.resetFields()
     }
 
     return (

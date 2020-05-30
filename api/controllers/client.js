@@ -2,6 +2,7 @@ const Client = require('../models/client')
 const Project = require('../models/project')
 const Post = require('../models/post')
 const Comment = require('../models/comment')
+const Translation = require('../models/translation')
 
 const clientController = {
     create: async (req, res) => {
@@ -93,10 +94,25 @@ const clientController = {
 
                     await Comment.deleteMany({ post: { $in: postId} }, (err, data) => {
                         Object.assign(response, { comments: data.n, success: true })
-                        err ? res.status(500).send(err) : res.status(200).json(response)
+                        err ? res.status(500).send(err) : Object.assign(response, { postsComments: data.n })
                     })
                 }
             }
+
+            if (client.translations && client.translations.fr) {
+                await Translation.findByIdAndDelete(client.translations.fr, err => {
+                    err ? res.status(500).send(err) : Object.assign(response, { translationfr: 1 })
+                })
+            }
+
+            if (client.translations && client.translations.de) {
+                await Translation.findByIdAndDelete(client.translations.de, err => {
+                    err ? res.status(500).send(err) : Object.assign(response, { translationfr: 1 })
+                })
+            }
+
+            res.status(200).json(response)
+
         } catch (error) {
             res.status(400).json({ message: 'Bad Request' })
         }

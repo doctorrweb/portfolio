@@ -1,12 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { List, Card } from 'antd'
 import moment from 'moment'
 
+
+const NO_IMAGE = '/uploads/images-no-image-2020-05-22T18:41:03.460Z.jpg'
+
+
 const BlogTable = ({ data }) => {
 
     const history = useHistory()
+    const lang = useSelector(state => state.locale.lang)
 
     return (
         <List
@@ -31,7 +37,7 @@ const BlogTable = ({ data }) => {
                         hoverable
                         cover={
                             <img
-                                src={item.image.path}
+                                src={item.image ? item.image.path : NO_IMAGE}
                                 width={100}
                                 height={150}
                                 style={{ objectFit: 'cover' }}
@@ -39,7 +45,7 @@ const BlogTable = ({ data }) => {
                         }
                         onClick={() => history.push(`/blog/${item._id}`)}
                     >
-                        <h3 style={{ color: '#FF9900' }}>{item.title}</h3>
+                        <h3 style={{ color: '#FF9900' }}>{item.translations[lang] ? item.translations[lang].title : item.title}</h3>
                         <div>
                             {`Published ${moment(item.creationDate).fromNow()}`}
                         </div>

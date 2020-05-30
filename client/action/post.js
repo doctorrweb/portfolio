@@ -59,17 +59,16 @@ export function readAllPosts() {
     }
 }
 
-export function readTranslatedPosts(lang) {
+export function readTranslatedPosts(project, lang) {
     return function (dispatch) {
         axios({
             method: 'get',
-            url: `${BASE_URL}/posts`,
-            data: lang
+            url: `${BASE_URL}/posts/${project}/${lang}`,
         })
             .then((response) => {
                 dispatch({
                     type: READTRANSLATED_POSTS,
-                    payload: response.data.filter((post) => post.lang === lang)
+                    payload: response.data
                 })
             })
             .catch((error) => {

@@ -1,59 +1,33 @@
 import React from 'react'
-import Typewriter from 'typewriter-effect'
-import { Row, Col } from 'antd'
+import { Divider } from 'antd'
+import Intro from '../component/intro'
+import Technos from '../component/technos'
 
 const bgImgUri = 'img/background-code.png'
 
-const developer = `<pre class='typewriter'>
-                            <span class="const-highlight">const</span> webDeveloper = {
-                                name: <span class="string-highlight">'doctorrWeb'</span>,
-                                title: <span class="string-highlight">'Developer FullStack JS'</span>,
-                                location: <span class="string-highlight">'Zurich (Switzerland)'</span>,
-                                stack:[
-                                    <span class="string-highlight">'Node JS'</span>,
-                                    <span class="string-highlight">'React JS'</span>,
-                                    <span class="string-highlight">...otherTechno</span>
-                                ]}
-                        </pre>`
-
-/*
-const message = `<pre class='typewriter'>
-                            <span class='const-highlight'>continue</span> ? <span class='func-highlight'>mainMenu.click()</span> : <span class='func-highlight'>leave()</span>
-                        </pre>`
-*/
-
-const Intro = () => {
+const Home = () => {
     return (
-        <Row
+        <div
             className="content"
-            justify="center"
             style={{
-                minHeight: '100%',
-                backgroundImage: `url(${bgImgUri})`,
+                Height: '100%',
                 overflow: 'hidden',
+                backgroundImage: `url(${bgImgUri})`
             }}
         >
-            <Col
-                lg={24}
-                md={24}
-                sm={24}
-                xs={24}
-                style={{
-                    marginTop: '12em',
-                }}
-            >
-                <Typewriter
-                    options={{
-                        strings: [developer],
-                        autoStart: true,
-                        loop: true,
-                        delay: 35,
-                        deleteSpeed: 40,
-                    }}
-                />
-            </Col>
-        </Row>
+            <Intro />
+            <Divider 
+                orientation="left" 
+                style={{ 
+                    color: '#333', 
+                    fontWeight: 'normal',
+                    marginTop: 150
+                }}>
+      doctorrWeb
+            </Divider>
+            <Technos />
+        </div>
     )
 }
 
-export default Intro
+export default Home

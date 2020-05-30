@@ -27,6 +27,7 @@ const DashboardUser = () => {
     const [modalVisibilityCreate, setModalVisibilityCreate] = useState(false)
     const [itemToUpdate, setItemToUpdate] = useState('')
     
+
     useEffect(() => {
         dispatch(readAllUsers())
     }, [])

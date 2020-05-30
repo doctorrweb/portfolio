@@ -113,7 +113,6 @@ const PostForm = () => {
             message: `${intl.formatMessage({ id: 'login-fail' })}`,
             description: errorInfo
         })
-        form.resetFields()
     }
 
     const handleRelationChange = (e) => {

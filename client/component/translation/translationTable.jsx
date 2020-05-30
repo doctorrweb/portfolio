@@ -34,13 +34,14 @@ const TranslationTable = () => {
             fetchedData.map((trans) =>
                 tmpData.push({
                     title: trans.title,
+                    name: trans.name,
                     relation: trans.relation,
+                    description: trans.description,
                     completed: trans.completed,
                     post: trans.post && trans.post.title,
-                    project:
-                        trans.project && trans.project.title,
-                    formation:
-                        trans.formation && trans.formation.title,
+                    project: trans.project && trans.project.title,
+                    formation: trans.formation && trans.formation.title,
+                    client: trans.client && trans.client.name,
                     lang: trans.lang,
                     key: trans._id,
                 })

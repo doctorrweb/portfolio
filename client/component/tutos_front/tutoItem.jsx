@@ -18,6 +18,7 @@ import moment from 'moment'
 import ReactPlayer from 'react-player'
 import { readOneTutorial } from '../../action/tutorial'
 
+const NO_IMAGE = '/uploads/images-no-image-2020-05-22T18:41:03.460Z.jpg'
 const { Content } = Layout
 const { TabPane } = Tabs
 const { Title, Paragraph, Text } = Typography
@@ -62,7 +63,7 @@ const TutoItem = () => {
                     <Col lg={14} md={24} sm={24} xs={24}>
                         <Title style={{ color: '#FF9900' }}>{tutorial.title}</Title>
                         <img
-                            src={tutorial.image ? tutorial.image.path : null}
+                            src={tutorial.image ? tutorial.image.path : NO_IMAGE}
                             width="90%"
                             height={250}
                             style={{ objectFit: 'cover', marginTop: 10 }}

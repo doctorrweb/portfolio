@@ -116,7 +116,7 @@ const renderDate = (value) => {
     }
 
     if (value === null) {
-        return <Tag color="magenta">To determine</Tag>
+        return <Tag color="magenta"><FormattedMessage id="to-determine" /></Tag>
     }
 }
 
@@ -137,7 +137,7 @@ const columns = {
         },
         {
             title: <FormattedMessage id="status" />,
-            width: 40,
+            width: 50,
             dataIndex: 'status',
             key: 'status',
             filters: [

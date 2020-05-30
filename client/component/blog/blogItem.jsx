@@ -13,6 +13,8 @@ import {
 } from 'antd'
 import { readPost } from '../../action/post'
 
+const NO_IMAGE = '/uploads/images-no-image-2020-05-22T18:41:03.460Z.jpg'
+
 const { Content } = Layout
 const { Title, Paragraph, Text } = Typography
 
@@ -22,6 +24,7 @@ const BlogItem = () => {
     const { id } = useParams()
 
     const post = useSelector((state) => state.posts.posts[0])
+    const lang = useSelector(state => state.locale.lang)
 
     useEffect(() => {
         dispatch(readPost(id))
@@ -42,15 +45,15 @@ const BlogItem = () => {
                             <Breadcrumb.Item>
                                 <Link to="/blog">Blog</Link>
                             </Breadcrumb.Item>
-                            <Breadcrumb.Item>{post.title}</Breadcrumb.Item>
+                            <Breadcrumb.Item>{post.translations && post.translations[lang] ? post.translations[lang].title : post.title}</Breadcrumb.Item>
                         </Breadcrumb>
                     </Col>
                 </Row>
                 <Row>
                     <Col lg={24} md={24} sm={24} xs={24}>
-                        <Title>{post.title}</Title>
+                        <Title>{post.translations && post.translations[lang] ? post.translations[lang].title : post.title}</Title>
                         <img
-                            src={post.image.path}
+                            src={post.image ? post.image.path : NO_IMAGE}
                             width="90%"
                             height={250}
                             style={{ objectFit: 'cover', marginTop: 10 }}
@@ -70,7 +73,7 @@ const BlogItem = () => {
                         >
                             <div
                                 dangerouslySetInnerHTML={{
-                                    __html: post.content,
+                                    __html: post.translations && post.translations[lang] ? post.translations[lang].content : post.content,
                                 }}
                             />
                         </Paragraph>

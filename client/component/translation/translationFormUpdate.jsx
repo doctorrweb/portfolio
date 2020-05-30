@@ -72,9 +72,11 @@ const TranslationFormUpdate = ({ itemToUpdate }) => {
                 client: initialData.client ? initialData.client._id : null,
                 post: initialData.post ? initialData.post._id : null,
                 project: initialData.project ? initialData.project._id : null,
-                formation: initialData.foimation ? initialData.formation._id : null
+                formation: initialData.formation ? initialData.formation._id : null
             })
+            setRelation(initialData.relation)
         }
+
     }, [itemToUpdate])
 
     // To disable submit button at the beginning.
@@ -107,6 +109,7 @@ const TranslationFormUpdate = ({ itemToUpdate }) => {
             })
             dispatch(resetResponse())
             dispatch(resetRequestType())
+            setRelation('')
         }
     }
 
@@ -123,11 +126,10 @@ const TranslationFormUpdate = ({ itemToUpdate }) => {
         dispatch(
             updateTranslation(itemToUpdate, {
                 ...valuesToSend,
-                content,
+                content: (relation === 'formation' || relation === 'post') && content,
                 relation
             })
         )
-        form.resetFields()
     }
 
     const onFinishFailed = (errorInfo) => {
@@ -135,7 +137,6 @@ const TranslationFormUpdate = ({ itemToUpdate }) => {
             message: `${intl.formatMessage({ id: 'login-fail' })}`,
             description: errorInfo,
         })
-        form.resetFields()
     }
 
     return (
@@ -208,6 +209,11 @@ const TranslationFormUpdate = ({ itemToUpdate }) => {
                                         <FormattedMessage id="title" />
                                     </span>
                                 }
+                                rules={[
+                                    {
+                                        required: true,
+                                    },
+                                ]}
                             >
                                 <Input />
                             </Form.Item>
@@ -230,6 +236,11 @@ const TranslationFormUpdate = ({ itemToUpdate }) => {
                                     <FormattedMessage id="name" />
                                 </span>
                             }
+                            rules={[
+                                {
+                                    required: true,
+                                },
+                            ]}
                         >
                             <Input />
                         </Form.Item>
@@ -292,6 +303,7 @@ const TranslationFormUpdate = ({ itemToUpdate }) => {
             </Form.Item>
 
             <Form.Item
+                disabled
                 noStyle
                 shouldUpdate={(prevValues, currentValues) =>
                     prevValues.relation !== currentValues.relation
@@ -299,7 +311,15 @@ const TranslationFormUpdate = ({ itemToUpdate }) => {
             >
                 {({ getFieldValue }) =>
                     getFieldValue('relation') === 'post' ? (
-                        <Form.Item label="Post" name="post">
+                        <Form.Item
+                            label="Post"
+                            name="post"
+                            rules={[
+                                {
+                                    required: true,
+                                },
+                            ]}
+                        >
                             <Select
                                 allowClear
                                 showSearch
@@ -324,7 +344,15 @@ const TranslationFormUpdate = ({ itemToUpdate }) => {
             >
                 {({ getFieldValue }) =>
                     getFieldValue('relation') === 'formation' ? (
-                        <Form.Item label="Tutorial" name="formation">
+                        <Form.Item
+                            label="Tutorial"
+                            name="formation"
+                            rules={[
+                                {
+                                    required: true,
+                                },
+                            ]}
+                        >
                             <Select
                                 allowClear
                                 showSearch
@@ -349,8 +377,16 @@ const TranslationFormUpdate = ({ itemToUpdate }) => {
             >
                 {({ getFieldValue }) =>
                     getFieldValue('relation') === 'client' ? (
-                        <Form.Item label="Client" name="client">
-                            <Select allowClear showSearch>
+                        <Form.Item
+                            label="Client"
+                            name="client"
+                            rules={[
+                                {
+                                    required: true,
+                                },
+                            ]}
+                        >
+                            <Select allowClear showSearch disabled>
                                 {clients.map((client) => (
                                     <Option key={client._id} value={client._id}>
                                         {client.name}
@@ -370,7 +406,15 @@ const TranslationFormUpdate = ({ itemToUpdate }) => {
             >
                 {({ getFieldValue }) =>
                     getFieldValue('relation') === 'project' ? (
-                        <Form.Item label="Project" name="project">
+                        <Form.Item
+                            label="Project"
+                            name="project"
+                            rules={[
+                                {
+                                    required: true,
+                                },
+                            ]}
+                        >
                             <Select
                                 allowClear
                                 showSearch

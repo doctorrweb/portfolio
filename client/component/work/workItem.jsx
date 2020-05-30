@@ -9,8 +9,9 @@ import {
 import { Breadcrumb, Layout, Row, Col, Divider, Timeline, Typography, Tag } from 'antd'
 import moment from 'moment'
 import { readOneProject } from '../../action/project'
-import { readAllPosts } from '../../action/post'
+import { readTranslatedPosts } from '../../action/post'
 
+const NO_IMAGE = '/uploads/images-no-image-2020-05-22T18:41:03.460Z.jpg'
 
 const { Content } = Layout
 const { Title, Paragraph, Text } = Typography
@@ -27,30 +28,22 @@ const WorkItem = () => {
     
     useEffect(() => {
         console.log('project', project)
+        console.log('posts', posts)
     })
     
     useEffect(() => {
-        dispatch(readAllPosts())
+        dispatch(readTranslatedPosts(id))
         dispatch(readOneProject(id))
     }, [])
 
-    useEffect(() => {
-        relatedPostlist(lang)
-    }, [lang])
-
     const renderDate = (value) => {
-        if (value !== null) {
+        if (value) {
             return <Tag color='orange'>{moment(value).format('LL')}</Tag>
         }
 
-        if (value === null) {
-            return <Tag color="magenta">To determine</Tag>
+        if (!value) {
+            return <Tag color="magenta"><FormattedMessage id="to-determine" /></Tag>
         }
-    }
-
-    const relatedPostlist = () => {
-        const list = posts.filter(post => post.project === id)
-        return list
     }
 
     const renderContent = () => {
@@ -80,7 +73,7 @@ const WorkItem = () => {
                             {project.translations && project.translations[lang] ? project.translations[lang].title : project.title }
                         </Title>
                         <img
-                            src={project.image.path}
+                            src={project.image ? project.image.path : NO_IMAGE}
                             width="90%"
                             height={250}
                             style={{ objectFit: 'cover', marginTop: 10 }}
@@ -132,7 +125,7 @@ const WorkItem = () => {
                         </Title>
                         <Divider type="horizontal" />
                         <Timeline mode="left">
-                            {project.posts.map((post) => (
+                            {posts.map((post) => (
                                 <Timeline.Item
                                     key={post._id}
                                     label={
@@ -146,7 +139,7 @@ const WorkItem = () => {
                                         </Tag>
                                     }
                                 >
-                                    {post.title}
+                                    {(lang !== 'en' && post.translations[lang]) ? post.translations[lang].title : post.title }
                                     <Link to={`/work/${id}/${post._id}`}>
                                         {' ...'}
                                     </Link>

@@ -25,7 +25,7 @@ const ProjectTable = () => {
             fetchedData.map((project) =>
                 tmpData.push({
                     title: project.title,
-                    client: project.client.name,
+                    client: project.client && project.client.name,
                     category: project.category,
                     status: project.status,
                     startDate: project.startDate,

@@ -91,8 +91,6 @@ const MenuContent = () => {
             }}
         >
             <Col>
-                <p>Menu</p>
-
                 <Button
                     type='link'
                     style={menuLinkStyle}

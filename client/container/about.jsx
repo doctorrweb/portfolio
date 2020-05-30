@@ -1,22 +1,83 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { Layout, Col, Row, Typography, Breadcrumb } from 'antd'
-import { useIntl } from 'react-intl'
+import React, { useEffect, Fragment } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Link, useLocation } from 'react-router-dom'
+import { Layout, Col, Row, Typography, Breadcrumb, Anchor, Divider } from 'antd'
+import { useIntl, FormattedMessage } from 'react-intl'
+import { readAllPosts } from '../action/post'
 
-const { Content } = Layout
+const { Content, Sider } = Layout
+const AnchorLink = Anchor.Link
 const { Title } = Typography
 
 const About = () => {
 
     const intl = useIntl()
+    const location = useLocation()
+    const dispatch = useDispatch()
+
+    const posts = useSelector(state => state.posts.posts)
+    const lang = useSelector(state => state.locale.lang)
+
+    useEffect(() => {
+        console.log('posts', posts)
+    })
+
+    useEffect(() => {
+        dispatch(readAllPosts())
+    }, [])
+
+    const renderPost = (title, hash) => {
+        const post = posts.find(post => post.title === title)
+        console.log(post)
+        if (post) {
+            return (
+                <Fragment>
+                    <Row
+                        justify="space-between"
+                        style={{ marginTop: 50 }}
+                        id={hash}
+                    >
+                        <Col lg={24} md={24} sm={24} xs={24}>
+                            <Title level={3} style={{ color: '#FF9900' }}>
+                                {post.translations[lang]
+                                    ? post.translations[lang].title
+                                    : post.title}
+                            </Title>
+                            <div
+                                dangerouslySetInnerHTML={{
+                                    __html: post.translations[lang]
+                                        ? post.translations[lang].content
+                                        : post.content,
+                                }}
+                            />
+                        </Col>
+                    </Row>
+                    <Row justify="space-between" style={{ marginTop: 50 }}>
+                        <Col lg={24} md={24} sm={24} xs={24}>
+                            <img
+                                src={post.image.path}
+                                width="100%"
+                                height={350}
+                                style={{ objectFit: 'cover', marginTop: 10 }}
+                            />
+                        </Col>
+                    </Row>
+                </Fragment>
+            )
+        }
+    }
 
     return (
         <Layout
             style={{
-                margin: '10em 15em 5em',
+                margin: '10%',
             }}
         >
-            <Content>
+            <Content
+                style={{
+                    marginRight: '2%'
+                }}
+            >
                 <Row
                     justify="space-between"
                     style={{ margin: '10px 16px 0' }}
@@ -24,117 +85,69 @@ const About = () => {
                 >
                     <Col lg={14} md={14} sm={24} xs={24}>
                         <Title style={{ color: '#707070' }}>
-                            {intl.formatMessage({ id: 'about-me' }).toUpperCase()}
+                            {intl
+                                .formatMessage({ id: 'about-me' })
+                                .toUpperCase()}
                         </Title>
-                        <p style={{ textAlign: 'justify' }}>
-                            Sed ut perspiciatis unde omnis iste natus error sit
-                            voluptatem accusantium doloremque laudantium, totam
-                            rem aperiam, eaque ipsa quae ab illo inventore
-                            veritatis et quasi architecto beatae vitae dicta
-                            sunt explicabo. Nemo enim ipsam voluptatem quia
-                            voluptas sit aspernatur.
-                        </p>
                     </Col>
                     <Col lg={6} md={6} sm={24} xs={24}>
                         <Breadcrumb>
                             <Breadcrumb.Item>
-                                <Link to='/'>{intl.formatMessage({id: 'home'})}</Link>
+                                <Link to="/">
+                                    {intl.formatMessage({ id: 'home' })}
+                                </Link>
                             </Breadcrumb.Item>
-                            <Breadcrumb.Item>{intl.formatMessage({id: 'about-me'})}</Breadcrumb.Item>
+                            <Breadcrumb.Item>
+                                {intl.formatMessage({ id: 'about-me' })}
+                            </Breadcrumb.Item>
                         </Breadcrumb>
                     </Col>
                 </Row>
-                <Row justify="space-between" style={{ marginTop: 50 }}>
-                    <Col lg={6} md={6} sm={24} xs={24}>
-                        <img src="https://www.webdesignertrends.com/wp-content/uploads/2020/04/00_preview.__large_preview.jpg" />
-                    </Col>
-                    <Col lg={12} md={14} sm={24} xs={24}>
-                        <Title level={3} style={{ color: '#FF9900' }}>
-                            I’m doctorrweb
-                        </Title>
-                        <p style={{ textAlign: 'justify' }}>
-                            Sed ut perspiciatis unde omnis iste natus error sit
-                            voluptatem accusantium doloremque laudantium, totam
-                            rem aperiam, eaque ipsa quae ab illo inventore
-                            veritatis et quasi architecto beatae vitae dicta
-                            sunt explicabo. Nemo enim ipsam voluptatem quia
-                            voluptas sit aspernatur aut odit aut fugit, sed quia
-                            consequuntur magni dolores eos qui ratione
-                            voluptatem sequi nesciunt. Neque porro quisquam est,
-                            qui dolorem ipsum quia dolor sit amet, consectetur,
-                            adipisci velit, sed quia non numquam eius modi
-                            tempora incidunt ut labore et dolore magnam aliquam
-                            quaerat voluptatem. Ut enim ad minima veniam, quis
-                            nostrum exercitationem ullam corporis suscipit
-                            laboriosam, nisi ut aliquid ex ea commodi
-                            consequatur? Quis autem vel eum iure reprehenderit
-                            qui in ea voluptate velit esse quam nihil molestiae
-                            consequatur, vel illum qui dolorem eum fugiat quo
-                            voluptas nulla pariatur?
-                        </p>
-                    </Col>
-                </Row>
+                {posts && renderPost('The little story', 'theLittleStory')}
                 <Row justify="center" style={{ marginTop: 50 }}>
                     <Col lg={18} md={18} sm={24} xs={24}>
                         <blockquote>
-                            consequatur, vel illum qui dolorem eum fugiat quo
-                            voluptas nulla pariatur? iste natus error sit
-                            voluptatem accusantium doloremque laudantium, ed
-                            quia consequuntur magni dolores eos qui ratione
-                            voluptatem sequi nesciunt. Neque porro quisquam est,
-                            qui dolorem ipsum quia dolor sit amet, consectetur,
+                            “{intl.formatMessage({ id: 'quote-zeitoun' })}”
                         </blockquote>
+                        <em>Jean Zeitoun, {intl.formatMessage({ id: 'title-zeitoun' })}</em>
                     </Col>
                 </Row>
-
-                <Row justify="space-between" align="middle">
-                    <Col lg={8} md={8} sm={8} xs={24} style={{ padding: 20 }}>
-                        <Title level={3} style={{ color: '#FF9900' }}>
-                            My philosophy
-                        </Title>
-                        <p style={{ textAlign: 'justify' }}>
-                            Sed ut perspiciatis unde omnis iste natus error sit
-                            voluptatem accusantium doloremque laudantium, totam
-                            rem aperiam, eaque ipsa quae ab illo inventore
-                            veritatis et quasi architecto beatae vitae dicta
-                            sunt explicabo. Nemo enim ipsam voluptatem quia
-                            voluptas sit aspernatur aut odit aut fugit, sed quia
-                            consequuntur magni dolores eos qui ratione
-                            voluptatem sequi nesciunt.
-                        </p>
-                    </Col>
-                    <Col lg={8} md={8} sm={8} xs={24} style={{ padding: 20 }}>
-                        <Title level={3} style={{ color: '#FF9900' }}>
-                            My Vision
-                        </Title>
-                        <p style={{ textAlign: 'justify' }}>
-                            Sed ut perspiciatis unde omnis iste natus error sit
-                            voluptatem accusantium doloremque laudantium, totam
-                            rem aperiam, eaque ipsa quae ab illo inventore
-                            veritatis et quasi architecto beatae vitae dicta
-                            sunt explicabo. Nemo enim ipsam voluptatem quia
-                            voluptas sit aspernatur aut odit aut fugit, sed quia
-                            consequuntur magni dolores eos qui ratione
-                            voluptatem sequi nesciunt.
-                        </p>
-                    </Col>
-                    <Col lg={8} md={8} sm={8} xs={24} style={{ padding: 20 }}>
-                        <Title level={3} style={{ color: '#FF9900' }}>
-                            My Stack
-                        </Title>
-                        <p style={{ textAlign: 'justify' }}>
-                            Sed ut perspiciatis unde omnis iste natus error sit
-                            voluptatem accusantium doloremque laudantium, totam
-                            rem aperiam, eaque ipsa quae ab illo inventore
-                            veritatis et quasi architecto beatae vitae dicta
-                            sunt explicabo. Nemo enim ipsam voluptatem quia
-                            voluptas sit aspernatur aut odit aut fugit, sed quia
-                            consequuntur magni dolores eos qui ratione
-                            voluptatem sequi nesciunt.
-                        </p>
+                {posts && renderPost('What\'s up doctorr ?', 'doctorr')}
+                <Divider type='horizontal' />
+                {posts && renderPost('My Philosophy', 'myPhilosophy')}
+                <Row justify="center" style={{ marginTop: 50 }}>
+                    <Col lg={18} md={18} sm={24} xs={24}>
+                        <blockquote>
+                            “{intl.formatMessage({ id: 'quote-burgress' })}“
+                        </blockquote>
+                        <em>Wades Burgress, {intl.formatMessage({ id: 'title-burgress' })}</em>
                     </Col>
                 </Row>
+                {posts && renderPost('My Stack', 'myStack')}
+                <Divider type='horizontal' />
+                {posts && renderPost('My Vision', 'myVision')}
             </Content>
+            <Sider
+                breakpoint="lg"
+                collapsedWidth="0"
+                style={{
+                    backgroundColor: 'transparent'
+                }}
+            >
+                <Anchor
+                    affix={true}
+                    offsetTop={150}
+                    style={{
+                        backgroundColor: 'transparent'
+                    }}
+                >
+                    <AnchorLink href={`#${location.pathname}#theLittleStory`} title={<FormattedMessage id="thelittlestory" />} />
+                    <AnchorLink href={`#${location.pathname}#doctorr`} title={<FormattedMessage id="whatsupdoctor" />} />
+                    <AnchorLink href={`#${location.pathname}#myPhilosophy`} title={<FormattedMessage id="my-philosophy" />} />
+                    <AnchorLink href={`#${location.pathname}#myStack`} title={<FormattedMessage id="my-stack" />} />
+                    <AnchorLink href={`#${location.pathname}#myVision`} title={<FormattedMessage id="my-vision" />} />
+                </Anchor>
+            </Sider>
         </Layout>
     )
 }

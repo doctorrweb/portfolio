@@ -1,6 +1,7 @@
 const Formation = require('../models/formation')
 const Post = require('../models/post')
 const Comment = require('../models/comment')
+const Translation = require('../models/translation')
 
 const formationController = {
     create: async (req, res) => {
@@ -90,6 +91,23 @@ const formationController = {
                         err ? res.status(500).send(err) : res.status(200).json(response)
                     })
                 }
+
+                // Delete translations related to the posts 
+                await Translation.deleteMany({ post: { $in: formation.posts} }, (err, data) => {
+                    err ? res.status(500).send(err) : Object.assign(response, { translations: data.n, success: true })
+                })
+            }
+
+            if (formation.translations && formation.translations.fr) {
+                await Translation.findByIdAndDelete(formation.translations.fr, err => {
+                    err ? res.status(500).send(err) : Object.assign(response, { translationfr: 1 })
+                })
+            }
+
+            if (formation.translations && formation.translations.de) {
+                await Translation.findByIdAndDelete(formation.translations.de, err => {
+                    err ? res.status(500).send(err) : Object.assign(response, { translationfr: 1 })
+                })
             }
 
         } catch (error) {

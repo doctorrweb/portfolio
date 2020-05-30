@@ -7,11 +7,8 @@ const Client = require('../models/client')
 const translationController = {
 
     create: async (req, res) => {
-
-        console.log('createTranslation values', req.body)
         
         try {
-            console.log('createTranslation try block values', req.body)
             const translation = new Translation(req.body)
             await translation.save()
 
@@ -112,6 +109,7 @@ const translationController = {
                 err ? res.status(500).send(err) : res.status(200).json(updatedTranslation)
             }
         )
+
     },
     delete: async (req, res) => {
 
@@ -126,39 +124,52 @@ const translationController = {
         // Remove the translation in the related post
         if (translation.post) {
             const post = await Post.findById(translation.post)
-            if (translation.lang === 'fr') {
-                post.translation.fr = null
-                post.save()
+            if (post && translation.lang === 'fr') {
+                post.translations.fr = null
+                await post.save()
             }
-            if (translation.lang === 'de') {
-                post.translation.de = null
-                post.save()
+            if (post && translation.lang === 'de') {
+                post.translations.de = null
+                await post.save()
             }
         }
 
         // Remove the translation in the related project
         if (translation.project) {
             const project = await Project.findById(translation.project)
-            if (translation.lang === 'fr') {
-                project.translation.fr = null
-                project.save()
+            if (project && translation.lang === 'fr') {
+                project.translations.fr = null
+                await project.save()
             }
-            if (translation.lang === 'de') {
-                project.translation.de = null
-                project.save()
+            if (project && translation.lang === 'de') {
+                project.translations.de = null
+                await project.save()
             }
         }
 
         // Remove the translation in the related project
         if (translation.formation) {
             const formation = await Formation.findById(translation.formation)
-            if (translation.lang === 'fr') {
-                formation.translation.fr = null
-                formation.save()
+            if (formation && translation.lang === 'fr') {
+                formation.translations.fr = null
+                await formation.save()
             }
-            if (translation.lang === 'de') {
-                formation.translation.de = null
-                formation.save()
+            if (formation && translation.lang === 'de') {
+                formation.translations.de = null
+                await formation.save()
+            }
+        }
+
+        // Remove the translation in the related project
+        if (translation.client) {
+            const client = await Client.findById(translation.client)
+            if (client && translation.lang === 'fr') {
+                client.translations.fr = null
+                await client.save()
+            }
+            if (client && translation.lang === 'de') {
+                client.translations.de = null
+                await client.save()
             }
         }
 

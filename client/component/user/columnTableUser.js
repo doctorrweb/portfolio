@@ -92,7 +92,7 @@ const columns = {
             key: 'email'
         },
         {
-            title: 'Connexion Type',
+            title: <FormattedMessage id='connexion-type' />,
             width: 50,
             dataIndex: 'connexiontype',
             key: 'connexiontype',

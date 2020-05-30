@@ -11,13 +11,15 @@ const postRouter = express.Router()
 
 postRouter.route('/posts')
     .get(postController.readAll)
-    .get(postController.readTranslated)
     .post(jwtAuthentication, authorize('manager', 'administrator'), postController.create)
 
 postRouter.route('/posts/:id')
     .get(postController.readOne)
     .put(jwtAuthentication, authorize('manager', 'administrator'), postController.update)
-    .delete(jwtAuthentication, authorize('manager', 'administrator'), postController.delete)    
+    .delete(jwtAuthentication, authorize('manager', 'administrator'), postController.delete)  
+
+postRouter.route('/posts/:id/:lang')
+    .get(postController.readTranslated)   
 
 
 module.exports = postRouter

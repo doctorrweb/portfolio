@@ -60,6 +60,10 @@ const ProjectForm = () => {
     const images = useSelector(state => state.images.images)
     const requestType = useSelector(state => state.requestType.status)
 
+    // useEffect(() => {
+    //     console.log('endDate', endDate)
+    // })
+
     // To disable submit button at the beginning.
     useEffect(() => {
         dispatch(readAllClients())
@@ -103,23 +107,22 @@ const ProjectForm = () => {
         setStartDate(value)
     }
 
-    const endDateHandler = (value, dateString) => {
+    const endDateHandler = (value) => {
         setEndDate(value)
     }
 
     const checkStatusHandler = () => {
         // setEndDate(null)
         setChekStatus(!checkStatus)
-        
     } 
 
     const onFinish = (values) => {
-        
+        // console.log('onFinish values', values)
         dispatch(
             createProject({
                 ...values,
                 startDate: startDate.toDate(),
-                endDate: endDate === null ? null : endDate.toDate() 
+                endDate: endDate ? null : endDate.toDate(),
             })
         )
         form.resetFields()

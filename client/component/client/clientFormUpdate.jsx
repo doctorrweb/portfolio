@@ -9,7 +9,7 @@ import {
 } from 'antd'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
-import { resetResponse, resetError } from '../../action'
+import { resetResponse, resetError, resetRequestType } from '../../action'
 import { useValuesToSend } from '../../helper/utils'
 import { updateClient } from '../../action/client'
 import { readAllImages } from '../../action/image'
@@ -48,6 +48,7 @@ const ClientFormUpdate = ({ itemToUpdate }) => {
     const dispatch = useDispatch()
 
     const errorStatus = useSelector(state => state.error.status)
+    const requestType = useSelector((state) => state.requestType.status)
     const responseStatus = useSelector(state => state.response.status)
     const clients = useSelector(state => state.clients.clients)
     const images = useSelector(state => state.images.images)
@@ -73,27 +74,29 @@ const ClientFormUpdate = ({ itemToUpdate }) => {
     }, [errorStatus, responseStatus])
 
     const requestNotification = () => {
-        if (errorStatus === 400) {
+        if (errorStatus !== null && requestType === 'update-client') {
             notification['error']({
-                message: `${intl.formatMessage({ id: 'login-fail' })}`
+                message: 'An error occured',
+                description: 'We couldn\'t update this client',
             })
             dispatch(resetError())
+            dispatch(resetRequestType())
         }
-        if (responseStatus === 201) {
+        if (responseStatus >= 200 && requestType === 'update-client') {
             notification['success']({
-                message: `${intl.formatMessage({ id: 'login-success' })}`
+                message: 'Client updated Successfully',
+                description: 'Click on \'details\' to see the new client',
             })
             dispatch(resetResponse())
+            dispatch(resetRequestType())
         }
     }
 
     const onFinish = values => {
         const valuesToSend = useValuesToSend(values)
-        dispatch(updateClient({
+        dispatch(updateClient(itemToUpdate, {
             ...valuesToSend
         }))
-        form.resetFields()
-
     }
 
     const onFinishFailed = errorInfo => {
@@ -101,7 +104,6 @@ const ClientFormUpdate = ({ itemToUpdate }) => {
             message: `${intl.formatMessage({ id: 'login-fail' })}`,
             description: errorInfo
         })
-        form.resetFields()
     }
 
     return (

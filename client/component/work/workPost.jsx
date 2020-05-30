@@ -33,8 +33,16 @@ const WorkPost = () => {
 
     const post = useSelector(state => state.posts.posts[0])
     const project = useSelector(state => state.projects.projects[0] )
+    const lang = useSelector(state => state.locale.lang)
 
     const [newPostId, setNewPostId] = useState(postId)
+
+    useEffect(() => {
+        console.log('post', post)
+        console.log('project', project)
+        console.log('id', id)
+        console.log('postId', postId)
+    })
 
     useEffect(() => {
         dispatch(readPost(postId))
@@ -48,12 +56,12 @@ const WorkPost = () => {
     }, [newPostId])
 
     const renderDate = (value) => {
-        if (value !== null) {
-            return <Tag color="orange">{moment(value).format('LL')}</Tag>
+        if (value) {
+            return <Tag color='orange'>{moment(value).format('LL')}</Tag>
         }
 
-        if (value === null) {
-            return <Tag color="magenta">To determine</Tag>
+        if (!value) {
+            return <Tag color="magenta"><FormattedMessage id="to-determine" /></Tag>
         }
     }
 
@@ -75,10 +83,12 @@ const WorkPost = () => {
                                 <Link to="/work"><FormattedMessage id='work' /></Link>
                             </Breadcrumb.Item>
                             <Breadcrumb.Item>
-                                <Link to={`/work/${id}`}>{post.project && post.project.title}</Link>
+                                <Link to={`/work/${id}`}>
+                                    {project.translations[lang] ? project.translations[lang].title : project.title }
+                                </Link>
                             </Breadcrumb.Item>
                             <Breadcrumb.Item>
-                                {post.title}
+                                {post.translations[lang] ? post.translations[lang].title : post.title}
                             </Breadcrumb.Item>
                         </Breadcrumb>
                     </Col>
@@ -86,7 +96,7 @@ const WorkPost = () => {
                 <Row>
                     <Col lg={16} md={16} sm={24} xs={24}>
                         <Title level={2} style={{ color: '#707070' }}>
-                            {` Project: ${post.project.title}`}
+                            {` ${intl.formatMessage({id: 'project'})}: ${post.project.title}`}
                         </Title>
                         <div>
                             <Text>
@@ -140,7 +150,7 @@ const WorkPost = () => {
                         >
                             <div
                                 dangerouslySetInnerHTML={{
-                                    __html: post.content,
+                                    __html: post.translations[lang] ? post.translations[lang].content : post.content ,
                                 }}
                             />
                         </Paragraph>
@@ -149,7 +159,7 @@ const WorkPost = () => {
                         <Title level={3} style={{ textAlign: 'center' }}>
                             <FormattedMessage id='project-timeline' />
                         </Title>
-                        <Divider type="horizontal" />
+                        <Divider type="horizontal" /> 
                         <Timeline mode="left">
                             {project &&
                                 project.posts.map((item) => (
@@ -206,7 +216,7 @@ const WorkPost = () => {
 
     return (
         <Content>
-            { post && renderContent() }
+            { (post && project) && renderContent() }
         </Content>
     )
 }

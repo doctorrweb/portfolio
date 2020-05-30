@@ -2,13 +2,13 @@ const Post = require('../models/post')
 const Comment = require('../models/comment')
 const Project = require('../models/project')
 const Formation = require('../models/formation')
+const Translation = require('../models/translation')
 
 const postController = {
     create: async (req, res) => {
         try {
             const post = new Post(req.body)
             await post.save()
-
 
             //Link the post to the related project
             if (post.project) {
@@ -36,8 +36,8 @@ const postController = {
                 .populate({ path: 'image', select: 'path' })
                 .populate({ path: 'formation', select: 'title' })
                 .populate({ path: 'project', select: 'title' })
-                .populate({path: 'translations.fr', select: ['titre', 'content']})
-                .populate({path: 'translations.de', select: ['titre', 'content']})
+                .populate({path: 'translations.fr', select: ['title', 'content']})
+                .populate({path: 'translations.de', select: ['title', 'content']})
 
             res.status(200).json(posts)
             
@@ -48,14 +48,14 @@ const postController = {
     readTranslated: async (req, res) => {
         try {
 
-            const { lang } = req.body
+            const { id } = req.params
 
-            const posts = await Post.find({ lang })
+            const posts = await Post.find({ project: id })
                 .populate({ path: 'image', select: 'path' })
                 .populate({ path: 'formation', select: 'title' })
                 .populate({ path: 'project', select: 'title' })
-                .populate({path: 'translations.fr', select: ['titre', 'content']})
-                .populate({path: 'translations.de', select: ['titre', 'content']})
+                .populate({path: 'translations.fr', select: ['title', 'content']})
+                .populate({path: 'translations.de', select: ['title', 'content']})
 
             res.status(200).json(posts)
             
@@ -68,10 +68,10 @@ const postController = {
             const { id } = req.params
             const post = await Post.findById(id)
                 .populate({ path: 'image', select: 'path' })
-                .populate({ path: 'project', 
-                    select: [ 'title', 'category', 'link', 'client', 'startDate', 'endDate' ] })
-                .populate({ path: 'formation', 
-                    select: [ 'title', 'category', 'creationDate' ] })
+                .populate({ path: 'project', select: [ 'title', 'category', 'link', 'client', 'startDate', 'endDate' ] })
+                .populate({ path: 'formation', select: [ 'title', 'category', 'creationDate' ] })
+                .populate({path: 'translations.fr', select: ['title', 'content']})
+                .populate({path: 'translations.de', select: ['title', 'content']})
             res.status(200).json(post)
         } catch (error) {
             res.status(400).json({ message: 'Bad Request' })
@@ -224,6 +224,18 @@ const postController = {
             if (post.comments !== []) {
                 await Comment.deleteMany({ post: id }, (err, data) => {
                     err ? res.status(500).send(err) : Object.assign(response, { comments: data.n })
+                })
+            }
+
+            if (post.translations && post.translations.fr) {
+                await Translation.findByIdAndDelete(post.translations.fr, err => {
+                    err ? res.status(500).send(err) : Object.assign(response, { translationfr: 1 })
+                })
+            }
+
+            if (post.translations && post.translations.de) {
+                await Translation.findByIdAndDelete(post.translations.de, err => {
+                    err ? res.status(500).send(err) : Object.assign(response, { translationfr: 1 })
                 })
             }
 

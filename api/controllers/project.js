@@ -2,6 +2,7 @@ const Project = require('../models/project')
 const Post = require('../models/post')
 const Client = require('../models/client')
 const Comment = require('../models/comment')
+const Translation = require('../models/translation')
 
 const projectController = {
     create: async (req, res) => {
@@ -125,7 +126,25 @@ const projectController = {
                 await Comment.deleteMany({ post: { $in: project.posts} }, (err, data) => {
                     err ? res.status(500).send(err) : Object.assign(response, { comments: data.n, success: true })
                 })
+
+                // Delete translations related to the posts 
+                await Translation.deleteMany({ post: { $in: project.posts} }, (err, data) => {
+                    err ? res.status(500).send(err) : Object.assign(response, { translations: data.n, success: true })
+                })
                     
+            }
+
+            // Delete translations related to the project
+            if (project.translations && project.translations.fr) {
+                await Translation.findByIdAndDelete(project.translations.fr, err => {
+                    err ? res.status(500).send(err) : Object.assign(response, { translationfr: 1 })
+                })
+            }
+
+            if (project.translations && project.translations.de) {
+                await Translation.findByIdAndDelete(project.translations.de, err => {
+                    err ? res.status(500).send(err) : Object.assign(response, { translationfr: 1 })
+                })
             }
 
             res.status(200).json(response)

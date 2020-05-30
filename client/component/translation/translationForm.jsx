@@ -84,6 +84,8 @@ const TranslationForm = () => {
             })
             dispatch(resetResponse())
             dispatch(resetRequestType())
+            setRelation('')
+            form.resetFields()
         }
     }
 
@@ -99,18 +101,16 @@ const TranslationForm = () => {
         dispatch(
             createTranslation({
                 ...values,
-                content: content,
-                relation: relation
+                content: (relation === 'formation' || relation === 'post') && content,
             })
         )
     }
 
-    const onFinishFailed = (errorInfo) => {
+    const onFinishFailed = () => {
         notification['error']({
             message: `${intl.formatMessage({ id: 'login-fail' })}`,
-            description: errorInfo,
+            description: 'An error occured',
         })
-        form.resetFields()
     }
 
     return (
@@ -183,6 +183,11 @@ const TranslationForm = () => {
                                         <FormattedMessage id="title" />
                                     </span>
                                 }
+                                rules={[
+                                    {
+                                        required: true,
+                                    },
+                                ]}
                             >
                                 <Input />
                             </Form.Item>
@@ -205,6 +210,11 @@ const TranslationForm = () => {
                                     <FormattedMessage id="name" />
                                 </span>
                             }
+                            rules={[
+                                {
+                                    required: true,
+                                },
+                            ]}
                         >
                             <Input />
                         </Form.Item>
@@ -274,7 +284,15 @@ const TranslationForm = () => {
             >
                 {({ getFieldValue }) =>
                     getFieldValue('relation') === 'post' ? (
-                        <Form.Item label="Post" name="post">
+                        <Form.Item
+                            label="Post"
+                            name="post"
+                            rules={[
+                                {
+                                    required: true,
+                                },
+                            ]}
+                        >
                             <Select
                                 allowClear
                                 showSearch
@@ -299,7 +317,15 @@ const TranslationForm = () => {
             >
                 {({ getFieldValue }) =>
                     getFieldValue('relation') === 'formation' ? (
-                        <Form.Item label="Tutorial" name="formation">
+                        <Form.Item
+                            label="Tutorial"
+                            name="formation"
+                            rules={[
+                                {
+                                    required: true,
+                                },
+                            ]}
+                        >
                             <Select
                                 allowClear
                                 showSearch
@@ -324,7 +350,15 @@ const TranslationForm = () => {
             >
                 {({ getFieldValue }) =>
                     getFieldValue('relation') === 'client' ? (
-                        <Form.Item label="Client" name="client">
+                        <Form.Item
+                            label="Client"
+                            name="client"
+                            rules={[
+                                {
+                                    required: true,
+                                },
+                            ]}
+                        >
                             <Select allowClear showSearch>
                                 {clients.map((client) => (
                                     <Option key={client._id} value={client._id}>
@@ -339,6 +373,11 @@ const TranslationForm = () => {
 
             <Form.Item
                 noStyle
+                rules={[
+                    {
+                        required: true,
+                    },
+                ]}
                 shouldUpdate={(prevValues, currentValues) =>
                     prevValues.project !== currentValues.project
                 }

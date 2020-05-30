@@ -79,14 +79,26 @@ const renderStatus = (status) => {
         return <Tag color="orange">Not completed</Tag>
     }
 }
+
 const renderRelatedItem = (trans) => {
     switch (trans.relation) {
     case 'project':
         return <Paragraph>{trans.project}</Paragraph>
     case 'formation':
         return <Paragraph>{trans.formation}</Paragraph>
+    case 'client':
+        return <Paragraph>{trans.client}</Paragraph>
     default:
         return <Paragraph>{trans.post}</Paragraph>
+    }
+}
+
+const renderTitle = (record) => {
+    switch (record.relation) {
+    case 'client':
+        return <Paragraph>{record.name}</Paragraph>
+    default:
+        return <Paragraph>{record.title}</Paragraph>
     }
 }
 
@@ -95,9 +107,10 @@ const columns = {
         {
             title: <FormattedMessage id="title" />,
             width: 150,
-            dataIndex: 'title',
+            dataIndex: ['title', 'name'],
             key: 'title',
             fixed: 'left',
+            render: (value, record) => renderTitle(record)
         },
         {
             title: <FormattedMessage id="relation" />,
@@ -114,7 +127,7 @@ const columns = {
         {
             title: 'Related Item',
             width: 130,
-            dataIndex: ['post', 'project', 'formation'],
+            dataIndex: ['post', 'project', 'formation', 'client'],
             key: 'relatedItem',
             render: (text, record) => renderRelatedItem(record),
         },

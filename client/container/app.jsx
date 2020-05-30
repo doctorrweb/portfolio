@@ -8,11 +8,11 @@ import About from './about'
 import Work from '../component/work/work'
 import Blog from '../component/blog/blog'
 import Tutorial from '../component/tutos_front/tutorial'
-import Project from './project'
 import Contact from './contact'
 import Dashboard from './dashboard'
 import CustomFooter from './customFooter'
 import MainMenu from '../component/mainMenu'
+// import Intro from '../component/intro'
 import Home from './home'
 import en from '../translation/en.json'
 import fr from '../translation/fr.json'
@@ -61,9 +61,6 @@ const App = () => {
                         </Route>
                         <Route path="/tutorial">
                             <Tutorial />
-                        </Route>
-                        <Route path="/project">
-                            <Project />
                         </Route>
                         <Route path="/contact">
                             <Contact />

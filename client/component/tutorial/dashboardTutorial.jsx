@@ -34,6 +34,10 @@ const DashboardTutorial = () => {
     }, [])
 
     useEffect(() => {
+        dispatch(readAllTutorials())
+    }, [requestType])
+
+    useEffect(() => {
         if (itemToUpdate !== '') {
             let initialData = tutorials.filter(tutorial => tutorial._id === itemToUpdate)
             setInitialValues({ ...initialData[0] })

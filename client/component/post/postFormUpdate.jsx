@@ -73,7 +73,7 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
             setContent(initialData.content)
             form.setFieldsValue({ 
                 ...initialData,
-                image: initialData.image._id,
+                image: initialData.image && initialData.image._id,
                 project: initialData.project ? initialData.project._id : null,
                 formation: initialData.formation ? initialData.formation._id : null,
                 relationItem: findoutRelatedItem(initialData)
@@ -123,7 +123,6 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
             content: content
         }))
         setContent('')
-        form.resetFields()
     }
 
     const onFinishFailed = errorInfo => {
@@ -131,7 +130,6 @@ const PostFormUpdate = ({ itemToUpdate, initialValues }) => {
             message: `${intl.formatMessage({ id: 'login-fail' })}`,
             description: errorInfo
         })
-        form.resetFields()
     }
 
     const handleRelationChange = (e) => {

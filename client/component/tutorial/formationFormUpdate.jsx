@@ -118,7 +118,6 @@ const FormationFormUpdate = ({ itemToUpdate, initialValues }) => {
             message: `${intl.formatMessage({ id: 'login-fail' })}`,
             description: errorInfo
         })
-        form.resetFields()
     }
 
     return (

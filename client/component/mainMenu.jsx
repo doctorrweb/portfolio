@@ -1,12 +1,15 @@
 import React from 'react'
-import { Drawer } from 'antd'
+import { Col, Drawer, Row, Typography } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
+import { FormattedMessage } from 'react-intl'
 import { showMainMenu, toggleBtn } from '../action'
+import { HeartOutlined, CoffeeOutlined } from '@ant-design/icons'
 import Logo from './logo'
 import MenuContent from './menuContent'
 import CustomFooter from '../container/customFooter'
 
 const bgImgUri = 'img/menubg.gif'
+const { Title } = Typography
 
 const MainMenu = () => {
 
@@ -45,6 +48,22 @@ const MainMenu = () => {
             }}
         >
             <MenuContent />
+            <Row 
+                justify="center"
+                style={{ marginTop: 75 }}
+            >
+                <Col>
+                    <Title level={4} style={{textAlign: 'center' }}>
+                        <FormattedMessage 
+                            id="accroch" 
+                            values={{
+                                love: <HeartOutlined />,
+                                coffee: <CoffeeOutlined />
+                            }}
+                        />
+                    </Title>
+                </Col>
+            </Row>
         </Drawer>
     )
 }

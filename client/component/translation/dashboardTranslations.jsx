@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Row, Col, Button, Typography } from 'antd'
+import { Row, Col, Button, Typography, notification } from 'antd'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useSelector, useDispatch } from 'react-redux'
 import { PlusOutlined } from '@ant-design/icons'
@@ -9,6 +9,7 @@ import TranslationFormUpdate from './translationFormUpdate'
 import TranslationForm from './translationForm'
 import { readAllTranslations } from '../../action/translation'
 import { ModalTranslationFormProvider } from '../../helper/modalFormProvider'
+import { resetRequestType, resetError, resetResponse } from '../../action'
 
 const { Title } = Typography
 
@@ -18,15 +19,21 @@ const DashboardTranslation = () => {
 
     const responseStatus = useSelector((state) => state.response.status)
     const translations = useSelector((state) => state.translations.translations)
+    const requestType = useSelector(state => state.requestType.status)
+    const errorStatus = useSelector(state => state.error.status)
 
     const [modalVisibilityUpdate, setModalVisibilityUpdate] = useState(false)
     const [modalVisibilityCreate, setModalVisibilityCreate] = useState(false)
     const [itemToUpdate, setItemToUpdate] = useState('')
     const [initialValues, setInitialValues] = useState({})
-
+    
     useEffect(() => {
         dispatch(readAllTranslations())
     }, [])
+
+    useEffect(() => {
+        dispatch(readAllTranslations())
+    }, [requestType])
 
     useEffect(() => {
         if (itemToUpdate !== '') {
@@ -42,12 +49,38 @@ const DashboardTranslation = () => {
     }, [modalVisibilityUpdate])
 
     useEffect(() => {
-        if (responseStatus >= 200) {
-            setModalVisibilityUpdate(false)
+        if (requestType === 'create-translation') {
             setModalVisibilityCreate(false)
-            dispatch(readAllTranslations())
+            //dispatch(readAllPosts())
         }
-    }, [responseStatus])
+        if (requestType === 'update-translation') {
+            setModalVisibilityUpdate(false)
+        }
+        dispatch(readAllTranslations())
+    }, [requestType])
+
+    useEffect(() => {
+        requestNotification()
+    }, [errorStatus, responseStatus, requestType])
+
+    const requestNotification = () => {
+        if (errorStatus !== null && requestType === 'delete-translation') {
+            notification['error']({
+                message: 'An error occured',
+                description: 'We couldn\'t delete this translation',
+            })
+            dispatch(resetError())
+            dispatch(resetRequestType())
+        }
+        if (responseStatus >= 200 && requestType === 'delete-translation') {
+            notification['success']({
+                message: 'Translation deleted Successfully',
+                description: 'Click on \'details\' to see the updated translation',
+            })
+            dispatch(resetResponse())
+            dispatch(resetRequestType())
+        }
+    }
 
     const title = <Title level={4}>Translation Form</Title>
     const componentCreate = <TranslationForm />
