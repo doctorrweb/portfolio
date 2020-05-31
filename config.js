@@ -8,6 +8,7 @@ const config = {
         console.info('*********')
     },
     port: env.port || 3000,
+    DB: env.db || 'mongodb://localhost:27017/drwb_dev',
     devDB: 'mongodb://localhost:27017/drwb_dev',
     testDB: 'mongodb://localhost:27017/drwb_test'
 }

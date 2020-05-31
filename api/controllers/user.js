@@ -4,6 +4,8 @@ const jwt = require('jwt-simple')
 const User = require('../models/user')
 const config = require('../config')
 
+const { env } = process
+
 const getToken = user => {
     
     const date = new Date()
@@ -19,7 +21,7 @@ const getToken = user => {
             exp: expirationDate,
             role: user.role
         },
-        config.secret
+        env.secret || config.secret
     )
 }
 
