@@ -20,7 +20,7 @@ start - SETTING OF THE DATABASE
 **** */
 
 // Conection to Databse
-mongoose.connect( env.DB || config.devDB, {
+mongoose.connect(  env.NODE_ENV === 'development' ? config.devDB : config.DB, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
