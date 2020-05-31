@@ -10,20 +10,21 @@ const Home = () => {
         <div
             className="content"
             style={{
-                Height: '100%',
+                // minHeight: 950,
                 overflow: 'hidden',
-                backgroundImage: `url(${bgImgUri})`
+                backgroundImage: `url(${bgImgUri})`,
+                backgroundSize: 'cover'
             }}
         >
             <Intro />
             <Divider 
-                orientation="left" 
+                orientation="right" 
                 style={{ 
                     color: '#333', 
                     fontWeight: 'normal',
-                    marginTop: 150
+                    marginTop: 200
                 }}>
-      doctorrWeb
+      My Stack
             </Divider>
             <Technos />
         </div>

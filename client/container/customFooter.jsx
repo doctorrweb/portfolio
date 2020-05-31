@@ -9,7 +9,15 @@ const { Footer } = Layout
 
 const CustomFooter = () => {
     return (
-        <Footer style={{ position: 'fixed', zIndex: 1, bottom: 1, right: 10}}>
+        <Footer 
+            style={{
+                position: 'fixed', 
+                zIndex: 1, 
+                bottom: 1, 
+                right: 10,
+                backgroundColor: 'transparent'
+            }}
+        >
             <Row justify="end">
                 <Language />
             </Row>
