@@ -7,10 +7,17 @@ const config = require('../config')
 const { env } = process
 
 const getToken = user => {
+
+    const addDays = (dateObj, numDays) => {
+        const copy = new Date(Number(dateObj))
+        copy.setDate(date.getDate() + numDays)
+        return copy.getTime()
+    }
     
     const date = new Date()
-    const expirationDate = date.setDate(date.getDate() + 10)
+    const expirationDate = addDays(date, 10)
     const timeStamp = date.getTime()
+
 
     return jwt.encode(
         {

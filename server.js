@@ -9,6 +9,8 @@ const hpp = require('hpp')
 const morgan = require('morgan')
 const config = require('./config')
 
+const { env } = process
+
 const appRouter = require('./api/routes')
 
 const app = express()
@@ -18,7 +20,7 @@ start - SETTING OF THE DATABASE
 **** */
 
 // Conection to Databse
-mongoose.connect(config.devDB, {
+mongoose.connect( env.DB || config.devDB, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
