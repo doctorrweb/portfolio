@@ -1,6 +1,11 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const mongoSanitize = require('express-mongo-sanitize')
+const helmet = require('helmet')
+const xss = require('xss-clean')
+const rateLimit = require('express-rate-limit')
+const hpp = require('hpp')
 const morgan = require('morgan')
 const config = require('./config')
 
@@ -41,9 +46,29 @@ app.use(morgan('tiny'))
 app.use(bodyParser.json({ limit: '50mb' }, { type: '*/*' }))
 app.use(bodyParser.urlencoded({ extended: false }, { limit: '50mb' }))
 
+// Sanitize data
+app.use(mongoSanitize())
+
+// Set security headers
+app.use(helmet())
+
+// prevent cross site scrpting 'xss' attacks
+app.use(xss())
+
+// Rale Limiting
+const limiter = rateLimit({
+    windowMs: 10 * 60 * 100, // 10 mins
+    max: 1000
+})
+
+app.use(limiter)
+
+// Prevent http param pollution
+app.use(hpp())
+
 app.get('/', (req, res) => {
     res.status(200).render('index', {
-        content: 'test content'
+        content: ''
     })
 })
 
