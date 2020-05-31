@@ -2,7 +2,8 @@
 
 ## Usage
 
-Rename the config-template.js to config.js and fill it with the correct values
+- Rename the config-template.js to config.js and fill it with the correct values
+- Rename the api/config-template.js to api/config.js and fill it with the correct values
 
 ## Install Dependencies
 
