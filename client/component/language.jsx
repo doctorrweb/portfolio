@@ -51,10 +51,10 @@ const Language = () => {
             <Tooltip placement="bottom" title={intl.formatMessage({id: 'lang-fr'})}>
                 <Button onClick={() => ChangeLanguage('fr')} size="small"><img src="/img/lang-fr.png" width="20" /></Button>
             </Tooltip>
-            <Divider type="vertical" />
+            {/* <Divider type="vertical" />
             <Tooltip placement="bottom" title={intl.formatMessage({id: 'lang-de'})}>
                 <Button onClick={() => ChangeLanguage('de')} size="small"><img src="/img/lang-de.png" width="20" /></Button>
-            </Tooltip>
+            </Tooltip> */}
         </Col>
     )
 }

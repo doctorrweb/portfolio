@@ -12,6 +12,7 @@ import Contact from './contact'
 import Dashboard from './dashboard'
 import CustomFooter from './customFooter'
 import MainMenu from '../component/mainMenu'
+import NotFound from './notFound'
 // import Intro from '../component/intro'
 import Home from './home'
 import en from '../translation/en.json'
@@ -67,6 +68,9 @@ const App = () => {
                         </Route>
                         <Route path="/dashboard">
                             <Dashboard />
+                        </Route>
+                        <Route>
+                            <NotFound />
                         </Route>
                     </Switch>
                 </Router>

@@ -12,6 +12,7 @@
     "auth-closed": "You are successfully disconnected",
     "auth-fail": "Authentication failed",
     "back": "Back",
+    "back-home": "Back Home",
     "back-to-project": "Back to Project",
     "back-to-tutorial": "Back to Tutorial",
     "cancel": "Cancel",
@@ -69,6 +70,7 @@
     "no": "No",
     "of": "of",
     "not-translated": "Not translated",
+    "page-not-found": "Page not found !",
     "password": "Password",
     "password-mismatch": "Password mismatch",
     "path": "Path",
@@ -114,5 +116,6 @@
     "waiting": "Waiting",
     "whatsupdoctor": "What's up doctorr ?",
     "work": "Work",
-    "yes": "Yes"
+    "yes": "Yes",
+    "404": "Sorry, the page you want to visit does not exist."
 }

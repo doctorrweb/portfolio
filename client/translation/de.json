@@ -12,6 +12,7 @@
     "auth-closed": "Sie wurden erfolgreich getrennt",
     "auth-fail": "Authentifizierung fehlgeschlagen",
     "back": "Zurück",
+    "back-home": "Zurück Home",
     "back-to-project": "Zurück zum Projekt",
     "back-to-tutorial": "Zurück zum Tutorial",
     "cancel": "Abbrechen",
@@ -40,7 +41,7 @@
     "accroch": "Design mit {love}, viel {coffee} und MERN Stack von doctorrWeb",
     "firstname": "Vorname",
     "form": "Formular",
-    "home": "Zuhause",
+    "home": "Home",
     "image": "Bild",
     "inprogress": "In Bearbeitung",
     "input-conf-password": "Bitte bestätigen Sie Ihr Passwort !",
@@ -69,6 +70,7 @@
     "no": "Nein",
     "of": "von",
     "not-translated": "Nicht übersetzt",
+    "page-not-found": "Seite nicht gefunden !",
     "password": "Passwort",
     "password-mismatch": "Die Passwörter stimmen nicht überein",
     "path": "Pfad",
@@ -114,5 +116,6 @@
     "waiting": "Warten",
     "whatsupdoctor": "Was ist los, Doctorr ?",
     "work": "Erfolge",
-    "yes": "Ja"
+    "yes": "Ja",
+    "404": "Die Seite, die Sie besuchen möchten, ist leider nicht vorhanden."
 }
