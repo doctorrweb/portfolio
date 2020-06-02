@@ -80,7 +80,7 @@ const About = () => {
             >
                 <Row
                     justify="space-between"
-                    style={{ margin: '10px 16px 0' }}
+                    style={{ margin: '25px 16px 0' }}
                     align="middle"
                 >
                     <Col lg={14} md={14} sm={24} xs={24}>

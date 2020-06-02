@@ -8,7 +8,7 @@ import Logo from './logo'
 import MenuContent from './menuContent'
 import CustomFooter from '../container/customFooter'
 
-const bgImgUri = 'img/menubg.gif'
+const bgImgUri = 'img/video-menu-bg.gif'
 const { Title } = Typography
 
 const MainMenu = () => {
@@ -33,7 +33,9 @@ const MainMenu = () => {
                 
             }}
             drawerStyle={{
-                backgroundImage: `url(${bgImgUri})`
+                backgroundImage: `url(${bgImgUri})`,
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover'
             }}
             bodyStyle={{
                 backgroundColor: 'rgba(0, 0, 0, .9)'
@@ -50,7 +52,7 @@ const MainMenu = () => {
             <MenuContent />
             <Row 
                 justify="center"
-                style={{ marginTop: 75 }}
+                style={{ marginTop: '10%' }}
             >
                 <Col>
                     <Title level={4} style={{textAlign: 'center' }}>

@@ -1,61 +1,39 @@
 import React from 'react'
 import { Row, Col } from 'antd'
 
+const logos = [
+    'javascript',
+    'nodejs',
+    'express',
+    'react',
+    'graphql',
+    'mongodb',
+]
+
 const Technos = () => {
+
+    const renderLogo = () =>
+        logos.map((logo) => (
+            <Col
+                key={logo}
+                lg={{ span: 2 }}
+                md={{ span: 2 }}
+                sm={{ span: 1 }}
+                xs={{ span: 1 }}
+            >
+                <img 
+                    src={`img/${logo}.svg`} 
+                    height={logo === 'express' ? 22 : 30} 
+                    style={{ paddingRight: 50 }} 
+                />
+            </Col>
+        ))
 
     return (
         <Row 
-            justify="center"
-            gutter={[32, 8]}
+            justify="space-around"
         >
-            <Col 
-                lg={{span: 2}}
-                md={{span: 2}}
-                sm={{span: 0}}
-                xs={{span: 0}}
-            >
-                <img src="img/javascript.svg" height={30} />
-            </Col>
-            <Col 
-                lg={{span: 2}}
-                md={{span: 2}}
-                sm={{span: 0}}
-                xs={{span: 0}}
-            >
-                <img src="img/nodejs.svg" height={40} />
-            </Col>
-            <Col 
-                lg={{span: 2}}
-                md={{span: 2}}
-                sm={{span: 0}}
-                xs={{span: 0}}
-            >
-                <img src="img/express.svg" height={25} />
-            </Col>
-            <Col 
-                lg={{span: 2}}
-                md={{span: 2}}
-                sm={{span: 0}}
-                xs={{span: 0}}
-            >
-                <img src="img/react.svg" height={30} />
-            </Col>
-            <Col 
-                lg={{span: 2}}
-                md={{span: 2}}
-                sm={{span: 0}}
-                xs={{span: 0}}
-            >
-                <img src="img/graphql.svg" height={35} />
-            </Col>
-            <Col 
-                lg={{span: 2}}
-                md={{span: 2}}
-                sm={{span: 0}}
-                xs={{span: 0}}
-            >
-                <img src="img/mongodb.svg" height={30} />
-            </Col>
+            {renderLogo()}
         </Row>
     )
     

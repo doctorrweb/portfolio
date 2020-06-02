@@ -8,17 +8,17 @@ const NavBar = () => {
     
     
     return (
-        <Row type="flex" justify="space-between">
+        <Row type="flex" justify="space-between" align="middle">
             <Col
                 md={3}
                 sm={3}
-                xs={9}
-                style={{ textAlign: 'left' }}
+                xs={4}
+                style={{ textAlign: 'left', paddingTop: 27 }}
                 className="logo"
             >
                 <Logo />
             </Col>
-            <Col md={3} sm={3} xs={9} style={{ textAlign: 'right' }}>
+            <Col md={3} sm={3} xs={3} style={{ textAlign: 'right' }}>
                 <MenuIcon  />
             </Col>
         </Row>

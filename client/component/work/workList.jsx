@@ -42,6 +42,14 @@ const activeMenuLinkStyle = {
     color: '#FF9900',
 }
 
+const filters = [
+    { elmt: 'graphic', text: 'Graphic', icon: <HighlightOutlined /> },
+    { elmt: 'edition', text: 'Edition', icon: <ReadOutlined /> },
+    { elmt: 'web', text: 'Web', icon: <GlobalOutlined /> },
+    { elmt: 'mobile', text: 'Mobile', icon: <MobileOutlined /> },
+    { elmt: 'desktop', text: 'Desktop', icon: <LaptopOutlined /> }
+]
+
 const WorkList = () => {
 
     const intl = useIntl()
@@ -65,8 +73,33 @@ const WorkList = () => {
         setProjectList(newArray)
     }, [activeTab])
 
+    const renderfilters = () =>
+
+        filters.map(({ elmt, icon, text }) => (
+            <Col
+                key={elmt}
+                lg={{ span: 4 }}
+                md={{ span: 8 }}
+                sm={{ span: 12 }}
+                xs={{ span: 12 }}
+            >
+                <Button
+                    type="link"
+                    style={
+                        activeTab === elmt ? activeMenuLinkStyle : menuLinkStyle
+                    }
+                    ghost
+                    icon={icon}
+                    onClick={() => setActiveTab(elmt)}
+                >
+                    {text}
+                </Button>
+            </Col>
+        ))
+
     return (
-        <Content >
+        <Content 
+        >
             <Row 
                 justify="space-between" 
             >
@@ -99,81 +132,7 @@ const WorkList = () => {
                         {intl.formatMessage({id: 'all'})}
                     </Button>
                 </Col>
-                <Col>
-                    <Button
-                        type="link"
-                        style={
-                            activeTab === 'graphic'
-                                ? activeMenuLinkStyle
-                                : menuLinkStyle
-                        }
-                        ghost
-                        icon={<HighlightOutlined />}
-                        onClick={() => setActiveTab('graphic')}
-                    >
-                        Graphic
-                    </Button>
-                </Col>
-                <Col>
-                    <Button
-                        type="link"
-                        style={
-                            activeTab === 'edition'
-                                ? activeMenuLinkStyle
-                                : menuLinkStyle
-                        }
-                        ghost
-                        icon={<ReadOutlined />}
-                        onClick={() => setActiveTab('edition')}
-                    >
-                        Edition
-                    </Button>
-                </Col>
-                <Col>
-                    <Button
-                        type="link"
-                        style={
-                            activeTab === 'web'
-                                ? activeMenuLinkStyle
-                                : menuLinkStyle
-                        }
-                        ghost
-                        icon={<GlobalOutlined />}
-                        onClick={() => setActiveTab('web')}
-                    >
-                        Web
-                    </Button>
-                </Col>
-                <Col>
-                    <Button
-                        type="link"
-                        style={
-                            activeTab === 'mobile'
-                                ? activeMenuLinkStyle
-                                : menuLinkStyle
-                        }
-                        ghost
-                        icon={<MobileOutlined />}
-                        onClick={() => setActiveTab('mobile')}
-                    >
-                        Mobile
-                    </Button>
-                </Col>
-                <Col>
-                    <Button
-                        type="link"
-                        style={
-                            activeTab === 'desktop'
-                                ? activeMenuLinkStyle
-                                : menuLinkStyle
-                        }
-                        ghost
-                        icon={<LaptopOutlined />}
-                        onClick={() => setActiveTab('desktop')}
-                    >
-                        Desktop
-                    </Button>
-                </Col>
+                {renderfilters()}
             </Row>
             <Divider type="horizontal" />
             <Row>

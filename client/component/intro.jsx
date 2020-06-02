@@ -9,9 +9,11 @@ const Intro = () => {
         <Row justify="center">
             <Col
                 style={{
-                    minWidth: '550px',
+                    minWidth: '380px',
                     minHeight: '400px',
                     marginTop: 200,
+                    // marginTop: '45%',
+                    // marginBottom: '50%',
                     paddingTop: 18,
                     borderRadius: 25,
                     backgroundSize: 'contain',
@@ -23,6 +25,7 @@ const Intro = () => {
                 md={{ span: 12, push: 1}} 
                 sm={{ span: 24}}
                 xs={24}
+                className="bg-code-editor"
             >
                 <IntroMessage />
             </Col>

@@ -87,7 +87,7 @@ const MenuContent = () => {
         <Row 
             justify="space-around"
             style={{
-                marginTop: '2em'
+                marginTop: '1%'
             }}
         >
             <Col>

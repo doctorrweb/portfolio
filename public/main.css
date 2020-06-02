@@ -27,9 +27,6 @@ blockquote {
   
 /* Add some content at the bottom of the video/page */
 .content {
-  /* position: absolute; */
-  /* top: 0; */
-  /* width: 100%; */
   height: 100%;
   color:#f1f1f1;
   background-color: rgba(0, 0, 0, 0.3);
@@ -83,15 +80,39 @@ blockquote {
 @media screen and (max-width: 768px) {
   .content {
   position: absolute;
-  /* top: 0; */
   color:#f1f1f1;
   background-color: rgba(0, 0, 0, 0.3);
   width: 100%;
   height: 100%;
-}
+  }
 
   pre.typewriter {
-	font-size: 1.3em;
-  /* right: 200; */
+	font-size: .9em;
   }
+}
+
+@media screen and (max-width: 480px) {
+  .stack {
+    display: none !important;
+  }
+}
+
+@media screen and (max-height: 420px) {
+  .stack {
+    display: none !important;
+  }
+
+}
+
+@media screen and (max-height: 420px) {
+
+  .bg-code-editor {
+    margin-top: 110px !important;
+    min-height: 220px !important;
+  }
+
+  pre.typewriter {
+	font-size: .8em;
+  }
+
 }
