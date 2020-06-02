@@ -1,52 +1,40 @@
 import React from 'react'
+import { useHistory } from 'react-router-dom'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { Result, Button, Layout, Typography } from 'antd'
-import Typewriter from 'typewriter-effect'
-
-const bgImgUri = 'img/background-code.png'
+import { Result, Button, Layout, Typography, Row } from 'antd'
 
 const { Content } = Layout
-const { Title } = Typography
+const { Title, Text } = Typography
 
 const NotFound = () => {
 
     const intl = useIntl()
+    const history = useHistory()
 
 
     return (
         <Layout
-            style={{
-                margin: '10%',
-                height: '100%',
-                overflow: 'hidden',
-                backgroundImage: `url(${bgImgUri})`,
-                backgroundSize: 'cover'
-            }}
+            style={{ margin: '15% 10% 10%' }}
         >
             <Content
                 style={{
                     marginRight: '2%',
                 }}
             >
-                <Result
-                    status="error"
-                    title={
-                        <Title>
-                            404:
-                            <Typewriter
-                                options={{
-                                    strings: [`${intl.formatMessage({ id: 'page-not-found' })}`],
-                                    autoStart: true,
-                                    loop: true,
-                                    delay: 150,
-                                    deleteSpeed: 1500
-                                }}
-                            />
-                        </Title>
-                    }
-                    subTitle={<Title level={4}>{intl.formatMessage({ id: '404' })}</Title>}
-                    extra={<Button type="danger"><FormattedMessage id="back-home" /></Button>}
-                />
+                <Row justify="center" align="middle">
+                    <Result
+                        status="error"
+                        title={<Title level={2}>404: {intl.formatMessage({ id: 'page-not-found' })}</Title>}
+                        subTitle={<Text>{intl.formatMessage({ id: '404' })}</Text>}
+                        extra={
+                            <Button 
+                                onClick={() => history.push('/')} 
+                                type="danger">
+                                <FormattedMessage id="back-home" />
+                            </Button>
+                        }
+                    />
+                </Row>
             </Content>
         </Layout>
     )
