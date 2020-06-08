@@ -38,10 +38,9 @@ const Home = () => {
                         style={{ 
                             color: '#333', 
                             fontWeight: 'normal',
-                        // marginTop: 200
                         }}
                     >
-                        My Stack
+                        My Stack 
                     </Divider>
                     <Technos />
                 </Col>

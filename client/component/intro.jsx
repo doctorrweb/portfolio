@@ -11,9 +11,7 @@ const Intro = () => {
                 style={{
                     minWidth: '380px',
                     minHeight: '400px',
-                    marginTop: 200,
-                    // marginTop: '45%',
-                    // marginBottom: '50%',
+                    marginTop: 180,
                     paddingTop: 18,
                     borderRadius: 25,
                     backgroundSize: 'contain',

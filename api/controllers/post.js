@@ -213,7 +213,6 @@ const postController = {
             if (post.formation) {
                 const formation = await Formation.findById(post.formation)
                 const formationPosts = await formation.posts.filter(formation => formation != id)
-
                 // Remove the post from the related project
                 formation.posts = formationPosts
                 await formation.save()

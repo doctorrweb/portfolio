@@ -13,11 +13,11 @@ import Dashboard from './dashboard'
 import CustomFooter from './customFooter'
 import MainMenu from '../component/mainMenu'
 import NotFound from './notFound'
-// import Intro from '../component/intro'
 import Home from './home'
 import en from '../translation/en.json'
 import fr from '../translation/fr.json'
 import de from '../translation/de.json'
+import '../main.css'
 
 const { Header } = Layout
 
@@ -32,8 +32,7 @@ const App = () => {
                 : lang === 'de' ? de
                     : en
         }>
-            <Layout
-            >
+            <Layout>
                 <Header
                     style={{
                         position: 'fixed',

@@ -7,9 +7,12 @@ const xss = require('xss-clean')
 const rateLimit = require('express-rate-limit')
 const hpp = require('hpp')
 const morgan = require('morgan')
+// const dotenv = require('dotenv')
 const config = require('./config')
+const fs = require('fs')
 
-const { env } = process
+// Load env vars
+// dotenv.config({ path: './config/config.env' })
 
 const appRouter = require('./api/routes')
 
@@ -20,7 +23,7 @@ start - SETTING OF THE DATABASE
 **** */
 
 // Conection to Databse
-mongoose.connect(  env.NODE_ENV === 'development' ? config.devDB : config.DB, {
+mongoose.connect( config.devDB, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
@@ -69,20 +72,24 @@ app.use(limiter)
 app.use(hpp())
 
 app.get('/', (req, res) => {
-    res.status(200).render('index', {
-        content: ''
-    })
+    const pathToHtmlFile = 'public/dist/index.html'
+    const contentFromHtmlFile = fs.readFileSync(pathToHtmlFile, 'utf-8')
+    res.status(200).send(contentFromHtmlFile)
 })
 
-app.set('view engine', 'ejs')
-
-//routes(app)
 app.use('/api', appRouter)
 app.use(express.static('public'))
 
 
-app.listen(config.port, () => {
+const server = app.listen(config.port, () => {
     console.log(`Express is launch: http://localhost:${config.port}`)
 })
+
+// Handle unhandled rejections
+process.on('unhandledRejection', (err) => {
+    console.log(`Error: ${err.message}`)
+    server.close(() => process.exit(1))
+})
+
 
 module.exports = app
