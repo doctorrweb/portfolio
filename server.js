@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const mongoSanitize = require('express-mongo-sanitize')
 const helmet = require('helmet')
 const xss = require('xss-clean')
+const cors = require('cors')
 const rateLimit = require('express-rate-limit')
 const hpp = require('hpp')
 const morgan = require('morgan')
@@ -59,6 +60,8 @@ app.use(helmet())
 
 // prevent cross site scrpting 'xss' attacks
 app.use(xss())
+
+app.use(cors())
 
 // Rale Limiting
 const limiter = rateLimit({
