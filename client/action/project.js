@@ -13,7 +13,7 @@ import {
     resetResponse
 } from './index'
 
-const BASE_URL = 'http://localhost:3000/api'
+const URL_API = `${process.env.BASE_URL}:${process.env.PORT}/api`
 
 
 export function createProject(project) {
@@ -22,7 +22,7 @@ export function createProject(project) {
         dispatch(parseRequestType('create-project'))
         axios({
             method: 'post',
-            url: `${BASE_URL}/projects`,
+            url: `${URL_API}/projects`,
             data: project,
             //config: { headers: { 'Content-Type': 'multipart/form-data' } }
         })
@@ -44,7 +44,7 @@ export function readAllProjects() {
     return function (dispatch) {
         axios({
             method: 'get',
-            url: `${BASE_URL}/projects`
+            url: `${URL_API}/projects`
         })
             .then((response) => {
                 dispatch({
@@ -64,7 +64,7 @@ export function readOneProject(projectId) {
     return function (dispatch) {
         axios({
             method: 'get',
-            url: `${BASE_URL}/projects/${projectId}`
+            url: `${URL_API}/projects/${projectId}`
         })
             .then((response) => {
                 dispatch({
@@ -86,7 +86,7 @@ export function updateProject(projectId, updatedContent) {
         dispatch(parseRequestType('update-project'))
         axios({
             method: 'put',
-            url: `${BASE_URL}/projects/${projectId}`,
+            url: `${URL_API}/projects/${projectId}`,
             data: updatedContent,
         })
             .then((response) => {
@@ -109,7 +109,7 @@ export function deleteProject(projectId) {
         dispatch(parseRequestType('delete-project'))
         axios({
             method: 'delete',
-            url: `${BASE_URL}/projects/${projectId}`
+            url: `${URL_API}/projects/${projectId}`
         })
             .then((response) => {
                 dispatch({

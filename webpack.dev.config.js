@@ -1,5 +1,6 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const Dotenv = require('dotenv-webpack')
 const darkThemeVars = require('antd/dist/dark-theme')
 
 module.exports = {
@@ -25,12 +26,6 @@ module.exports = {
             {
                 test: /\.html$/,
                 loader: 'html-loader'
-            },
-            { 
-                test: /\.(png|jpg)$/,
-                use: {
-                    loader: 'file-loader'
-                },
             },
             { 
                 test: /\.css$/,
@@ -59,6 +54,18 @@ module.exports = {
                         },
                     },
                 ],
+            },
+            { 
+                test: /\.(woff2|woff|ttf)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            output: 'fonts/'
+                        }
+                    }
+                ],
             }
         ],
     },
@@ -66,7 +73,8 @@ module.exports = {
         new HtmlWebpackPlugin({
             favicon: './public/img/favicon.ico',
             template: './template.html'
-        })
+        }),
+        new Dotenv()
     ],
     resolve: {
         extensions: ['*', '.js', '.jsx', '.css'],

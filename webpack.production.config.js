@@ -1,6 +1,7 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const Dotenv = require('dotenv-webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const darkThemeVars = require('antd/dist/dark-theme')
 
@@ -29,12 +30,6 @@ module.exports = {
                 loader: 'html-loader'
             },
             { 
-                test: /\.(png|jpg)$/,
-                use: {
-                    loader: 'file-loader'
-                },
-            },
-            { 
                 test: /\.css$/,
                 use: [
                     MiniCssExtractPlugin.loader, 'css-loader'
@@ -61,7 +56,19 @@ module.exports = {
                         },
                     },
                 ],
+            },{ 
+                test: /\.(woff2|woff|ttf)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            output: 'fonts/'
+                        }
+                    }
+                ],
             }
+
         ],
     },
     plugins: [
@@ -73,7 +80,8 @@ module.exports = {
             favicon: './public/img/favicon.ico',
             template: './template.html',
             cache: true
-        })
+        }),
+        new Dotenv()
     ],
     resolve: {
         extensions: ['*', '.js', '.jsx', '.css'],

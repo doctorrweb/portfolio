@@ -17,7 +17,7 @@ import axios from 'axios'
 import jwt from 'jsonwebtoken'
 import setAuthorizationToken from '../helper/authToken'
 
-const BASE_URL = 'http://localhost:3000/api'
+const URL_API = `${process.env.BASE_URL}:${process.env.PORT}/api`
 
 export function setAuthentication(isLoggedIn) {
     return {
@@ -102,7 +102,7 @@ export function resetRequestType() {
 export function loginUser(user) {
     return function(dispatch) {
         axios
-            .post(`${BASE_URL}/signin`, user)
+            .post(`${URL_API}/signin`, user)
             .then(response => {
                 const { token } = response.data
                 localStorage.setItem('token', token)
@@ -112,7 +112,7 @@ export function loginUser(user) {
                 dispatch(parseResponse(response.status))
             })
             .catch(error => {
-                dispatch(parseError(error.response.status))
+                dispatch(parseError(error.response))
             })
     }
 }
@@ -122,12 +122,12 @@ export function logonUser(user) {
         dispatch(resetResponse())
         dispatch(parseRequestType('create-user'))
         axios
-            .post(`${BASE_URL}/signup`, user)
+            .post(`${URL_API}/signup`, user)
             .then(response => {
                 dispatch(parseResponse(response.status))
             })
             .catch(error => {
-                dispatch(parseError(error.response.status))
+                dispatch(parseError(error.response))
             })
     }
 }

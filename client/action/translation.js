@@ -13,7 +13,7 @@ import {
     resetResponse,
 } from './index'
 
-const BASE_URL = 'http://localhost:3000/api'
+const URL_API = `${process.env.BASE_URL}:${process.env.PORT}/api`
 
 export function createTranslation(trans) {
     return function (dispatch) {
@@ -22,7 +22,7 @@ export function createTranslation(trans) {
 
         axios({
             method: 'post',
-            url: `${BASE_URL}/translations`,
+            url: `${URL_API}/translations`,
             data: trans,
         })
             .then((response) => {
@@ -42,7 +42,7 @@ export function readAllTranslations() {
     return function (dispatch) {
         axios({
             method: 'get',
-            url: `${BASE_URL}/translations`,
+            url: `${URL_API}/translations`,
         })
             .then((response) => {
                 dispatch({
@@ -61,7 +61,7 @@ export function readTranslation(transId) {
     return function (dispatch) {
         axios({
             method: 'get',
-            url: `${BASE_URL}/translations/${transId}`,
+            url: `${URL_API}/translations/${transId}`,
         })
             .then((response) => {
                 dispatch({
@@ -82,7 +82,7 @@ export function updateTranslation(transId, updatedContent) {
         dispatch(parseRequestType('update-translation'))
         axios({
             method: 'put',
-            url: `${BASE_URL}/translations/${transId}`,
+            url: `${URL_API}/translations/${transId}`,
             data: updatedContent,
         })
             .then((response) => {
@@ -104,7 +104,7 @@ export function deleteTranslation(transId) {
         dispatch(parseRequestType('delete-translation'))
         axios({
             method: 'delete',
-            url: `${BASE_URL}/translations/${transId}`,
+            url: `${URL_API}/translations/${transId}`,
         })
             .then((response) => {
                 dispatch({

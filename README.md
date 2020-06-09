@@ -2,8 +2,7 @@
 
 ## Usage
 
-- Rename the config-template.js to config.js and fill it with the correct values
-- Rename the api/config-template.js to api/config.js and fill it with the correct values
+- Rename the template.env to .env and fill it with the correct values
 
 ## Install Dependencies
 
@@ -11,22 +10,35 @@
 npm install
 ````
 
-> Frontend for doctorrWeb website
+## FRONT END 
 
+> Generate the bundles 
 
-## Generate the bundle.js file
 `````
-npm run dev 
+npm run watch
 `````
 
+> Run the App
 
-> Backend API for doctorrWeb website
+```````
+npm run dev
+```````
 
 
-## Run App
+## BACK END 
+
+> Generate the bundles 
+
 `````
+npm run build
+`````
+
+> Run the App
+
+```````
 npm start
-`````
+```````
+
 
 - version: 1.0.0
 - License: MIT

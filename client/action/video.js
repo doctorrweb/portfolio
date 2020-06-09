@@ -11,7 +11,7 @@ import {
     resetResponse
 } from './index'
 
-const BASE_URL = 'http://localhost:3000/api'
+const URL_API = `${process.env.BASE_URL}:${process.env.PORT}/api`
 
 
 export function addVideo(videos) {
@@ -22,7 +22,7 @@ export function addVideo(videos) {
 
         axios({
             method: 'post',
-            url: `${BASE_URL}/videos`,
+            url: `${URL_API}/videos`,
             data: videos,
             config: { headers: { 'Content-Type': 'multipart/form-data' } }
         })
@@ -43,7 +43,7 @@ export function readAllVideos() {
     return function (dispatch) {
         axios({
             method: 'get',
-            url: `${BASE_URL}/videos`
+            url: `${URL_API}/videos`
         })
             .then((response) => {
                 dispatch({
@@ -67,7 +67,7 @@ export function deleteVideo(videoId) {
         dispatch(parseRequestType('delete-video'))
         axios({
             method: 'delete',
-            url: `${BASE_URL}/videos/${videoId}`
+            url: `${URL_API}/videos/${videoId}`
         })
             .then((response) => {
                 dispatch({

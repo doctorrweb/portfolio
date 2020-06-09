@@ -13,7 +13,7 @@ import {
     resetResponse
 } from './index'
 
-const BASE_URL = 'http://localhost:3000/api'
+const URL_API = `${process.env.BASE_URL}:${process.env.PORT}/api`
 
 
 export function createTutorial(tutorial) {
@@ -22,7 +22,7 @@ export function createTutorial(tutorial) {
         dispatch(parseRequestType('create-tutorial'))
         axios({
             method: 'post',
-            url: `${BASE_URL}/formations`,
+            url: `${URL_API}/formations`,
             data: tutorial,
         })
             .then(response => {
@@ -42,7 +42,7 @@ export function readAllTutorials() {
     return function (dispatch) {
         axios({
             method: 'get',
-            url: `${BASE_URL}/formations`
+            url: `${URL_API}/formations`
         })
             .then((response) => {
                 dispatch({
@@ -62,7 +62,7 @@ export function readOneTutorial(tutoId) {
     return function (dispatch) {
         axios({
             method: 'get',
-            url: `${BASE_URL}/formations/${tutoId}`
+            url: `${URL_API}/formations/${tutoId}`
         })
             .then((response) => {
                 dispatch({
@@ -85,7 +85,7 @@ export function updateTutorial(tutoId, updatedContent) {
         dispatch(parseRequestType('update-tutorial'))
         axios({
             method: 'put',
-            url: `${BASE_URL}/formations/${tutoId}`,
+            url: `${URL_API}/formations/${tutoId}`,
             data: updatedContent,
         })
             .then((response) => {
@@ -108,7 +108,7 @@ export function deleteTutorial(tutoId) {
         dispatch(parseRequestType('delete-tutorial'))
         axios({
             method: 'delete',
-            url: `${BASE_URL}/formations/${tutoId}`
+            url: `${URL_API}/formations/${tutoId}`
         })
             .then((response) => {
                 dispatch({

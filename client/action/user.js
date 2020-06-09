@@ -11,7 +11,7 @@ import {
     resetResponse,
 } from './index'
 
-const BASE_URL = 'http://localhost:3000/api'
+const URL_API = `${process.env.BASE_URL}:${process.env.PORT}/api`
 
 
 // use the logonUser function to create a new user
@@ -20,7 +20,7 @@ export function readAllUsers() {
     return function (dispatch) {
         axios({
             method: 'get',
-            url: `${BASE_URL}/users`
+            url: `${URL_API}/users`
         })
             .then((response) => {
                 dispatch({
@@ -43,7 +43,7 @@ export function updateUser(userId, updatedContent) {
         dispatch(parseRequestType('update-user'))
         axios({
             method: 'put',
-            url: `${BASE_URL}/users/${userId}`,
+            url: `${URL_API}/users/${userId}`,
             data: updatedContent,
         })
             .then((response) => {
@@ -63,7 +63,7 @@ export function deleteUser(userId) {
     return function (dispatch) {
         axios({
             method: 'delete',
-            url: `${BASE_URL}/users/${userId}`
+            url: `${URL_API}/users/${userId}`
         })
             .then((response) => {
                 dispatch({

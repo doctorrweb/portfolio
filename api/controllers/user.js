@@ -2,9 +2,7 @@ const lodash = require('lodash')
 const bcrypt = require('bcrypt')
 const jwt = require('jwt-simple')
 const User = require('../models/user')
-const config = require('../config')
-
-const { env } = process
+require('dotenv')
 
 const getToken = user => {
 
@@ -28,7 +26,8 @@ const getToken = user => {
             exp: expirationDate,
             role: user.role
         },
-        env.secret || config.secret
+        // env.secret || config.secret
+        process.env.SECRET
     )
 }
 

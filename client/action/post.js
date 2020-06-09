@@ -14,7 +14,7 @@ import {
     resetResponse
 } from './index'
 
-const BASE_URL = 'http://localhost:3000/api'
+const URL_API = `${process.env.BASE_URL}:${process.env.PORT}/api`
 
 
 export function createPost(post) {
@@ -23,7 +23,7 @@ export function createPost(post) {
         dispatch(parseRequestType('create-post'))
         axios({
             method: 'post',
-            url: `${BASE_URL}/posts`,
+            url: `${URL_API}/posts`,
             data: post,
         })
             .then(response => {
@@ -44,7 +44,7 @@ export function readAllPosts() {
     return function (dispatch) {
         axios({
             method: 'get',
-            url: `${BASE_URL}/posts`
+            url: `${URL_API}/posts`
         })
             .then((response) => {
                 dispatch({
@@ -63,7 +63,7 @@ export function readTranslatedPosts(project, lang) {
     return function (dispatch) {
         axios({
             method: 'get',
-            url: `${BASE_URL}/posts/${project}/${lang}`,
+            url: `${URL_API}/posts/${project}/${lang}`,
         })
             .then((response) => {
                 dispatch({
@@ -81,7 +81,7 @@ export function readPost(postId) {
     return function (dispatch) {
         axios({
             method: 'get',
-            url: `${BASE_URL}/posts/${postId}`
+            url: `${URL_API}/posts/${postId}`
         })
             .then((response) => {
                 dispatch({
@@ -102,7 +102,7 @@ export function updatePost(postId, updatedContent) {
         dispatch(parseRequestType('update-post'))
         axios({
             method: 'put',
-            url: `${BASE_URL}/posts/${postId}`,
+            url: `${URL_API}/posts/${postId}`,
             data: updatedContent,
         })
             .then((response) => {
@@ -127,7 +127,7 @@ export function deletePost(postId) {
         dispatch(parseRequestType('delete-post'))
         axios({
             method: 'delete',
-            url: `${BASE_URL}/posts/${postId}`
+            url: `${URL_API}/posts/${postId}`
         })
             .then((response) => {
                 dispatch({

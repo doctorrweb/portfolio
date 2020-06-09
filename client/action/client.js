@@ -12,7 +12,7 @@ import {
     resetResponse
 } from './index'
 
-const BASE_URL = 'http://localhost:3000/api'
+const URL_API = `${process.env.BASE_URL}:${process.env.PORT}/api`
 
 
 export function createClient(client) {
@@ -21,7 +21,7 @@ export function createClient(client) {
         dispatch(parseRequestType('create-client'))
         axios({
             method: 'post',
-            url: `${BASE_URL}/clients`,
+            url: `${URL_API}/clients`,
             data: client,
             //config: { headers: { 'Content-Type': 'multipart/form-data' } }
         })
@@ -42,7 +42,7 @@ export function readAllClients() {
     return function (dispatch) {
         axios({
             method: 'get',
-            url: `${BASE_URL}/clients`
+            url: `${URL_API}/clients`
         })
             .then((response) => {
                 dispatch({
@@ -65,7 +65,7 @@ export function updateClient(clientId, updatedContent) {
         dispatch(parseRequestType('update-client'))
         axios({
             method: 'put',
-            url: `${BASE_URL}/clients/${clientId}`,
+            url: `${URL_API}/clients/${clientId}`,
             data: updatedContent,
         })
             .then((response) => {
@@ -88,7 +88,7 @@ export function deleteClient(clientId) {
         dispatch(parseRequestType('delete-client'))
         axios({
             method: 'delete',
-            url: `${BASE_URL}/clients/${clientId}`
+            url: `${URL_API}/clients/${clientId}`
         })
             .then((response) => {
                 dispatch({

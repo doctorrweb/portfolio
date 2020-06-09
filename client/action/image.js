@@ -11,7 +11,7 @@ import {
     resetResponse
 } from './index'
 
-const BASE_URL = 'http://localhost:3000/api'
+const URL_API = `${process.env.BASE_URL}:${process.env.PORT}/api`
 
 
 export function addImage(images) {
@@ -20,7 +20,7 @@ export function addImage(images) {
         dispatch(parseRequestType('add-image'))
         axios({
             method: 'post',
-            url: `${BASE_URL}/images`,
+            url: `${URL_API}/images`,
             data: images,
             config: { headers: { 'Content-Type': 'multipart/form-data' } }
         })
@@ -41,7 +41,7 @@ export function readAllImages() {
     return function (dispatch) {
         axios({
             method: 'get',
-            url: `${BASE_URL}/images`
+            url: `${URL_API}/images`
         })
             .then((response) => {
                 dispatch({
@@ -65,7 +65,7 @@ export function deleteImage(imageId) {
         dispatch(parseRequestType('delete-image'))
         axios({
             method: 'delete',
-            url: `${BASE_URL}/images/${imageId}`
+            url: `${URL_API}/images/${imageId}`
         })
             .then((response) => {
                 dispatch({
