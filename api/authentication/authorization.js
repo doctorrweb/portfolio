@@ -1,5 +1,5 @@
 const jwt = require('jwt-simple')
-const { secret } = require('../config')
+// const { secret } = require('../config')
 
 // middleware for doing role-based permissions
 function authorize(...allowed) {
@@ -7,7 +7,7 @@ function authorize(...allowed) {
     // return a middleware
     return (req, res, next) => {
         const token = req.headers.authorization
-        const user = jwt.decode(token, secret)
+        const user = jwt.decode(token, process.env.SECRET)
 
         if (isAllowed(user.role)) next()
         // role is allowed, so continue on the next middleware

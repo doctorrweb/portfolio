@@ -1,5 +1,4 @@
 const passport = require('passport')
-const config = require('../config')
 const User = require('../models/user')
 const { ExtractJwt, Strategy } = require('passport-jwt')
 const JWTStrategy = Strategy
@@ -25,7 +24,7 @@ passport.use(
     new JWTStrategy(
         {
             jwtFromRequest: ExtractJwt.fromHeader('authorization'),
-            secretOrKey: config.secret
+            secretOrKey: process.env.SECRET
         },
         verify
     )
