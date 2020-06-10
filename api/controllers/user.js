@@ -2,7 +2,7 @@ const lodash = require('lodash')
 const bcrypt = require('bcrypt')
 const jwt = require('jwt-simple')
 const User = require('../models/user')
-require('dotenv')
+require('dotenv').config()
 
 const getToken = user => {
 

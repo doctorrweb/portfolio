@@ -1,4 +1,5 @@
 const jwt = require('jwt-simple')
+require('dotenv').config()
 // const { secret } = require('../config')
 
 // middleware for doing role-based permissions

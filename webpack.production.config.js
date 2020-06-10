@@ -81,7 +81,7 @@ module.exports = {
             template: './template.html',
             cache: true
         }),
-        new Dotenv()
+        new Dotenv({ path: '/prod-aws.env' })
     ],
     resolve: {
         extensions: ['*', '.js', '.jsx', '.css'],

@@ -1,6 +1,7 @@
 const passport = require('passport')
 const User = require('../models/user')
 const { ExtractJwt, Strategy } = require('passport-jwt')
+require('dotenv').config()
 const JWTStrategy = Strategy
 
 const verify = async (payload, done) => {

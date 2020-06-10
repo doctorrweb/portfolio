@@ -3,3 +3,4 @@ node_modules/*
 .vscode/launch.json
 public/uploads
 .env
+prod-aws.env

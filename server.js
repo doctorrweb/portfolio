@@ -14,6 +14,8 @@ const appRouter = require('./api/routes')
 
 const app = express()
 
+require('dotenv').config()
+
 /* ****
 start - SETTING OF THE DATABASE
 **** */
