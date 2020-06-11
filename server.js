@@ -82,7 +82,7 @@ app.use(express.static('public'))
 
 
 const server = app.listen(process.env.PORT, () => {
-    console.log(`Express is launch: http://${process.env.BASE_URL}:${process.env.PORT}`)
+    console.log(`Express is launch: ${process.env.BASE_URL}:${process.env.PORT}`)
 })
 
 // Handle unhandled rejections
