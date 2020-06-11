@@ -1,3 +1,4 @@
+const https = require('https')
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
@@ -80,8 +81,12 @@ app.get('/', (req, res) => {
 app.use('/api', appRouter)
 app.use(express.static('public'))
 
+const serverOptions = {
+    key: fs.readFileSync('./ssl/privkey.pem'),
+    cert: fs.readFileSync('./ssl/fullchain.pem')
+}
 
-const server = app.listen(process.env.PORT, () => {
+const server = https.createServer(serverOptions, app).listen(process.env.PORT, () => {
     console.log(`Express is launch: ${process.env.BASE_URL}:${process.env.PORT}`)
 })
 
