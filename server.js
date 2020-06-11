@@ -9,12 +9,12 @@ const rateLimit = require('express-rate-limit')
 const hpp = require('hpp')
 const morgan = require('morgan')
 const fs = require('fs')
+require('dotenv').config()
 
 const appRouter = require('./api/routes')
 
 const app = express()
 
-require('dotenv').config()
 
 /* ****
 start - SETTING OF THE DATABASE
