@@ -56,7 +56,8 @@ module.exports = {
                         },
                     },
                 ],
-            },{ 
+            },
+            { 
                 test: /\.(woff2|woff|ttf)$/,
                 use: [
                     {
@@ -68,7 +69,6 @@ module.exports = {
                     }
                 ],
             }
-
         ],
     },
     plugins: [

@@ -67,6 +67,10 @@ blockquote {
   margin: 0;
 }
 
+pre.typewriter {
+  font-family: 'Menlo', monospace;
+  }
+
 .typewriter:after {
 	content: "|";
   animation: blink 500ms linear infinite alternate;
@@ -127,7 +131,7 @@ blockquote {
   }
 
   pre.typewriter {
-	font-size: .8em;
+  font-size: .8em;
   }
 
 }
