@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken'
 import { HashRouter } from 'react-router-dom'
 import App from './container/app'
 import setAuthorizationToken from './helper/authToken'
-import registerServiceWorker from './registerServiceWorker'
+// import registerServiceWorker from './registerServiceWorker'
 import reducers from './reducer'
 import { setAuthentication, setCurrentUser } from './action/index'
 import reduxImmutableStateVariant from 'redux-immutable-state-invariant'
@@ -41,4 +41,4 @@ render(
     document.querySelector('#root')
 )
 
-registerServiceWorker()
+// registerServiceWorker()
