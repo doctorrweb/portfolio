@@ -19518,6 +19518,25 @@ textarea.ant-input-number {
       url(/dist/Menlo-Bold.ttf) format('ttf'),
 }
 
+@font-face {
+  font-family: 'Helvetica Neue';
+  font-size: 300;
+  src: url(/dist/HelveticaNeue-Light.woff) format('woff'),
+      url(/dist/HelveticaNeueLight.woff2) format('woff2'),
+      url(/dist/HelveticaNeue-Light.ttf) format('ttf'),
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  font-size: 600;
+  src: url(/dist/HelveticaNeue-Bold.woff) format('woff'),
+      url(/dist/HelveticaNeue-Bold.woff2) format('woff2'),
+      url(/dist/HelveticaNeue-Bold.ttf) format('ttf'),
+}
+
+body {
+  font-family: 'Helvetica Neue';
+}
 
 blockquote {
   border-left: #FF9900 solid 7px;
@@ -19646,4 +19665,4 @@ pre.typewriter {
 }
 
 
-/*# sourceMappingURL=main.6ba02cae3d035124b451.css.map*/
+/*# sourceMappingURL=main.e000bfae7af61a3d5310.css.map*/

@@ -15,6 +15,25 @@
       url('./fonts/Menlo-Bold.ttf') format('ttf'),
 }
 
+@font-face {
+  font-family: 'Helvetica Neue';
+  font-size: 300;
+  src: url('./fonts/HelveticaNeue-Light.woff') format('woff'),
+      url('./fonts/HelveticaNeueLight.woff2') format('woff2'),
+      url('./fonts/HelveticaNeue-Light.ttf') format('ttf'),
+}
+
+@font-face {
+  font-family: 'Helvetica Neue';
+  font-size: 600;
+  src: url('./fonts/HelveticaNeue-Bold.woff') format('woff'),
+      url('./fonts/HelveticaNeue-Bold.woff2') format('woff2'),
+      url('./fonts/HelveticaNeue-Bold.ttf') format('ttf'),
+}
+
+body {
+  font-family: 'Helvetica Neue';
+}
 
 blockquote {
   border-left: #FF9900 solid 7px;
