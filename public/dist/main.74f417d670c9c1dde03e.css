@@ -19534,8 +19534,10 @@ textarea.ant-input-number {
       url(/dist/HelveticaNeue-Bold.ttf) format('ttf'),
 }
 
-body {
-  font-family: 'Helvetica Neue';
+* {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+  'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+  'Noto Color Emoji';
 }
 
 blockquote {
@@ -19665,4 +19667,4 @@ pre.typewriter {
 }
 
 
-/*# sourceMappingURL=main.e000bfae7af61a3d5310.css.map*/
+/*# sourceMappingURL=main.74f417d670c9c1dde03e.css.map*/
