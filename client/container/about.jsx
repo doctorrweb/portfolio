@@ -19,10 +19,6 @@ const About = () => {
     const lang = useSelector(state => state.locale.lang)
 
     useEffect(() => {
-        console.log('posts', posts)
-    })
-
-    useEffect(() => {
         dispatch(readAllPosts())
     }, [])
 
@@ -39,13 +35,13 @@ const About = () => {
                     >
                         <Col lg={24} md={24} sm={24} xs={24}>
                             <Title level={3} style={{ color: '#FF9900' }}>
-                                {post.translations[lang]
+                                {post.translations && post.translations[lang]
                                     ? post.translations[lang].title
                                     : post.title}
                             </Title>
                             <div
                                 dangerouslySetInnerHTML={{
-                                    __html: post.translations[lang]
+                                    __html: post.translations && post.translations[lang]
                                         ? post.translations[lang].content
                                         : post.content,
                                 }}
@@ -55,7 +51,7 @@ const About = () => {
                     <Row justify="space-between" style={{ marginTop: 50 }}>
                         <Col lg={24} md={24} sm={24} xs={24}>
                             <img
-                                src={post.image.path}
+                                src={post.image && post.image.path}
                                 width="100%"
                                 height={350}
                                 style={{ objectFit: 'cover', marginTop: 10 }}

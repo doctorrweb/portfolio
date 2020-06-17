@@ -12,7 +12,7 @@ import {
     resetResponse
 } from './index'
 
-const URL_API = `${process.env.BASE_URL}/api`
+const URL_API = `${process.env.API_URL}:${process.env.PORT}/api`
 
 
 export function createClient(client) {

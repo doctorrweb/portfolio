@@ -17,7 +17,7 @@ import axios from 'axios'
 import jwt from 'jsonwebtoken'
 import setAuthorizationToken from '../helper/authToken'
 
-const URL_API = `${process.env.BASE_URL}/api`
+const URL_API = `${process.env.API_URL}:${process.env.PORT}/api`
 
 export function setAuthentication(isLoggedIn) {
     return {
