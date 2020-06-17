@@ -13,7 +13,7 @@ import {
     resetResponse
 } from './index'
 
-const URL_API = `${process.env.BASE_URL}:${process.env.PORT}/api`
+const URL_API = `${process.env.BASE_URL}/api`
 
 
 export function createTutorial(tutorial) {
