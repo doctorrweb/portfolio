@@ -30,6 +30,12 @@ const BlogItem = () => {
         dispatch(readPost(id))
     }, [])
 
+    const htmlDecode = (content) => {
+        let e = document.createElement('div')
+        e.innerHTML = content
+        return e.childNodes.length === 0 ? '' : e.childNodes[0].nodeValue
+    }
+
     const renderContent = () => {
         return (
             <Fragment>
@@ -73,7 +79,7 @@ const BlogItem = () => {
                         >
                             <div
                                 dangerouslySetInnerHTML={{
-                                    __html: post.translations && post.translations[lang] ? post.translations[lang].content : post.content,
+                                    __html: post.translations && post.translations[lang] ? htmlDecode(post.translations[lang].content) : htmlDecode(post.content),
                                 }}
                             />
                         </Paragraph>

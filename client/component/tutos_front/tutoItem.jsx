@@ -37,6 +37,12 @@ const TutoItem = () => {
         dispatch(readOneTutorial(id))
     }, [])
 
+    const htmlDecode = (content) => {
+        let e = document.createElement('div')
+        e.innerHTML = content
+        return e.childNodes.length === 0 ? '' : e.childNodes[0].nodeValue
+    }
+
 
     const renderContent = () => {
         return (
@@ -82,7 +88,7 @@ const TutoItem = () => {
                         >
                             <div
                                 dangerouslySetInnerHTML={{
-                                    __html: tutorial ? tutorial.content : null,
+                                    __html: tutorial ? htmlDecode(tutorial.content) : null,
                                 }}
                             />
                         </Paragraph>

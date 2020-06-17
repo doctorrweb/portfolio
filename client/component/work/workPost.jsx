@@ -55,6 +55,12 @@ const WorkPost = () => {
         dispatch(readOneProject(id))
     }, [newPostId])
 
+    const htmlDecode = (content) => {
+        let e = document.createElement('div')
+        e.innerHTML = content
+        return e.childNodes.length === 0 ? '' : e.childNodes[0].nodeValue
+    }
+
     const renderDate = (value) => {
         if (value) {
             return <Tag color='orange'>{moment(value).format('LL')}</Tag>
@@ -150,7 +156,7 @@ const WorkPost = () => {
                         >
                             <div
                                 dangerouslySetInnerHTML={{
-                                    __html: post.translations[lang] ? post.translations[lang].content : post.content ,
+                                    __html: post.translations[lang] ? htmlDecode(post.translations[lang].content) : htmlDecode(post.content) ,
                                 }}
                             />
                         </Paragraph>

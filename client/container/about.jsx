@@ -22,9 +22,14 @@ const About = () => {
         dispatch(readAllPosts())
     }, [])
 
+    const htmlDecode = (content) => {
+        let e = document.createElement('div')
+        e.innerHTML = content
+        return e.childNodes.length === 0 ? '' : e.childNodes[0].nodeValue
+    }
+
     const renderPost = (title, hash) => {
         const post = posts.find(post => post.title === title)
-        console.log(post)
         if (post) {
             return (
                 <Fragment>
@@ -42,8 +47,8 @@ const About = () => {
                             <div
                                 dangerouslySetInnerHTML={{
                                     __html: post.translations && post.translations[lang]
-                                        ? post.translations[lang].content
-                                        : post.content,
+                                        ? htmlDecode(post.translations[lang].content)
+                                        : htmlDecode(post.content),
                                 }}
                             />
                         </Col>

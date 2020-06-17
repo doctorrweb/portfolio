@@ -34,7 +34,6 @@ export function readAllUsers() {
                 dispatch(parseError(error.response))
             })
     }
-
 }
 
 export function updateUser(userId, updatedContent) {

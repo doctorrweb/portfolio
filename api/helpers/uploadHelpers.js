@@ -10,10 +10,9 @@ const storage = multer.diskStorage({
             cb(null, 'public/img/')
         }
 
-        if (!file.mimetype.includes('video') || !file.mimetype.includes('image')) {
+        if (!file.mimetype.includes('video') && !file.mimetype.includes('image')) {
             cb(null, 'public/uploads/')
         }
-        
     },
     filename: (req, file, cb) => {
         const { originalname, fieldname } = file
